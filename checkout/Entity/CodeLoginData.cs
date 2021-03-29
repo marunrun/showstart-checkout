@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace checkout.Entity
 {
-    class LoginData
+    class CodeLoginData
     {
 
         /// <summary>
@@ -18,14 +18,15 @@ namespace checkout.Entity
         /// 
         /// </summary>
         public string cityCode = "10";
+
         /// <summary>
         /// 
         /// </summary>
-        public int deviceType = 4;
+        public string formToken = "";
         /// <summary>
         /// 
         /// </summary>
-        public string jsessionId = Helpers.Get32RandomID();
+        public string ip = Helpers.GetIP();
         /// <summary>
         /// 
         /// </summary>
@@ -33,18 +34,14 @@ namespace checkout.Entity
         /// <summary>
         /// 
         /// </summary>
-        public string loginIp =  Helpers.GetIP();
-        /// <summary>
-        /// 
-        /// </summary>
         public double longitude = 0.0;
         /// <summary>
         /// 
         /// </summary>
-        public string name { get; set; }
+        public string phone { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string password { get; set; }
+        public string verifyCode { get; set; }
     }
 }

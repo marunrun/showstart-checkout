@@ -6,36 +6,36 @@ using System.Threading.Tasks;
 
 namespace checkout.Entity
 {
-    class PublicData
+    class Result<T>
     {
         /// <summary>
         /// 
         /// </summary>
-        public string uuid = "869161028801108";
+        public string invalidParams { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string isHasResult { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string msg { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string nd { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public T result { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string state { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string terminal = "android";
-        /// <summary>
-        /// 
-        /// </summary>
-        public string sysVersion = "10";
-        /// <summary>
-        /// 
-        /// </summary>
-        public string sign { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string p_json_dig { get; set; }
-        /// <string>
-        /// 
-        /// </summary>
-        public string deviceName = "MI 9 SE";
-        /// <summary>
-        /// 
-        /// </summary>
-        public string appVersion = "4.6.9";
+        public bool isSuccess() 
+        {
+            return this.isHasResult == "1";
+        }
     }
 }

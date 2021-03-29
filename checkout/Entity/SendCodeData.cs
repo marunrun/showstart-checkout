@@ -6,36 +6,29 @@ using System.Threading.Tasks;
 
 namespace checkout.Entity
 {
-    class PublicData
+    class SendCodeData
     {
         /// <summary>
         /// 
         /// </summary>
-        public string uuid = "869161028801108";
+        public string areaCode = "86_CN";
+        /// <summary>
+        /// 
+        /// </summary>
+        public string mobile { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string terminal = "android";
+        public string randStr { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string sysVersion = "10";
+        public string ticket { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string sign { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string p_json_dig { get; set; }
-        /// <string>
-        /// 
-        /// </summary>
-        public string deviceName = "MI 9 SE";
-        /// <summary>
-        /// 
-        /// </summary>
-        public string appVersion = "4.6.9";
+        public string type { get; set; }
+
     }
 }

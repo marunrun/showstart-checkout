@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="mul">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <style type="text/css">
+      body {
+        font-size: 12px;
+        height: 232px;
+      }
+      .cap_iframe {
+        width: 300px;
+        height: 232px;
+      }
+    </style>
+    <title>腾讯验证码</title>
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+    <!-- <script src="./slide.js"></script> -->
+  </head>
+  <body id="full">
+    <div
+      id="cap_iframe"
+      data-appid="2032912416"
+      data-cbfn="callback"
+      class="cap_iframe"
+    ></div>
+    <div id="result" data=""></div>
+    <input id="randstr" type="hidden" />
+    <input id="ticket" type="hidden"/>
+    <script type="text/javascript">
+      window.onload = function () {
+        captcha = new TencentCaptcha(
+          document.getElementById("cap_iframe"),
+          "2032912416",
+          function (res) {
+            if (res.ret == 0) {
+              document.getElementById("randstr").text = res.randstr;
+              document.getElementById("ticket").text = res.ticket;
+            }
+            console.log(res);
+          },
+          {
+            type: "embed",
+          }
+        );
+        captcha.show();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <!--点击此元素会自动激活验证码-->
+    <!--id : 元素的id(必须)-->
+    <!--data-appid : AppID(必须)-->
+    <!--data-cbfn : 回调函数名(必须)-->
+    <!--data-biz-state : 业务自定义透传参数(可选)-->
+    <button
+      data-appid="2032912416"
+      data-cbfn="callback"
+      type="button"
+      onclick="btnClick()"
+      id="btn"
+    >
+      验证
+    </button>
+    <div
+      id="newVcodeIframe"
+      style="
+        background: none rgb(255, 255, 255);
+        position: absolute;
+        width: 300px;
+        left: 50%;
+        margin-left: -150px;
+        z-index: 9999;
+      "
+    ></div>
+  </body>
+  <script>
+    window.onload = function () {
+      btnClick = function () {
+        console.log(1);
+        captcha = new TencentCaptcha(
+          document.getElementById("newVcodeIframe"),
+          "2032912416",
+          function (res) {
+            if (res.ret == 0) {
+              $.ajax({
+                url: "http://localhost:9504/order/order",
+                method: "POST",
+                data: {
+                  randStr: res.randstr,
+                  ticket: res.ticket,
+                },
+                success: function () {
+                  console.log("success");
+                },
+              });
+            }
+          },
+          {
+            type: "embed",
+          }
+        );
+        captcha.show();
+      };
+    };
+  </script>
+</html>

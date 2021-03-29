@@ -1,0 +1,7 @@
+﻿[*.{cs,vb}]
+
+# IDE0044: 添加只读修饰符
+dotnet_style_readonly_field = false:suggestion
+
+# IDE1006: 命名样式
+dotnet_diagnostic.IDE1006.severity = none

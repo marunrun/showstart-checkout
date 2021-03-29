@@ -1,62 +1,60 @@
 ﻿using checkout.Entity;
 using checkout.Helper;
+using checkout.Services;
 using Newtonsoft.Json;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
+using Microsoft.Edge.SeleniumTools;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
+
 using System.Windows.Forms;
+using System.Threading;
+using System.Text.RegularExpressions;
+using System.Drawing;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using Fiddler;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using OpenQA.Selenium.Support.UI;
 
 namespace checkout
 {
-    public partial class Form1 : Form
+
+    public partial class checkoutForm : Form
     {
-        public Form1()
+        static Fiddler.Proxy oSecureEndpoint;
+        static string sSecureEndpointHostname = "localhost";
+        static int iSecureEndpointPort = 7777;
+
+
+        private static string MOBILE = "userMobile";
+
+        private static string PASSWORD = "pwd";
+
+        private UserService userService;
+
+        public checkoutForm()
         {
+            this.userService = new UserService();
+
             InitializeComponent();
-            initListView();
+            initMobileAndPwd();
         }
 
-        protected void initListView()
+        // 初始化，账号，密码等信息
+        public void initMobileAndPwd()
         {
-            this.listView1.BeginUpdate();
-            foreach (Product product in Depot.products.Values)
+            mobile.Text = Helpers.readIni(MOBILE, "");
+            password.Text = Helpers.readIni(PASSWORD, "");
+
+            if (userService.isLogin())
             {
-                ListViewItem item = new ListViewItem();
-                item.Text = product.name;
-                item.SubItems.Add(product.price.ToString());
-                item.SubItems.Add(product.count.ToString());
-                this.listView1.Items.Add(item);
+                LogHelpers.write("您已登陆：" + userService.getTel(), logText);
             }
-            this.listView1.EndUpdate();
         }
 
         private void buy_Click(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection selectedItems = this.listView1.SelectedItems;
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("是否确认购买");
-            foreach (ListViewItem item in selectedItems)
-            {
-                stringBuilder.Append($"{item.Text} ");
-            }
-            stringBuilder.Append("？");
 
-            if (MessageBox.Show(stringBuilder.ToString(), "是否确认购买", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Console.WriteLine("yes");
-            }
-            else
-            {
-                Console.WriteLine("no");
-
-            }
         }
 
 
@@ -65,40 +63,142 @@ namespace checkout
 
         }
 
+        // 发送验证码
         private void sendCode_Click(object sender, EventArgs e)
         {
-            String userMobile = mobile.Text;
+            string userMobile = mobile.Text;
 
-
-        }
-
-        private void pwdLogin_Click(object sender, EventArgs e)
-        {
-            String userMobile = mobile.Text;
-            
-            if (userMobile.Length  == 0 || userMobile.Length != 11) {
+            if (userMobile.Length == 0 || userMobile.Length != 11)
+            {
                 MessageBox.Show("手机号格式错误");
                 return;
             }
-            String pwd = password.Text;
-            if (pwd.Length == 0 )
+
+            // 滑块验证
+            CaptchData captchData = CaptchHelper.getTicket();
+
+            SendCodeData sendCodeData = new SendCodeData
+            {
+                mobile = userMobile,
+                randStr = Uri.EscapeDataString(captchData.randstr),
+                ticket = captchData.ticket,
+                type = "1"
+            };
+            Helpers.writeini(MOBILE, userMobile);
+
+            string res = RequestUtil.sign(JsonConvert.SerializeObject(sendCodeData));
+            Result<object> result = RequestUtil.sendCode(res);
+            if (result.isSuccess())
+            {
+                LogHelpers.write("验证码发送成功", logText);
+            }
+            else
+            {
+                LogHelpers.write("验证码发送失败：" + result.msg, logText);
+                return;
+            }
+
+        }
+
+        public void writeLog(string msg)
+        {
+            logText.AppendText(msg);
+        }
+
+        // 密码登陆
+        private void pwdLogin_Click(object sender, EventArgs e)
+        {
+            string userMobile = mobile.Text;
+
+            if (userMobile.Length == 0 || userMobile.Length != 11)
+            {
+                MessageBox.Show("手机号格式错误");
+                return;
+            }
+            string pwd = password.Text;
+            if (pwd.Length == 0)
             {
                 MessageBox.Show("密码不得为空");
                 return;
             }
-            LoginData loginData = new LoginData();
-            loginData.areaCode = "86_CN";
-            loginData.cityCode = "571";
-            loginData.deviceType = 4;
-            loginData.jsessionId = Helpers.Get32RandomID();
-            loginData.latitude = 30.275146;
-            loginData.longitude = 120.12643;
-            loginData.loginIp = Helpers.GetIP();
-            loginData.name = userMobile;
-            loginData.password = pwd;
+            LoginData loginData = new LoginData
+            {
+                name = userMobile,
+                password = pwd,
+            };
 
-            string res = RequestUtil.Sign(JsonConvert.SerializeObject(loginData));
-            Console.WriteLine(res);
+            string res = RequestUtil.sign(JsonConvert.SerializeObject(loginData));
+            Helpers.writeini(MOBILE, userMobile);
+            Helpers.writeini(PASSWORD, pwd);
+
+
+            Result<UserInfo> userRes = RequestUtil.loginByPwd(res);
+            LogHelpers.write(" 密码登陆：" + userRes);
+            if (userRes.isSuccess())
+            {
+                LogHelpers.write("登陆成功", logText);
+            }
+            else
+            {
+                LogHelpers.write("登陆失败：" + userRes.msg, logText);
+                return;
+            }
+            Helpers.writeini("sign", userRes.result.sign);
+            Helpers.writeini("st_flpv", userRes.result.st_flpv);
+            Helpers.writeini("token", userRes.result.token);
+            Helpers.writeini("expireTime", userRes.result.expireTime + "");
+            Helpers.writeini("tel", userRes.result.tel);
+            Helpers.writeini("userId", userRes.result.userId + "");
+        }
+
+
+        // 验证码登陆
+        private void login_Click(object sender, EventArgs e)
+        {
+            string userMobile = mobile.Text;
+            if (userMobile.Length == 0 || userMobile.Length != 11)
+            {
+                MessageBox.Show("手机号格式错误");
+                return;
+            }
+            string vcode = code.Text;
+            if (vcode.Length == 0)
+            {
+                MessageBox.Show("验证码不得为空");
+                return;
+            }
+
+            CodeLoginData loginData = new CodeLoginData
+            {
+                phone = userMobile,
+                verifyCode = vcode,
+            };
+            // 加签
+            string res = RequestUtil.sign(JsonConvert.SerializeObject(loginData));
+            // 发送请求
+            Result<UserSession> result = RequestUtil.loginByVCode(res);
+
+            if (result.isSuccess())
+            {
+                LogHelpers.write("登陆成功", logText);
+            }
+            else
+            {
+                LogHelpers.write("登陆失败：" + result.msg, logText);
+                return;
+            }
+
+            Helpers.writeini("sign", result.result.session.sign);
+            Helpers.writeini("st_flpv", result.result.session.st_flpv);
+            Helpers.writeini("token", result.result.session.token);
+            Helpers.writeini("expireTime", result.result.session.expireTime + "");
+            Helpers.writeini("tel", result.result.session.tel);
+            Helpers.writeini("userId", result.result.session.userId + "");
+        }
+
+        private void mobile_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
