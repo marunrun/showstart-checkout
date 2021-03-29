@@ -32,10 +32,6 @@ namespace checkout
         private void InitializeComponent()
         {
             this.buy = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.count = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,6 +42,10 @@ namespace checkout
             this.password = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.pwdLogin = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.logText = new System.Windows.Forms.TextBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buy
@@ -53,44 +53,17 @@ namespace checkout
             this.buy.Location = new System.Drawing.Point(24, 194);
             this.buy.Name = "buy";
             this.buy.Size = new System.Drawing.Size(75, 23);
-            this.buy.TabIndex = 0;
+            this.buy.TabIndex = 7;
             this.buy.Text = "购买";
             this.buy.UseVisualStyleBackColor = true;
             this.buy.Click += new System.EventHandler(this.buy_Click);
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.name,
-            this.price,
-            this.count});
-            this.listView1.FullRowSelect = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(374, 63);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(183, 97);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // name
-            // 
-            this.name.Text = "名称";
-            // 
-            // price
-            // 
-            this.price.Text = "单价";
-            // 
-            // count
-            // 
-            this.count.Text = "库存";
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(155, 193);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 8;
             this.button1.Text = "滑块";
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -118,21 +91,21 @@ namespace checkout
             this.mobile.Location = new System.Drawing.Point(75, 28);
             this.mobile.Name = "mobile";
             this.mobile.Size = new System.Drawing.Size(100, 21);
-            this.mobile.TabIndex = 7;
+            this.mobile.TabIndex = 1;
             // 
             // code
             // 
             this.code.Location = new System.Drawing.Point(75, 113);
             this.code.Name = "code";
             this.code.Size = new System.Drawing.Size(100, 21);
-            this.code.TabIndex = 8;
+            this.code.TabIndex = 4;
             // 
             // sendCode
             // 
             this.sendCode.Location = new System.Drawing.Point(24, 140);
             this.sendCode.Name = "sendCode";
             this.sendCode.Size = new System.Drawing.Size(75, 23);
-            this.sendCode.TabIndex = 9;
+            this.sendCode.TabIndex = 5;
             this.sendCode.Text = "发送验证码";
             this.sendCode.UseVisualStyleBackColor = true;
             this.sendCode.Click += new System.EventHandler(this.sendCode_Click);
@@ -142,7 +115,7 @@ namespace checkout
             this.login.Location = new System.Drawing.Point(105, 140);
             this.login.Name = "login";
             this.login.Size = new System.Drawing.Size(75, 23);
-            this.login.TabIndex = 10;
+            this.login.TabIndex = 6;
             this.login.Text = "验证码登陆";
             this.login.UseVisualStyleBackColor = true;
             // 
@@ -151,7 +124,7 @@ namespace checkout
             this.password.Location = new System.Drawing.Point(240, 28);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(100, 21);
-            this.password.TabIndex = 12;
+            this.password.TabIndex = 2;
             // 
             // label3
             // 
@@ -167,16 +140,47 @@ namespace checkout
             this.pwdLogin.Location = new System.Drawing.Point(75, 58);
             this.pwdLogin.Name = "pwdLogin";
             this.pwdLogin.Size = new System.Drawing.Size(100, 29);
-            this.pwdLogin.TabIndex = 13;
+            this.pwdLogin.TabIndex = 3;
             this.pwdLogin.Text = "密码登陆";
             this.pwdLogin.UseVisualStyleBackColor = true;
             this.pwdLogin.Click += new System.EventHandler(this.pwdLogin_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.linkLabel1);
+            this.groupBox1.Controls.Add(this.logText);
+            this.groupBox1.Location = new System.Drawing.Point(411, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(192, 235);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "日志";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(90, 69);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(0, 12);
+            this.linkLabel1.TabIndex = 1;
+            // 
+            // logText
+            // 
+            this.logText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logText.Location = new System.Drawing.Point(3, 17);
+            this.logText.Multiline = true;
+            this.logText.Name = "logText";
+            this.logText.Size = new System.Drawing.Size(186, 215);
+            this.logText.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(606, 247);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(630, 284);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pwdLogin);
             this.Controls.Add(this.password);
             this.Controls.Add(this.label3);
@@ -187,10 +191,11 @@ namespace checkout
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.listView1);
             this.Controls.Add(this.buy);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,10 +206,6 @@ namespace checkout
 
 
         private System.Windows.Forms.Button buy;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader name;
-        private System.Windows.Forms.ColumnHeader price;
-        private System.Windows.Forms.ColumnHeader count;
         private Button button1;
         private Label label1;
         private Label label2;
@@ -215,6 +216,9 @@ namespace checkout
         private TextBox password;
         private Label label3;
         private Button pwdLogin;
+        private GroupBox groupBox1;
+        public TextBox logText;
+        private LinkLabel linkLabel1;
     }
 }
 

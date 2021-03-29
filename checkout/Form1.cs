@@ -17,46 +17,27 @@ namespace checkout
 {
     public partial class Form1 : Form
     {
+
+        private static string MOBILE = "userMobile";
+
+        private static string PASSWORD = "pwd";
+
         public Form1()
         {
             InitializeComponent();
-            initListView();
+            initMobileAndPwd();
         }
 
-        protected void initListView()
+        // 初始化，账号，密码
+        public void initMobileAndPwd()
         {
-            this.listView1.BeginUpdate();
-            foreach (Product product in Depot.products.Values)
-            {
-                ListViewItem item = new ListViewItem();
-                item.Text = product.name;
-                item.SubItems.Add(product.price.ToString());
-                item.SubItems.Add(product.count.ToString());
-                this.listView1.Items.Add(item);
-            }
-            this.listView1.EndUpdate();
+            mobile.Text = Helpers.readIni(MOBILE, "");
+            password.Text = Helpers.readIni(PASSWORD, "");
         }
 
         private void buy_Click(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection selectedItems = this.listView1.SelectedItems;
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("是否确认购买");
-            foreach (ListViewItem item in selectedItems)
-            {
-                stringBuilder.Append($"{item.Text} ");
-            }
-            stringBuilder.Append("？");
 
-            if (MessageBox.Show(stringBuilder.ToString(), "是否确认购买", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Console.WriteLine("yes");
-            }
-            else
-            {
-                Console.WriteLine("no");
-
-            }
         }
 
 
@@ -72,16 +53,22 @@ namespace checkout
 
         }
 
+        public void writeLog(string msg)
+        {
+            logText.AppendText(msg);
+        }
+
         private void pwdLogin_Click(object sender, EventArgs e)
         {
-            String userMobile = mobile.Text;
-            
-            if (userMobile.Length  == 0 || userMobile.Length != 11) {
+            string userMobile = mobile.Text;
+
+            if (userMobile.Length == 0 || userMobile.Length != 11)
+            {
                 MessageBox.Show("手机号格式错误");
                 return;
             }
-            String pwd = password.Text;
-            if (pwd.Length == 0 )
+            string pwd = password.Text;
+            if (pwd.Length == 0)
             {
                 MessageBox.Show("密码不得为空");
                 return;
@@ -98,7 +85,15 @@ namespace checkout
             loginData.password = pwd;
 
             string res = RequestUtil.Sign(JsonConvert.SerializeObject(loginData));
-            Console.WriteLine(res);
+            Helpers.writeini(MOBILE, userMobile);
+            Helpers.writeini(PASSWORD, pwd);
+            string v = RequestUtil.loginByPwd(res);
+
+            Console.WriteLine(v);
+            LogHelpers.write(v, logText);
+
         }
+
+
     }
 }

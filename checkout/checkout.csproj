@@ -86,7 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Depot.cs" />
+    <Compile Include="Entity\Result.cs" />
     <Compile Include="Entity\LoginData.cs" />
     <Compile Include="Entity\PublicData.cs" />
     <Compile Include="enums\ProductEnum.cs" />
@@ -98,10 +98,9 @@
     </Compile>
     <Compile Include="Helper\CaptchHelper.cs" />
     <Compile Include="Helper\Helpers.cs" />
+    <Compile Include="Helper\LogHelpers.cs" />
     <Compile Include="Helper\RequestUtil.cs" />
     <Compile Include="Product.cs" />
-    <Compile Include="products\Acer.cs" />
-    <Compile Include="products\Samsung.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -116,6 +115,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
