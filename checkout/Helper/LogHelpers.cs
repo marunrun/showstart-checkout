@@ -33,6 +33,7 @@ namespace checkout.Helper
                 Directory.CreateDirectory("./logs");
             }
 
+            FileStream fileStream;
 
             StreamWriter streamWriter = File.AppendText(logPath);
 
