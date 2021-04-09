@@ -33,6 +33,12 @@ namespace checkout.Services
             return Helpers.readIni("sign", "");
         }
 
+        public string getUserId()
+        {
+            return Helpers.readIni("userId", "");
+
+        }
+
         public string getExpireTime()
         {
             return Helpers.readIni("expireTime", "");

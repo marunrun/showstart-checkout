@@ -1,4 +1,5 @@
 ﻿
+using checkout.Enums;
 using System.Windows.Forms;
 
 namespace checkout
@@ -31,8 +32,7 @@ namespace checkout
         /// </summary>
         private void InitializeComponent()
         {
-            this.buy = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.mobile = new System.Windows.Forms.TextBox();
@@ -47,37 +47,49 @@ namespace checkout
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.pwdLoginTab = new System.Windows.Forms.TabPage();
             this.codeLoginTab = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.userIdSelector = new System.Windows.Forms.ComboBox();
+            this.userIdInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.addressSelector = new System.Windows.Forms.ComboBox();
+            this.addressInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.refreshInfo = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.searchSelector = new System.Windows.Forms.ComboBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.activityComboBox = new System.Windows.Forms.ComboBox();
+            this.activityInfoVoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.searchBtn = new System.Windows.Forms.Button();
+            this.searchTxt = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buyTime = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buyTimeBtn = new System.Windows.Forms.Button();
+            this.buyNowBtn = new System.Windows.Forms.Button();
+            this.remainTicket = new System.Windows.Forms.Label();
+            this.ticketList = new System.Windows.Forms.ComboBox();
+            this.userSessionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.group1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pwdLoginTab.SuspendLayout();
             this.codeLoginTab.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userIdInfoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.addressInfoBindingSource)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.activityInfoVoBindingSource)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userSessionBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // buy
-            // 
-            this.buy.Location = new System.Drawing.Point(12, 167);
-            this.buy.Name = "buy";
-            this.buy.Size = new System.Drawing.Size(75, 23);
-            this.buy.TabIndex = 7;
-            this.buy.Text = "购买";
-            this.buy.UseVisualStyleBackColor = true;
-            this.buy.Click += new System.EventHandler(this.buy_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(162, 167);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "滑块";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(17, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.Size = new System.Drawing.Size(56, 14);
             this.label1.TabIndex = 4;
             this.label1.Text = "账 号：";
             // 
@@ -86,25 +98,25 @@ namespace checkout
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 19);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.Size = new System.Drawing.Size(63, 14);
             this.label2.TabIndex = 6;
             this.label2.Text = "验证码：";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // mobile
             // 
-            this.mobile.Location = new System.Drawing.Point(70, 18);
+            this.mobile.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.mobile.Location = new System.Drawing.Point(78, 23);
             this.mobile.MaxLength = 11;
             this.mobile.Name = "mobile";
-            this.mobile.Size = new System.Drawing.Size(100, 21);
+            this.mobile.Size = new System.Drawing.Size(100, 23);
             this.mobile.TabIndex = 1;
-            this.mobile.TextChanged += new System.EventHandler(this.mobile_TextChanged);
             // 
             // code
             // 
             this.code.Location = new System.Drawing.Point(54, 16);
             this.code.Name = "code";
-            this.code.Size = new System.Drawing.Size(100, 21);
+            this.code.Size = new System.Drawing.Size(100, 23);
             this.code.TabIndex = 2;
             // 
             // sendCode
@@ -132,7 +144,7 @@ namespace checkout
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 13);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.Size = new System.Drawing.Size(49, 14);
             this.label3.TabIndex = 11;
             this.label3.Text = "密码：";
             // 
@@ -159,7 +171,7 @@ namespace checkout
             // 
             this.password.Location = new System.Drawing.Point(59, 10);
             this.password.Name = "password";
-            this.password.Size = new System.Drawing.Size(100, 21);
+            this.password.Size = new System.Drawing.Size(100, 23);
             this.password.TabIndex = 2;
             // 
             // group1
@@ -176,10 +188,11 @@ namespace checkout
             // 
             this.tabControl1.Controls.Add(this.pwdLoginTab);
             this.tabControl1.Controls.Add(this.codeLoginTab);
-            this.tabControl1.Location = new System.Drawing.Point(12, 45);
+            this.tabControl1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tabControl1.Location = new System.Drawing.Point(12, 51);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(196, 102);
+            this.tabControl1.Size = new System.Drawing.Size(248, 120);
             this.tabControl1.TabIndex = 16;
             // 
             // pwdLoginTab
@@ -187,10 +200,10 @@ namespace checkout
             this.pwdLoginTab.Controls.Add(this.password);
             this.pwdLoginTab.Controls.Add(this.label3);
             this.pwdLoginTab.Controls.Add(this.pwdLogin);
-            this.pwdLoginTab.Location = new System.Drawing.Point(4, 22);
+            this.pwdLoginTab.Location = new System.Drawing.Point(4, 24);
             this.pwdLoginTab.Name = "pwdLoginTab";
             this.pwdLoginTab.Padding = new System.Windows.Forms.Padding(3);
-            this.pwdLoginTab.Size = new System.Drawing.Size(188, 76);
+            this.pwdLoginTab.Size = new System.Drawing.Size(240, 92);
             this.pwdLoginTab.TabIndex = 0;
             this.pwdLoginTab.Text = "密码登陆";
             this.pwdLoginTab.UseVisualStyleBackColor = true;
@@ -201,13 +214,240 @@ namespace checkout
             this.codeLoginTab.Controls.Add(this.sendCode);
             this.codeLoginTab.Controls.Add(this.code);
             this.codeLoginTab.Controls.Add(this.label2);
-            this.codeLoginTab.Location = new System.Drawing.Point(4, 22);
+            this.codeLoginTab.Location = new System.Drawing.Point(4, 24);
             this.codeLoginTab.Name = "codeLoginTab";
             this.codeLoginTab.Padding = new System.Windows.Forms.Padding(3);
-            this.codeLoginTab.Size = new System.Drawing.Size(188, 76);
+            this.codeLoginTab.Size = new System.Drawing.Size(240, 92);
             this.codeLoginTab.TabIndex = 1;
             this.codeLoginTab.Text = "验证码登陆";
             this.codeLoginTab.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.userIdSelector);
+            this.groupBox1.Location = new System.Drawing.Point(266, 23);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(208, 50);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "身份证信息";
+            // 
+            // userIdSelector
+            // 
+            this.userIdSelector.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.userIdInfoBindingSource, "documentNumber", true));
+            this.userIdSelector.DataSource = this.userIdInfoBindingSource;
+            this.userIdSelector.DisplayMember = "name";
+            this.userIdSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.userIdSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.userIdSelector.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.userIdSelector.FormattingEnabled = true;
+            this.userIdSelector.Location = new System.Drawing.Point(3, 17);
+            this.userIdSelector.Name = "userIdSelector";
+            this.userIdSelector.Size = new System.Drawing.Size(202, 22);
+            this.userIdSelector.TabIndex = 21;
+            this.userIdSelector.ValueMember = "documentNumber";
+            // 
+            // userIdInfoBindingSource
+            // 
+            this.userIdInfoBindingSource.DataSource = typeof(checkout.Entity.Vo.UserIdInfo);
+            // 
+            // addressSelector
+            // 
+            this.addressSelector.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.addressInfoBindingSource, "id", true));
+            this.addressSelector.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.addressInfoBindingSource, "address", true));
+            this.addressSelector.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.addressInfoBindingSource, "id", true));
+            this.addressSelector.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.addressInfoBindingSource, "address", true));
+            this.addressSelector.DataSource = this.addressInfoBindingSource;
+            this.addressSelector.DisplayMember = "address";
+            this.addressSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.addressSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.addressSelector.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.addressSelector.FormattingEnabled = true;
+            this.addressSelector.Location = new System.Drawing.Point(3, 17);
+            this.addressSelector.Name = "addressSelector";
+            this.addressSelector.Size = new System.Drawing.Size(199, 22);
+            this.addressSelector.TabIndex = 19;
+            this.addressSelector.ValueMember = "id";
+            // 
+            // addressInfoBindingSource
+            // 
+            this.addressInfoBindingSource.DataSource = typeof(checkout.Entity.Vo.AddressInfo);
+            // 
+            // refreshInfo
+            // 
+            this.refreshInfo.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.refreshInfo.Location = new System.Drawing.Point(269, 144);
+            this.refreshInfo.Name = "refreshInfo";
+            this.refreshInfo.Size = new System.Drawing.Size(205, 23);
+            this.refreshInfo.TabIndex = 20;
+            this.refreshInfo.Text = "刷新信息";
+            this.refreshInfo.UseVisualStyleBackColor = true;
+            this.refreshInfo.Click += new System.EventHandler(this.refreshInfo_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.addressSelector);
+            this.groupBox2.Location = new System.Drawing.Point(269, 75);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(205, 50);
+            this.groupBox2.TabIndex = 22;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "地址信息";
+            // 
+            // searchSelector
+            // 
+            this.searchSelector.DataSource = new string[] {
+        "演出名称",
+        "演出ID"};
+            this.searchSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.searchSelector.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.searchSelector.FormattingEnabled = true;
+            this.searchSelector.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.searchSelector.Items.AddRange(new object[] {
+            "演出名称",
+            "演出ID"});
+            this.searchSelector.Location = new System.Drawing.Point(6, 20);
+            this.searchSelector.Name = "searchSelector";
+            this.searchSelector.Size = new System.Drawing.Size(82, 22);
+            this.searchSelector.TabIndex = 23;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.activityComboBox);
+            this.groupBox3.Controls.Add(this.searchBtn);
+            this.groupBox3.Controls.Add(this.searchTxt);
+            this.groupBox3.Controls.Add(this.searchSelector);
+            this.groupBox3.Location = new System.Drawing.Point(12, 176);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(465, 96);
+            this.groupBox3.TabIndex = 24;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "演出搜索";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(6, 67);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(77, 14);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "选择演出：";
+            // 
+            // activityComboBox
+            // 
+            this.activityComboBox.DataSource = this.activityInfoVoBindingSource;
+            this.activityComboBox.DisplayMember = "MyTitle";
+            this.activityComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.activityComboBox.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.activityComboBox.FormattingEnabled = true;
+            this.activityComboBox.Location = new System.Drawing.Point(94, 64);
+            this.activityComboBox.Name = "activityComboBox";
+            this.activityComboBox.Size = new System.Drawing.Size(337, 22);
+            this.activityComboBox.TabIndex = 26;
+            this.activityComboBox.ValueMember = "MyTitle";
+            this.activityComboBox.SelectedIndexChanged += new System.EventHandler(this.activityChange);
+            // 
+            // activityInfoVoBindingSource
+            // 
+            this.activityInfoVoBindingSource.DataSource = typeof(checkout.Entity.Vo.ActivityInfoVo);
+            // 
+            // searchBtn
+            // 
+            this.searchBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.searchBtn.Location = new System.Drawing.Point(356, 17);
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(75, 23);
+            this.searchBtn.TabIndex = 25;
+            this.searchBtn.Text = "点击搜索";
+            this.searchBtn.UseVisualStyleBackColor = true;
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
+            // 
+            // searchTxt
+            // 
+            this.searchTxt.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.searchTxt.Location = new System.Drawing.Point(94, 20);
+            this.searchTxt.Name = "searchTxt";
+            this.searchTxt.Size = new System.Drawing.Size(231, 23);
+            this.searchTxt.TabIndex = 24;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.buyTime);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.buyTimeBtn);
+            this.groupBox4.Controls.Add(this.buyNowBtn);
+            this.groupBox4.Controls.Add(this.remainTicket);
+            this.groupBox4.Controls.Add(this.ticketList);
+            this.groupBox4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox4.Location = new System.Drawing.Point(12, 295);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(465, 100);
+            this.groupBox4.TabIndex = 25;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "选票";
+            // 
+            // buyTime
+            // 
+            this.buyTime.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buyTime.Location = new System.Drawing.Point(234, 70);
+            this.buyTime.Name = "buyTime";
+            this.buyTime.Size = new System.Drawing.Size(100, 23);
+            this.buyTime.TabIndex = 5;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(163, 73);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(77, 14);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "填写时间：";
+            // 
+            // buyTimeBtn
+            // 
+            this.buyTimeBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buyTimeBtn.Location = new System.Drawing.Point(338, 68);
+            this.buyTimeBtn.Name = "buyTimeBtn";
+            this.buyTimeBtn.Size = new System.Drawing.Size(121, 23);
+            this.buyTimeBtn.TabIndex = 3;
+            this.buyTimeBtn.Text = "定时自动购票";
+            this.buyTimeBtn.UseVisualStyleBackColor = true;
+            // 
+            // buyNowBtn
+            // 
+            this.buyNowBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buyNowBtn.Location = new System.Drawing.Point(6, 68);
+            this.buyNowBtn.Name = "buyNowBtn";
+            this.buyNowBtn.Size = new System.Drawing.Size(75, 23);
+            this.buyNowBtn.TabIndex = 2;
+            this.buyNowBtn.Text = "确认购票";
+            this.buyNowBtn.UseVisualStyleBackColor = true;
+            // 
+            // remainTicket
+            // 
+            this.remainTicket.AutoSize = true;
+            this.remainTicket.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.remainTicket.Location = new System.Drawing.Point(232, 27);
+            this.remainTicket.Name = "remainTicket";
+            this.remainTicket.Size = new System.Drawing.Size(0, 14);
+            this.remainTicket.TabIndex = 1;
+            // 
+            // ticketList
+            // 
+            this.ticketList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ticketList.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ticketList.FormattingEnabled = true;
+            this.ticketList.Location = new System.Drawing.Point(8, 22);
+            this.ticketList.Name = "ticketList";
+            this.ticketList.Size = new System.Drawing.Size(196, 22);
+            this.ticketList.TabIndex = 0;
+            // 
+            // userSessionBindingSource
+            // 
+            this.userSessionBindingSource.DataSource = typeof(checkout.Entity.Vo.UserSession);
             // 
             // checkoutForm
             // 
@@ -215,15 +455,20 @@ namespace checkout
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(709, 418);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.refreshInfo);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mobile);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.group1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.buy);
+            this.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.Name = "checkoutForm";
-            this.Text = "辅助下单";
+            this.Text = "演出名称：";
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -231,6 +476,16 @@ namespace checkout
             this.pwdLoginTab.PerformLayout();
             this.codeLoginTab.ResumeLayout(false);
             this.codeLoginTab.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.userIdInfoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.addressInfoBindingSource)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.activityInfoVoBindingSource)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.userSessionBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,10 +493,6 @@ namespace checkout
 
         #endregion
 
-
-
-        private System.Windows.Forms.Button buy;
-        private Button button1;
         private Label label1;
         private Label label2;
         private TextBox mobile;
@@ -256,6 +507,28 @@ namespace checkout
         private TabControl tabControl1;
         private TabPage pwdLoginTab;
         private TabPage codeLoginTab;
+        private GroupBox groupBox1;
+        private ComboBox addressSelector;
+        private BindingSource addressInfoBindingSource;
+        private Button refreshInfo;
+        private ComboBox userIdSelector;
+        private BindingSource userIdInfoBindingSource;
+        private GroupBox groupBox2;
+        private ComboBox searchSelector;
+        private GroupBox groupBox3;
+        private TextBox searchTxt;
+        private Button searchBtn;
+        private Label label4;
+        private ComboBox activityComboBox;
+        private GroupBox groupBox4;
+        private TextBox buyTime;
+        private Label label7;
+        private Button buyTimeBtn;
+        private Button buyNowBtn;
+        private Label remainTicket;
+        private ComboBox ticketList;
+        private BindingSource activityInfoVoBindingSource;
+        private BindingSource userSessionBindingSource;
     }
 }
 

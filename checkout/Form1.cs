@@ -1,30 +1,22 @@
-﻿using checkout.Entity;
+﻿using checkout.Constants;
+using checkout.Entity;
+using checkout.Entity.Qo;
+using checkout.Entity.Vo;
+using checkout.Enums;
 using checkout.Helper;
 using checkout.Services;
 using Newtonsoft.Json;
-using Microsoft.Edge.SeleniumTools;
 using System;
-
-using System.Windows.Forms;
-using System.Threading;
-using System.Text.RegularExpressions;
-using System.Drawing;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using Fiddler;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using OpenQA.Selenium.Support.UI;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
 
 namespace checkout
 {
 
     public partial class checkoutForm : Form
     {
-        static Fiddler.Proxy oSecureEndpoint;
-        static string sSecureEndpointHostname = "localhost";
-        static int iSecureEndpointPort = 7777;
-
 
         private static string MOBILE = "userMobile";
 
@@ -45,12 +37,41 @@ namespace checkout
         {
             mobile.Text = Helpers.readIni(MOBILE, "");
             password.Text = Helpers.readIni(PASSWORD, "");
-
-            if (userService.isLogin())
-            {
-                LogHelpers.write("您已登陆：" + userService.getTel(), logText);
-            }
         }
+
+        // 初始化用户身份证信息
+        protected async void initUserIdInfo()
+        {
+
+            userIdSelector.BeginUpdate();
+            getUserIdListQo getUserIdListQo = new getUserIdListQo
+            {
+                userId = new UserService().getUserId()
+            };
+            //string v = RequestUtil.sign(JsonConvert.SerializeObject());
+            Result<System.Collections.Generic.List<UserIdInfo>> result = await RequestUtil.getUserIdInfo(getUserIdListQo);
+
+            if (result.isSuccess())
+            {
+                userIdSelector.DataSource = result.result;
+            }
+            userIdSelector.EndUpdate();
+        }
+
+        // 初始化用户地址信息
+        protected void initAddress()
+        {
+            addressSelector.BeginUpdate();
+            AddressQo addressQo = new AddressQo
+            {
+                pageNo = 0,
+                pageSize = 10
+            };
+
+            RequestUtil.handleAddress(addressQo, addressSelector);
+            addressSelector.EndUpdate();
+        }
+
 
         private void buy_Click(object sender, EventArgs e)
         {
@@ -74,29 +95,22 @@ namespace checkout
                 return;
             }
 
-            // 滑块验证
-            CaptchData captchData = CaptchHelper.getTicket();
+            Task.Run(() =>
+            {
+                // 滑块验证
+                CaptchData captchData = CaptchHelper.getTicket();
 
-            SendCodeData sendCodeData = new SendCodeData
-            {
-                mobile = userMobile,
-                randStr = Uri.EscapeDataString(captchData.randstr),
-                ticket = captchData.ticket,
-                type = "1"
-            };
-            Helpers.writeini(MOBILE, userMobile);
+                SendCodeData sendCodeData = new SendCodeData
+                {
+                    mobile = userMobile,
+                    randStr = Uri.EscapeDataString(captchData.randstr),
+                    ticket = captchData.ticket,
+                    type = "1"
+                };
+                Helpers.writeini(MOBILE, userMobile);
 
-            string res = RequestUtil.sign(JsonConvert.SerializeObject(sendCodeData));
-            Result<object> result = RequestUtil.sendCode(res);
-            if (result.isSuccess())
-            {
-                LogHelpers.write("验证码发送成功", logText);
-            }
-            else
-            {
-                LogHelpers.write("验证码发送失败：" + result.msg, logText);
-                return;
-            }
+                RequestUtil.sendCode(sendCodeData, logText);
+            });
 
         }
 
@@ -127,12 +141,11 @@ namespace checkout
                 password = pwd,
             };
 
-            string res = RequestUtil.sign(JsonConvert.SerializeObject(loginData));
             Helpers.writeini(MOBILE, userMobile);
             Helpers.writeini(PASSWORD, pwd);
 
 
-            Result<UserInfo> userRes = RequestUtil.loginByPwd(res);
+            Result<UserInfo> userRes = RequestUtil.loginByPwd(loginData);
             LogHelpers.write(" 密码登陆：" + userRes);
             if (userRes.isSuccess())
             {
@@ -173,10 +186,8 @@ namespace checkout
                 phone = userMobile,
                 verifyCode = vcode,
             };
-            // 加签
-            string res = RequestUtil.sign(JsonConvert.SerializeObject(loginData));
             // 发送请求
-            Result<UserSession> result = RequestUtil.loginByVCode(res);
+            Result<UserSession> result = RequestUtil.loginByVCode(loginData);
 
             if (result.isSuccess())
             {
@@ -196,11 +207,68 @@ namespace checkout
             Helpers.writeini("userId", result.result.session.userId + "");
         }
 
-        private void mobile_TextChanged(object sender, EventArgs e)
+
+
+        // 刷新信息
+        private void refreshInfo_Click(object sender, EventArgs e)
         {
+            initUserIdInfo();
+            initAddress();
+            object selectedItem = addressSelector.SelectedItem;
+            Console.WriteLine(selectedItem);
+        }
+
+        // 搜索
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            Action<string> callBack = ((res) =>
+            {
+                Console.WriteLine(res);
+                Result<ActivityInfoList> result = (Result<ActivityInfoList>)JsonConvert.DeserializeObject(res, typeof(Result<ActivityInfoList>));
+
+                if (result.isSuccess() && result.result.activityInfo.Count > 0)
+                {
+                    activityComboBox.DataSource = result.result.activityInfo;
+                }
+            });
+            string search = searchTxt.Text;
+            switch (searchSelector.SelectedItem)
+            {
+                case "演出名称":
+                    SearchQo searchQo = new SearchQo
+                    {
+                        keyword = search,
+                        pageNo = 1,
+                        pageSize = 20
+                    };
+                    Console.WriteLine("名称搜索");
+                    RequestUtil.get(ApiUri.SEARCH, searchQo, callBack);
+                    break;
+                case "演出ID":
+                    handleActivity(search);
+                    break;
+            }
+        }
+
+        // 
+        private void handleActivity(string activtyId)
+        {
+            TicketListQo activityDetailQo = new TicketListQo
+            {
+                activityId = activtyId
+            };
+            RequestUtil.post(ApiUri.TICKET_LIST, activityDetailQo, ((res) =>
+            {
+                
+            }));
 
         }
 
-
+        // 选择的演出切换
+        private void activityChange(object sender, EventArgs e)
+        {
+            ActivityInfoVo activityInfo = (ActivityInfoVo)activityComboBox.SelectedItem;
+            handleActivity(activityInfo.activityId);
+        }
     }
 }

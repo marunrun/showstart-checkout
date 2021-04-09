@@ -1,4 +1,5 @@
 ﻿using checkout.Entity;
+using checkout.Entity.Qo;
 using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -53,7 +54,7 @@ namespace checkout.Helper
                     return d.FindElement(By.Id("ticket")).GetProperty("text");
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return getTicket();
             }

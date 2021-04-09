@@ -122,15 +122,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\CaptchData.cs" />
-    <Compile Include="Entity\CodeLoginData.cs" />
-    <Compile Include="Entity\Result.cs" />
-    <Compile Include="Entity\LoginData.cs" />
-    <Compile Include="Entity\PublicData.cs" />
-    <Compile Include="Entity\SendCodeData.cs" />
-    <Compile Include="Entity\UserInfo.cs" />
-    <Compile Include="Entity\UserSession.cs" />
-    <Compile Include="Enums\ProductEnum.cs" />
+    <Compile Include="Constants\ApiUri.cs" />
+    <Compile Include="Entity\Qo\AddressQo.cs" />
+    <Compile Include="Entity\Qo\CaptchData.cs" />
+    <Compile Include="Entity\Qo\CodeLoginData.cs" />
+    <Compile Include="Entity\Qo\getUserIdListQo.cs" />
+    <Compile Include="Entity\Qo\SearchQo.cs" />
+    <Compile Include="Entity\Vo\ActivityInfoVo.cs" />
+    <Compile Include="Entity\Vo\AddressInfo.cs" />
+    <Compile Include="Entity\Vo\Result.cs" />
+    <Compile Include="Entity\Qo\LoginData.cs" />
+    <Compile Include="Entity\Qo\PublicData.cs" />
+    <Compile Include="Entity\Qo\SendCodeData.cs" />
+    <Compile Include="Entity\Vo\UserIdInfo.cs" />
+    <Compile Include="Entity\Vo\UserInfo.cs" />
+    <Compile Include="Entity\Vo\UserSession.cs" />
+    <Compile Include="Enums\SearchEnums.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +169,13 @@
     </None>
     <None Include="checkout_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.ActivityInfoList.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.ActivityInfoVo.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.AddressInfo.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.Result`1[].datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.UserIdInfo.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.UserInfo.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.UserSession.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -195,5 +209,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
