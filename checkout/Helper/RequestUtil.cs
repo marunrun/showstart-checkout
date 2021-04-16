@@ -20,7 +20,7 @@ namespace checkout.Helper
 
         private static readonly HttpClient client = getHttpClient();
 
-        static Uri apiUri = new Uri("https://api.showstart.com/");
+        static Uri apiUri = new Uri("api","http://127.0.0.1:9503");
 
         static Uri signUri = new Uri(Helpers.readIni("signApi","http://127.0.0.1:9504"));
 
