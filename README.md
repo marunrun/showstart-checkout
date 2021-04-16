@@ -42,11 +42,15 @@
 
 如出现奇奇怪怪的bug，问题，欢迎反馈。
 
+如需使用，可联系我提供线上地址，仅供小部分人体验😀
+
 VX: amarunrun
 
 email:marunrun#163.com
 
 
 # 特别鸣谢
+
 自动滑块 ： https://github.com/omigo/crack-slide-captcha
+
 手机验证：  https://github.com/virjar/sekiro/
