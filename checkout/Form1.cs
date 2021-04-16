@@ -202,7 +202,7 @@ namespace checkout
 
         private void append(string msg)
         {
-            logText.AppendText(msg + "\r\n");
+            logText.AppendText(DateTime.Now.ToString("HH:mm:ss.fff  ") + msg + "\r\n");
         }
 
         // 验证码登陆

@@ -17,7 +17,7 @@ namespace checkout.Helper
     {
         static EdgeDriver getDriver()
         {
-            var chromeDriverService = EdgeDriverService.CreateChromiumService();
+            var chromeDriverService = EdgeDriverService.CreateChromiumService(Directory.GetCurrentDirectory());
             chromeDriverService.HideCommandPromptWindow = true;
             var options = new EdgeOptions
             {
