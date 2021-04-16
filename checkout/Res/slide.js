@@ -55,7 +55,7 @@ async function autoSlide(slide, block, bg) {
     const bgBase64 = await toDataURL(bgElem.src)
     // console.log('slide: ', bgBase64)
 
-    let resp = await fetch('http://127.0.0.1:8090/getdistance', {
+    let resp = await fetch('https://marun.run/getdistance', {
         body: JSON.stringify({
             'bg_base64': bgBase64,
             'bg_width': bgElem.clientWidth,

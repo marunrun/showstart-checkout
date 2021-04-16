@@ -62,13 +62,21 @@ namespace checkout
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchTxt = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.buyTime = new System.Windows.Forms.TextBox();
+            this.pickUpBtn = new System.Windows.Forms.Button();
+            this.buyTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
+            this.couponList = new System.Windows.Forms.ComboBox();
+            this.couponInfoVoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label7 = new System.Windows.Forms.Label();
             this.buyTimeBtn = new System.Windows.Forms.Button();
             this.buyNowBtn = new System.Windows.Forms.Button();
             this.remainTicket = new System.Windows.Forms.Label();
             this.ticketList = new System.Windows.Forms.ComboBox();
+            this.ticketListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.userSessionBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ticketListVoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.buyTimer = new System.Windows.Forms.Timer(this.components);
+            this.pickUpTimer = new System.Windows.Forms.Timer(this.components);
             this.group1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pwdLoginTab.SuspendLayout();
@@ -80,7 +88,10 @@ namespace checkout
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.activityInfoVoBindingSource)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.couponInfoVoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ticketListItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userSessionBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ticketListVoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -230,7 +241,7 @@ namespace checkout
             this.groupBox1.Size = new System.Drawing.Size(208, 50);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "身份证信息";
+            this.groupBox1.Text = "常用观影人";
             // 
             // userIdSelector
             // 
@@ -296,16 +307,10 @@ namespace checkout
             // 
             // searchSelector
             // 
-            this.searchSelector.DataSource = new string[] {
-        "演出名称",
-        "演出ID"};
             this.searchSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.searchSelector.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.searchSelector.FormattingEnabled = true;
             this.searchSelector.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.searchSelector.Items.AddRange(new object[] {
-            "演出名称",
-            "演出ID"});
             this.searchSelector.Location = new System.Drawing.Point(6, 20);
             this.searchSelector.Name = "searchSelector";
             this.searchSelector.Size = new System.Drawing.Size(82, 22);
@@ -344,10 +349,10 @@ namespace checkout
             this.activityComboBox.FormattingEnabled = true;
             this.activityComboBox.Location = new System.Drawing.Point(94, 64);
             this.activityComboBox.Name = "activityComboBox";
-            this.activityComboBox.Size = new System.Drawing.Size(337, 22);
+            this.activityComboBox.Size = new System.Drawing.Size(365, 22);
             this.activityComboBox.TabIndex = 26;
-            this.activityComboBox.ValueMember = "MyTitle";
-            this.activityComboBox.SelectedIndexChanged += new System.EventHandler(this.activityChange);
+            this.activityComboBox.ValueMember = "activityId";
+            this.activityComboBox.SelectionChangeCommitted += new System.EventHandler(this.activityChange);
             // 
             // activityInfoVoBindingSource
             // 
@@ -356,7 +361,7 @@ namespace checkout
             // searchBtn
             // 
             this.searchBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.searchBtn.Location = new System.Drawing.Point(356, 17);
+            this.searchBtn.Location = new System.Drawing.Point(384, 20);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(75, 23);
             this.searchBtn.TabIndex = 25;
@@ -367,6 +372,7 @@ namespace checkout
             // searchTxt
             // 
             this.searchTxt.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.searchTxt.ImeMode = System.Windows.Forms.ImeMode.On;
             this.searchTxt.Location = new System.Drawing.Point(94, 20);
             this.searchTxt.Name = "searchTxt";
             this.searchTxt.Size = new System.Drawing.Size(231, 23);
@@ -374,7 +380,10 @@ namespace checkout
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.buyTime);
+            this.groupBox4.Controls.Add(this.pickUpBtn);
+            this.groupBox4.Controls.Add(this.buyTimePicker);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.couponList);
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.buyTimeBtn);
             this.groupBox4.Controls.Add(this.buyNowBtn);
@@ -388,23 +397,60 @@ namespace checkout
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "选票";
             // 
-            // buyTime
+            // pickUpBtn
             // 
-            this.buyTime.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buyTime.Location = new System.Drawing.Point(234, 70);
-            this.buyTime.Name = "buyTime";
-            this.buyTime.Size = new System.Drawing.Size(100, 23);
-            this.buyTime.TabIndex = 5;
+            this.pickUpBtn.Location = new System.Drawing.Point(94, 68);
+            this.pickUpBtn.Name = "pickUpBtn";
+            this.pickUpBtn.Size = new System.Drawing.Size(75, 23);
+            this.pickUpBtn.TabIndex = 9;
+            this.pickUpBtn.Text = "开始捡漏";
+            this.pickUpBtn.UseVisualStyleBackColor = true;
+            this.pickUpBtn.Click += new System.EventHandler(this.pickUpBtn_Click);
+            // 
+            // buyTimePicker
+            // 
+            this.buyTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.buyTimePicker.Location = new System.Drawing.Point(254, 68);
+            this.buyTimePicker.Name = "buyTimePicker";
+            this.buyTimePicker.ShowUpDown = true;
+            this.buyTimePicker.Size = new System.Drawing.Size(78, 23);
+            this.buyTimePicker.TabIndex = 8;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(257, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(49, 14);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "优惠券";
+            // 
+            // couponList
+            // 
+            this.couponList.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.couponInfoVoBindingSource, "id", true));
+            this.couponList.DataSource = this.couponInfoVoBindingSource;
+            this.couponList.DisplayMember = "price";
+            this.couponList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.couponList.FormattingEnabled = true;
+            this.couponList.Location = new System.Drawing.Point(306, 22);
+            this.couponList.Name = "couponList";
+            this.couponList.Size = new System.Drawing.Size(156, 22);
+            this.couponList.TabIndex = 6;
+            this.couponList.ValueMember = "id";
+            // 
+            // couponInfoVoBindingSource
+            // 
+            this.couponInfoVoBindingSource.DataSource = typeof(checkout.Entity.Vo.CouponInfoVo);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(163, 73);
+            this.label7.Location = new System.Drawing.Point(185, 74);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(77, 14);
             this.label7.TabIndex = 4;
-            this.label7.Text = "填写时间：";
+            this.label7.Text = "选择时间：";
             // 
             // buyTimeBtn
             // 
@@ -415,6 +461,7 @@ namespace checkout
             this.buyTimeBtn.TabIndex = 3;
             this.buyTimeBtn.Text = "定时自动购票";
             this.buyTimeBtn.UseVisualStyleBackColor = true;
+            this.buyTimeBtn.Click += new System.EventHandler(this.buyTimeBtn_Click);
             // 
             // buyNowBtn
             // 
@@ -423,8 +470,9 @@ namespace checkout
             this.buyNowBtn.Name = "buyNowBtn";
             this.buyNowBtn.Size = new System.Drawing.Size(75, 23);
             this.buyNowBtn.TabIndex = 2;
-            this.buyNowBtn.Text = "确认购票";
+            this.buyNowBtn.Text = "立即购票";
             this.buyNowBtn.UseVisualStyleBackColor = true;
+            this.buyNowBtn.Click += new System.EventHandler(this.buyNowBtn_Click);
             // 
             // remainTicket
             // 
@@ -437,17 +485,39 @@ namespace checkout
             // 
             // ticketList
             // 
+            this.ticketList.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.ticketListItemBindingSource, "ticketId", true));
+            this.ticketList.DataSource = this.ticketListItemBindingSource;
+            this.ticketList.DisplayMember = "text";
             this.ticketList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ticketList.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ticketList.FormattingEnabled = true;
             this.ticketList.Location = new System.Drawing.Point(8, 22);
             this.ticketList.Name = "ticketList";
-            this.ticketList.Size = new System.Drawing.Size(196, 22);
+            this.ticketList.Size = new System.Drawing.Size(203, 22);
             this.ticketList.TabIndex = 0;
+            this.ticketList.ValueMember = "ticketId";
+            this.ticketList.SelectedIndexChanged += new System.EventHandler(this.ticketChange);
+            // 
+            // ticketListItemBindingSource
+            // 
+            this.ticketListItemBindingSource.DataSource = typeof(checkout.Entity.Vo.TicketListItem);
             // 
             // userSessionBindingSource
             // 
             this.userSessionBindingSource.DataSource = typeof(checkout.Entity.Vo.UserSession);
+            // 
+            // ticketListVoBindingSource
+            // 
+            this.ticketListVoBindingSource.DataSource = typeof(checkout.Entity.Vo.TicketListVo);
+            // 
+            // buyTimer
+            // 
+            this.buyTimer.Interval = 10;
+            this.buyTimer.Tick += new System.EventHandler(this.buyTimer_Tick);
+            // 
+            // pickUpTimer
+            // 
+            this.pickUpTimer.Tick += new System.EventHandler(this.pickUpTimer_Tick);
             // 
             // checkoutForm
             // 
@@ -468,7 +538,7 @@ namespace checkout
             this.Controls.Add(this.group1);
             this.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.Name = "checkoutForm";
-            this.Text = "演出名称：";
+            this.Text = "秀动辅助";
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -485,7 +555,10 @@ namespace checkout
             ((System.ComponentModel.ISupportInitialize)(this.activityInfoVoBindingSource)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.couponInfoVoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ticketListItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.userSessionBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ticketListVoBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -521,7 +594,6 @@ namespace checkout
         private Label label4;
         private ComboBox activityComboBox;
         private GroupBox groupBox4;
-        private TextBox buyTime;
         private Label label7;
         private Button buyTimeBtn;
         private Button buyNowBtn;
@@ -529,6 +601,15 @@ namespace checkout
         private ComboBox ticketList;
         private BindingSource activityInfoVoBindingSource;
         private BindingSource userSessionBindingSource;
+        private BindingSource ticketListItemBindingSource;
+        private BindingSource ticketListVoBindingSource;
+        private ComboBox couponList;
+        private Label label5;
+        private BindingSource couponInfoVoBindingSource;
+        private Timer buyTimer;
+        private DateTimePicker buyTimePicker;
+        private Button pickUpBtn;
+        private Timer pickUpTimer;
     }
 }
 

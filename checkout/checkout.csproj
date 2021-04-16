@@ -62,6 +62,12 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FiddlerCore">
       <HintPath>D:\code\FiddlerCoreAPI\FiddlerCore.dll</HintPath>
@@ -123,21 +129,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ApiUri.cs" />
+    <Compile Include="Entity\Qo\ActivityDetailQo.cs" />
     <Compile Include="Entity\Qo\AddressQo.cs" />
     <Compile Include="Entity\Qo\CaptchData.cs" />
     <Compile Include="Entity\Qo\CodeLoginData.cs" />
     <Compile Include="Entity\Qo\getUserIdListQo.cs" />
+    <Compile Include="Entity\Qo\OrderQo.cs" />
     <Compile Include="Entity\Qo\SearchQo.cs" />
+    <Compile Include="Entity\Qo\TicketListQo.cs" />
+    <Compile Include="Entity\Vo\ActivityDetail.cs" />
     <Compile Include="Entity\Vo\ActivityInfoVo.cs" />
     <Compile Include="Entity\Vo\AddressInfo.cs" />
+    <Compile Include="Entity\Qo\OrderBuyQo.cs" />
+    <Compile Include="Entity\Vo\CouponInfoVo.cs" />
     <Compile Include="Entity\Vo\Result.cs" />
     <Compile Include="Entity\Qo\LoginData.cs" />
     <Compile Include="Entity\Qo\PublicData.cs" />
     <Compile Include="Entity\Qo\SendCodeData.cs" />
+    <Compile Include="Entity\Vo\TicketListVo.cs" />
     <Compile Include="Entity\Vo\UserIdInfo.cs" />
     <Compile Include="Entity\Vo\UserInfo.cs" />
     <Compile Include="Entity\Vo\UserSession.cs" />
+    <Compile Include="Enums\BuyTimeTxt.cs" />
+    <Compile Include="Enums\PickUpTxt.cs" />
     <Compile Include="Enums\SearchEnums.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,7 +188,10 @@
     <None Include="Properties\DataSources\checkout.Entity.Vo.ActivityInfoList.datasource" />
     <None Include="Properties\DataSources\checkout.Entity.Vo.ActivityInfoVo.datasource" />
     <None Include="Properties\DataSources\checkout.Entity.Vo.AddressInfo.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.CouponInfoVo.datasource" />
     <None Include="Properties\DataSources\checkout.Entity.Vo.Result`1[].datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.TicketListItem.datasource" />
+    <None Include="Properties\DataSources\checkout.Entity.Vo.TicketListVo.datasource" />
     <None Include="Properties\DataSources\checkout.Entity.Vo.UserIdInfo.datasource" />
     <None Include="Properties\DataSources\checkout.Entity.Vo.UserInfo.datasource" />
     <None Include="Properties\DataSources\checkout.Entity.Vo.UserSession.datasource" />

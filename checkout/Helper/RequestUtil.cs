@@ -4,9 +4,11 @@ using checkout.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,8 +22,7 @@ namespace checkout.Helper
 
         static Uri apiUri = new Uri("https://api.showstart.com/");
 
-        static Uri signUri = new Uri("http://127.0.0.1:9504");
-
+        static Uri signUri = new Uri(Helpers.readIni("signApi","http://127.0.0.1:9504"));
 
         private static HttpClient getHttpClient()
         {
@@ -68,7 +69,6 @@ namespace checkout.Helper
                 HttpContent httpContent = getContent(sign(codeLoginData).Result);
                 HttpResponseMessage response = client.PostAsync(apiUri + "app/user/vc_login.json", httpContent).Result;
                 string result = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(result);
 
                 return (Result<UserSession>)JsonConvert.DeserializeObject(result, typeof(Result<UserSession>));
             }
@@ -81,30 +81,7 @@ namespace checkout.Helper
         }
 
 
-        // 发送验证码
-        public async static void sendCode(SendCodeData sendCodeData, TextBox logText)
-        {
-            try
-            {
-                HttpContent httpContent = getContent(await sign(sendCodeData));
-                HttpResponseMessage result = await client.PostAsync(apiUri + "app/sms/verifyCode.json", httpContent);
-                string content = await result.Content.ReadAsStringAsync();
-                Result<object> res = (Result<object>)JsonConvert.DeserializeObject(content, typeof(Result<object>));
-                if (res.isSuccess())
-                {
-                    LogHelpers.write("验证码发送成功", logText);
-                }
-                else
-                {
-                    LogHelpers.write("验证码发送失败：" + res.msg, logText);
-                }
-            }
-            catch (Exception e)
-            {
-                LogHelpers.write(e.ToString());
-                MessageBox.Show("服务异常，请重试");
-            }
-        }
+
 
 
         // 获取用户身份证信息
@@ -181,7 +158,6 @@ namespace checkout.Helper
 
             parms = parms.TrimEnd('&');
 
-            Console.WriteLine(parms);
             return parms;
         }
 
@@ -194,46 +170,42 @@ namespace checkout.Helper
         // 加签
         public async static Task<string> sign(String args)
         {
-            string content = "";
-            try
-            {
-                StringContent stringContent = new StringContent(args, Encoding.UTF8, "application/json");
-                HttpResponseMessage httpResponseMessage = client.PostAsync(signUri + "showstart/sign", stringContent).Result;
-                content = await httpResponseMessage.Content.ReadAsStringAsync();
-            }
-            catch (Exception e)
-            {
-                LogHelpers.write(e.ToString());
-                MessageBox.Show("服务器异常 请重试");
-            }
+            StringContent stringContent = new StringContent(args, Encoding.UTF8, "application/json");
 
-            return content;
+            HttpResponseMessage httpResponseMessage = await client.PostAsync(signUri + "showstart/sign", stringContent);
+            return await httpResponseMessage.Content.ReadAsStringAsync();
         }
 
 
-        public async static void post(string uri, Object param, Action<string> callback)
+        public async static void post(string uri, Object param, Action<Stream> callback)
         {
             HttpContent httpContent = getContent(await sign(param));
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + uri, httpContent);
-            string res = await httpResponseMessage.Content.ReadAsStringAsync();
+            Stream res = await httpResponseMessage.Content.ReadAsStreamAsync();
             callback(res);
         }
 
 
-        public async static void get(string uri, Object param, Action<string> callback)
+        public async static void get(string uri, Object param, Action<Stream> callback)
         {
             string pram = BuildParam(await sign(param));
-            HttpResponseMessage httpResponseMessage = await client.GetAsync(apiUri + uri + "?" + pram);
-            string res = await httpResponseMessage.Content.ReadAsStringAsync();
+            Stream res = await client.GetStreamAsync(apiUri + uri + "?" + pram);
             callback(res);
         }
 
-        public async static void get(string uri, Object param, Action<string> callback,bool signed = true)
+        public async static void post(string uri, Object param, Action<Stream> callback, DateTime dateTime) 
         {
-            string pram = BuildParam(await sign(param));
-            HttpResponseMessage httpResponseMessage = await client.GetAsync(apiUri + uri + "?" + pram);
-            string res = await httpResponseMessage.Content.ReadAsStringAsync();
+            HttpContent httpContent = getContent(await sign(param));
+            Console.WriteLine(dateTime.ToString("HH:mm:ss.ffff"));
+
+            while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
+            {
+                Thread.Sleep(10);
+            }
+            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + uri, httpContent);
+            Stream res = await httpResponseMessage.Content.ReadAsStreamAsync();
             callback(res);
         }
+
     }
 }
