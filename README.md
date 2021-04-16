@@ -38,7 +38,9 @@
 请先选择时间，点击定时自动购票，本工具会定时帮您购票
 
 # 特别说明
-自动滑块验证可能在不同的电脑上不可用，请勿频繁的滑块，会出问题。
+自动滑块验证使用[EdgeDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) 可能在不同的电脑上不可用，请自行下载。
+
+注意请勿频繁的滑块，会导致滑块失败。
 
 如出现奇奇怪怪的bug，问题，欢迎反馈。
 
