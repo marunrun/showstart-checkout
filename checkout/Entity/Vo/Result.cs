@@ -35,7 +35,7 @@ namespace checkout.Entity.Vo
 
         public bool isSuccess() 
         {
-            return this.isHasResult == "1";
+            return this.state == "1";
         }
     }
 }

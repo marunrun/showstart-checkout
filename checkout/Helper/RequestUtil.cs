@@ -1,13 +1,11 @@
 ﻿using checkout.Entity.Qo;
 using checkout.Entity.Vo;
-using checkout.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,12 +15,9 @@ namespace checkout.Helper
 
     class RequestUtil
     {
-
         private static readonly HttpClient client = getHttpClient();
 
-        static Uri apiUri = new Uri("api","http://127.0.0.1:9503");
-
-        static Uri signUri = new Uri(Helpers.readIni("signApi","http://127.0.0.1:9504"));
+        static Uri apiUri = new Uri(Helpers.readIni("apiUri", "http://pro2-api.showstart.com"));
 
         private static HttpClient getHttpClient()
         {
@@ -33,35 +28,20 @@ namespace checkout.Helper
             };
             HttpClient httpClient = new HttpClient(handler);
             httpClient.DefaultRequestHeaders.Clear();
-            httpClient.DefaultRequestHeaders.Add("Host", "api.showstart.com");
+            httpClient.DefaultRequestHeaders.Add("Host", "pro2-api.showstart.com");
             httpClient.DefaultRequestHeaders.Add("User-Agent", "okhttp/4.6.0");
-            httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
+            httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
             httpClient.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            httpClient.DefaultRequestHeaders.Add("Cookie", "u_s=http://api.showstart.com/app/user/bind/list.json; o_s=http://api.showstart.com/app/user/bind/list.json");
+            httpClient.DefaultRequestHeaders.Add("CTERMINAL", "android");
+            httpClient.DefaultRequestHeaders.Add("CUUSERREF", "e31d1cf2e8778e5ee9f0d5191a52ab02");
+            httpClient.DefaultRequestHeaders.Add("CUSUT", "");
+            httpClient.DefaultRequestHeaders.Add("CUSYSTIME", Helpers.DateToTicks(DateTime.Now).ToString());
             return httpClient;
         }
 
 
-        // 密码登陆
-        public static Result<UserInfo> loginByPwd(LoginData loginData)
-        {
-            try
-            {
-                HttpContent httpContent = getContent(sign(loginData).Result);
-                HttpResponseMessage result = client.PostAsync(apiUri + "app/user/login.json", httpContent).Result;
 
-                return (Result<UserInfo>)JsonConvert.DeserializeObject(result.Content.ReadAsStringAsync().Result, typeof(Result<UserInfo>));
-            }
-            catch (Exception e)
-            {
-                LogHelpers.write(e.ToString());
-                MessageBox.Show("服务异常，请重试");
-                return new Result<UserInfo>();
-            }
-        }
-
-
-        // 验证码登陆
+ /*       // 验证码登陆
         public static Result<UserSession> loginByVCode(CodeLoginData codeLoginData)
         {
             try
@@ -79,11 +59,11 @@ namespace checkout.Helper
                 return new Result<UserSession>();
             }
         }
+*/
 
 
 
-
-
+/*
         // 获取用户身份证信息
         public async static Task<Result<List<UserIdInfo>>> getUserIdInfo(getUserIdListQo getUserIdListQo)
         {
@@ -101,11 +81,11 @@ namespace checkout.Helper
                 MessageBox.Show("服务异常，请重试");
                 return new Result<List<UserIdInfo>>();
             }
-        }
+        }*/
 
-        public async static void handleAddress(AddressQo addressQo, ComboBox comboBox)
+/*        public async static void handleAddress(AddressQo addressQo, ComboBox comboBox)
         {
-            HttpContent httpContent = getContent(await sign(addressQo));
+            HttpContent httpContent = new FormUrlEncodedContent(buildeRquest(Urls, addressQo));
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + "app/address/list.json", httpContent);
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
             Result<List<AddressInfo>> res = (Result<List<AddressInfo>>)JsonConvert.DeserializeObject(result, typeof(Result<List<AddressInfo>>));
@@ -114,41 +94,90 @@ namespace checkout.Helper
                 comboBox.DataSource = res.result;
             }
         }
+*/
 
-        // 获取post对应的HttpConten
-        private static HttpContent getContent(String pSign)
+
+        // post请求
+        public async static void post(RequestQo request, Object param, Action<Stream> callback)
         {
-            return new FormUrlEncodedContent(getPublicList(pSign));
+           
+            HttpContent httpContent = new FormUrlEncodedContent(buildeRquest(request, param));
+            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.uri, httpContent);
+            Stream res = await httpResponseMessage.Content.ReadAsStreamAsync();
+            callback(res);
         }
 
-        // 获取公共参数
-        private static Dictionary<string, string> getPublicList(string pSign)
+        // 定时post请求
+        public async static void post(RequestQo request, Object param, Action<Stream> callback, DateTime dateTime)
         {
-            PublicData publicData = new PublicData
+            HttpContent httpContent = new FormUrlEncodedContent(buildeRquest(request, param));
+            Console.WriteLine(dateTime.ToString("HH:mm:ss.ffff"));
+
+            while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
             {
-                p_json_dig = pSign,
-                sign = new UserService().getSign(),
+                Thread.Sleep(10);
+            }
+            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.uri, httpContent);
+            Stream res = await httpResponseMessage.Content.ReadAsStreamAsync();
+            callback(res);
+        }
+
+        // get请求
+        public async static void get(RequestQo request, Object param, Action<Stream> callback)
+        {
+            string pram = BuildParam(request, param);
+            Stream res = await client.GetStreamAsync(apiUri + request.uri + "?" + pram);
+            callback(res);
+        }
+
+
+        // 构建请求参数
+        public static Dictionary<string, string> buildeRquest(RequestQo request, Object param)
+        {
+            Dictionary<string, object> queryObj = new Dictionary<string, object> {
+                {"action",request.action },
+                {"deviceName","MI 10" },
+                {"qtime",Helpers.DateToTicks(DateTime.Now) },
+                {"ranstr",Helpers.getRandom() },
+                {"sysVersion","10" },
             };
-            Dictionary<string, string> dictionaries = new Dictionary<string, string>
+            string jsonRes = JsonConvert.SerializeObject(param);
+            if (request.type == "REQUEST_BODY")
             {
-                { "uuid", publicData.uuid },
-                { "terminal", publicData.terminal },
-                { "sysVersion", publicData.sysVersion },
-                { "sign", publicData.sign },
-                { "p_json_dig", publicData.p_json_dig },
-                { "deviceName", publicData.deviceName },
-                { "appVersion", publicData.appVersion }
+                queryObj.Add("body", jsonRes);
+            }
+            else
+            {
+                queryObj.Add("query", jsonRes);
+            }
+
+            // 原始req
+            var reqJson = JsonConvert.SerializeObject(queryObj);
+
+            var dataKey = Helpers.readIni("dataKey", "");
+            var aruKey = Helpers.readIni("aruKey", "lMOEEdGup12IvTv1");
+            if (request.bol)
+            {
+                dataKey = aruKey;
+            }
+
+            return new Dictionary<string, string> {
+                { "appid","app"},
+                { "terminal","android"},
+                { "version","4.8.0"},
+                { "aru",Helpers.AesEncrypt(aruKey,request.action)},
+                { "data",Helpers.AesEncrypt(dataKey,reqJson)},
+                { "sign",Helpers.Md5(reqJson)},
             };
-            return dictionaries;
         }
 
 
         // getParams
-        private static string BuildParam(string pSigny)
+        private static string BuildParam(RequestQo request, Object param)
         {
-            string parms = "";
+            var parms = "";
 
-            Dictionary<string, string> dictionaries = getPublicList(pSigny);
+            Dictionary<string, string> dictionaries = buildeRquest(request,param);
 
             foreach (KeyValuePair<string, string> item in dictionaries)
             {
@@ -162,50 +191,6 @@ namespace checkout.Helper
         }
 
 
-        public async static Task<string> sign(Object obj)
-        {
-            return await sign(JsonConvert.SerializeObject(obj));
-        }
-
-        // 加签
-        public async static Task<string> sign(String args)
-        {
-            StringContent stringContent = new StringContent(args, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage httpResponseMessage = await client.PostAsync(signUri + "showstart/sign", stringContent);
-            return await httpResponseMessage.Content.ReadAsStringAsync();
-        }
-
-
-        public async static void post(string uri, Object param, Action<Stream> callback)
-        {
-            HttpContent httpContent = getContent(await sign(param));
-            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + uri, httpContent);
-            Stream res = await httpResponseMessage.Content.ReadAsStreamAsync();
-            callback(res);
-        }
-
-
-        public async static void get(string uri, Object param, Action<Stream> callback)
-        {
-            string pram = BuildParam(await sign(param));
-            Stream res = await client.GetStreamAsync(apiUri + uri + "?" + pram);
-            callback(res);
-        }
-
-        public async static void post(string uri, Object param, Action<Stream> callback, DateTime dateTime) 
-        {
-            HttpContent httpContent = getContent(await sign(param));
-            Console.WriteLine(dateTime.ToString("HH:mm:ss.ffff"));
-
-            while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
-            {
-                Thread.Sleep(10);
-            }
-            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + uri, httpContent);
-            Stream res = await httpResponseMessage.Content.ReadAsStreamAsync();
-            callback(res);
-        }
 
     }
 }

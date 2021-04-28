@@ -59,7 +59,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -124,13 +124,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\ApiUri.cs" />
+    <Compile Include="Constants\Urls.cs" />
     <Compile Include="Entity\Qo\ActivityDetailQo.cs" />
     <Compile Include="Entity\Qo\AddressQo.cs" />
     <Compile Include="Entity\Qo\CaptchData.cs" />
     <Compile Include="Entity\Qo\CodeLoginData.cs" />
     <Compile Include="Entity\Qo\getUserIdListQo.cs" />
     <Compile Include="Entity\Qo\OrderQo.cs" />
+    <Compile Include="Entity\Qo\RequestQo.cs" />
     <Compile Include="Entity\Qo\SearchQo.cs" />
     <Compile Include="Entity\Qo\TicketListQo.cs" />
     <Compile Include="Entity\Vo\ActivityDetail.cs" />

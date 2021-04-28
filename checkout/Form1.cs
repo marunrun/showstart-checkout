@@ -8,11 +8,13 @@ using checkout.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Urls = checkout.Constants.Urls;
 
 namespace checkout
 {
@@ -49,7 +51,7 @@ namespace checkout
         // 初始化用户身份证信息
         protected async void initUserIdInfo()
         {
-            userIdSelector.BeginUpdate();
+   /*         userIdSelector.BeginUpdate();
             getUserIdListQo getUserIdListQo = new getUserIdListQo
             {
                 userId = new UserService().getUserId()
@@ -61,13 +63,13 @@ namespace checkout
             {
                 userIdSelector.DataSource = result.result;
             }
-            userIdSelector.EndUpdate();
+            userIdSelector.EndUpdate();*/
         }
 
         // 初始化用户地址信息
         protected void initAddress()
         {
-            addressSelector.BeginUpdate();
+ /*           addressSelector.BeginUpdate();
             AddressQo addressQo = new AddressQo
             {
                 pageNo = 0,
@@ -75,7 +77,7 @@ namespace checkout
             };
 
             RequestUtil.handleAddress(addressQo, addressSelector);
-            addressSelector.EndUpdate();
+            addressSelector.EndUpdate();*/
         }
 
 
@@ -102,12 +104,12 @@ namespace checkout
                 SendCodeData sendCodeData = new SendCodeData
                 {
                     mobile = userMobile,
-                    randStr = Uri.EscapeDataString(captchData.randstr),
+                    randStr = System.Uri.EscapeDataString(captchData.randstr),
                     ticket = captchData.ticket,
                     type = "1"
                 };
                 Helpers.writeini(MOBILE, userMobile);
-                RequestUtil.post(ApiUri.SEND_CODE, sendCodeData, async (res) =>
+    /*            RequestUtil.post(Constants.Urls.SEND_CODE, sendCodeData, async (res) =>
                 {
                     Result<object> result = await JsonSerializer.DeserializeAsync<Result<object>>(res);
                     if (result.isSuccess())
@@ -118,7 +120,7 @@ namespace checkout
                     {
                         AppendLogText("验证码发送失败：" + result.msg + " " + result.state);
                     }
-                });
+                });*/
             });
 
         }
@@ -154,7 +156,7 @@ namespace checkout
             Helpers.writeini(PASSWORD, pwd);
 
 
-            RequestUtil.post(ApiUri.LOGIN_PWD, loginData, (async (res) =>
+            RequestUtil.post(Constants.Urls.LOGIN_PWD, loginData, (async (res) =>
             {
                 LogHelpers.write(" 密码登陆：" + res);
                 var userRes = await JsonSerializer.DeserializeAsync<Result<UserInfo>>(res);
@@ -227,7 +229,7 @@ namespace checkout
                 verifyCode = vcode,
             };
             // 发送请求
-            Result<UserSession> result = RequestUtil.loginByVCode(loginData);
+/*            Result<UserSession> result = RequestUtil.loginByVCode(loginData);
 
             if (result.isSuccess())
             {
@@ -248,7 +250,7 @@ namespace checkout
             Helpers.writeini("token", result.result.session.token);
             Helpers.writeini("expireTime", result.result.session.expireTime + "");
             Helpers.writeini("tel", result.result.session.tel);
-            Helpers.writeini("userId", result.result.session.userId + "");
+            Helpers.writeini("userId", result.result.session.userId + "");*/
         }
 
 
@@ -275,7 +277,7 @@ namespace checkout
             });
             string search = searchTxt.Text;
 
-            switch (searchSelector.SelectedItem)
+    /*        switch (searchSelector.SelectedItem)
             {
                 case "演出名称":
                     SearchQo searchQo = new SearchQo
@@ -284,10 +286,10 @@ namespace checkout
                         pageNo = 1,
                         pageSize = 20
                     };
-                    RequestUtil.get(ApiUri.SEARCH, searchQo, callBack);
+                    RequestUtil.get(Constants.Urls.SEARCH, searchQo, callBack);
                     break;
                 case "演出ID":
-                    RequestUtil.post(ApiUri.ACTIVITY_DETAIL, new Dictionary<string, object>() {
+                    RequestUtil.post(Constants.Urls.ACTIVITY_DETAIL, new Dictionary<string, object>() {
                     {"activityId", search },
                     {"userId",userService.getUserId() }
                 }, async (res) =>
@@ -303,17 +305,17 @@ namespace checkout
                 });
                     handleTicket(search);
                     break;
-            }
+            }*/
         }
 
         // 处理ticket
         private void handleTicket(string activtyId)
         {
-            TicketListQo activityDetailQo = new TicketListQo
+/*            TicketListQo activityDetailQo = new TicketListQo
             {
                 activityId = activtyId
             };
-            RequestUtil.post(ApiUri.TICKET_LIST, activityDetailQo, async (res) =>
+            RequestUtil.post(Constants.Urls.TICKET_LIST, activityDetailQo, async (res) =>
             {
                 Result<TicketListVo> result = await JsonSerializer.DeserializeAsync<Result<TicketListVo>>(res);
 
@@ -327,7 +329,7 @@ namespace checkout
                     });
                     ticketList.DataSource = result.result.ticketList;
                 }
-            });
+            });*/
 
         }
 
@@ -356,7 +358,7 @@ namespace checkout
         // 定时购票操作
         private void buyTicket(DateTime buyTime)
         {
-            var orderQo = getOrderQo();
+/*            var orderQo = getOrderQo();
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
@@ -377,11 +379,11 @@ namespace checkout
                            return;
                        }
                        newApiParams.Add("checkCode", captchData.ticket);
-                       newApiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
+                       newApiParams.Add("randStr", System.Uri.EscapeDataString(captchData.randstr));
                    }
                    RequestUtil.post("app/order/order.json", newApiParams, buyOrderCallback(ticket), buyTime);
                });
-            }
+            }*/
         }
 
 
@@ -487,9 +489,9 @@ namespace checkout
                     return;
                 }
                 apiParams.Add("checkCode", captchData.ticket);
-                apiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
+                apiParams.Add("randStr", System.Uri.EscapeDataString(captchData.randstr));
             }
-            RequestUtil.post("app/order/order.json", apiParams, buyOrderCallback(ticket));
+            //RequestUtil.post("app/order/order.json", apiParams, buyOrderCallback(ticket));
         }
 
         private Action<Stream> buyOrderCallback(TicketListItem ticket)
@@ -527,14 +529,14 @@ namespace checkout
                 {"totalAmout",ticket.sellingPrice },
                 {"type",1 },
             };
-            RequestUtil.post(ApiUri.COUPON_ORDER_LIST, apiParams, async (res) =>
+  /*          RequestUtil.post(Constants.Urls.COUPON_ORDER_LIST, apiParams, async (res) =>
             {
                 Result<CouponList> result = await JsonSerializer.DeserializeAsync<Result<CouponList>>(res);
                 if (result.isSuccess())
                 {
                     couponList.DataSource = result.result.couponList;
                 }
-            });
+            });*/
         }
 
         // 定时购票
@@ -636,7 +638,7 @@ namespace checkout
                 activityId = ticketListItem.activityId
             };
 
-            RequestUtil.post(ApiUri.TICKET_LIST, activityDetailQo, async (res) =>
+        /*    RequestUtil.post(Constants.Urls.TICKET_LIST, activityDetailQo, async (res) =>
             {
                 Result<TicketListVo> result = await JsonSerializer.DeserializeAsync<Result<TicketListVo>>(res);
 
@@ -650,6 +652,31 @@ namespace checkout
                             pickStop();
                         }
                     });
+                }
+            });*/
+        }
+ 
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var result = "https://s2.showstart.com/img/2021/0428/16/30/194ca928d6bf4b28b47b11596dd9cd68_1242_2208_937440.0x0.jpg";
+            MD5 md5 = MD5.Create(); //实例化一个md5对像
+            // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
+            byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(result));
+            StringBuilder stringBuilder = new StringBuilder();
+            for (var i = 0; i < s.Length; ++i) {
+               var res =  s[i] & 255;
+                stringBuilder.Append(res.ToString("X2"));
+            }
+            Console.WriteLine(stringBuilder.ToString());
+        }
+
+        private void makeToken(object sender, EventArgs e)
+        {
+
+            RequestUtil.post(Urls.MAKE_TOKEN,new Object(), async (res) => {
+                Result<object> result = await JsonSerializer.DeserializeAsync<Result<object>>(res);
+                if (result.isSuccess()) {
                 }
             });
         }
