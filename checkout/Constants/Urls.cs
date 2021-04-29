@@ -4,9 +4,65 @@ namespace checkout.Constants
 {
     class Urls
     {
-        public const string SEARCH = "app/activity/search.json";
-        public const string ACTIVITY_DETAIL = "app/activity/details.json";
-        public const string TICKET_LIST = "app/activity/ticket/list.json";
+
+        // 搜索列表
+        public static RequestQo SEARCH = new RequestQo
+        {
+            action = "/app/activity/search",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/00000000j2rN"
+        };
+
+
+        // 活动详情
+        public static RequestQo ACTIVITY_DETAIL = new RequestQo
+        {
+            action = "/app/activity/details",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/000000000000"
+        };
+
+        // 身份证
+        public static RequestQo COMMON_PERFORMER = new RequestQo
+        {
+            action = "/app/commonPerformer/list",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/00000000iRsA"
+        };
+
+        // 收货地址
+        public static RequestQo ADDRESS_LIST = new RequestQo
+        {
+            action = "/app/address/list",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/00000000iRsA"
+        };
+
+        // 下单
+        public static RequestQo ORDER_ORDER = new RequestQo
+        {
+            action = "/order/order",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "appnj/01000000iRsA"
+        };
+
+
+        // 票列表
+        public static RequestQo TICKET_LIST = new RequestQo
+        {
+            action = "/app/activity/ticket/list",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/00000000iRsA"
+        };
+
+
+        // 密码登陆
         public static RequestQo LOGIN_PWD = new RequestQo
         {
             action = "/app/user/login",
@@ -15,6 +71,8 @@ namespace checkout.Constants
             uri = "app/000000000000"
         };
 
+
+        // 获取token
         public static RequestQo MAKE_TOKEN = new RequestQo
         {
             action = "/common/user/maketoken",
@@ -23,8 +81,32 @@ namespace checkout.Constants
             uri  = "app/000000000000"
         };
 
-        public const string COUPON_ORDER_LIST = "app/coupon/order_list.json";
-        public const string SEND_CODE = "app/sms/verifyCode.json";
+        // 优惠券
+        public static RequestQo COUPON_ORDER_LIST = new RequestQo
+        {
+            action = "/coupon/default",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "appnj/00000000iRsA"
+        };
+
+        // 验证码登陆
+        public static RequestQo VC_LOGIN = new RequestQo
+        {
+            action = "/app/user/vc_login",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/000000000000"
+        };
+
+        // 发送验证码
+        public static RequestQo SEND_CODE = new RequestQo
+        {
+            action = "/app/msg/verifyCode",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "app/000000000000"
+        };
     }
 
 

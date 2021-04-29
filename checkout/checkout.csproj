@@ -160,6 +160,7 @@
     <Compile Include="Helper\CaptchHelper.cs" />
     <Compile Include="Helper\Helpers.cs" />
     <Compile Include="Helper\LogHelpers.cs" />
+    <Compile Include="Helper\LongToStringConverter.cs" />
     <Compile Include="Helper\RequestUtil.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />

@@ -1,17 +1,14 @@
-﻿using checkout.Constants;
-using checkout.Entity.Qo;
+﻿using checkout.Entity.Qo;
 using checkout.Entity.Vo;
 using checkout.Enums;
 using checkout.Exceptions;
 using checkout.Helper;
 using checkout.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Urls = checkout.Constants.Urls;
@@ -49,35 +46,37 @@ namespace checkout
         }
 
         // 初始化用户身份证信息
-        protected async void initUserIdInfo()
+        protected void initUserIdInfo()
         {
-   /*         userIdSelector.BeginUpdate();
-            getUserIdListQo getUserIdListQo = new getUserIdListQo
-            {
-                userId = new UserService().getUserId()
-            };
-            //string v = RequestUtil.sign(JsonConvert.SerializeObject());
-            Result<System.Collections.Generic.List<UserIdInfo>> result = await RequestUtil.getUserIdInfo(getUserIdListQo);
+            userIdSelector.BeginUpdate();
 
-            if (result.isSuccess())
+            RequestUtil.post(Urls.COMMON_PERFORMER, new object(), (res) =>
             {
-                userIdSelector.DataSource = result.result;
-            }
-            userIdSelector.EndUpdate();*/
+                Result<List<UserIdInfo>> result = JsonConvert.DeserializeObject<Result<List<UserIdInfo>>>(res);
+                if (result.isSuccess())
+                {
+                    userIdSelector.DataSource = result.result;
+                }
+            });
+
+            userIdSelector.EndUpdate();
         }
 
         // 初始化用户地址信息
         protected void initAddress()
         {
- /*           addressSelector.BeginUpdate();
+            addressSelector.BeginUpdate();
             AddressQo addressQo = new AddressQo
             {
                 pageNo = 0,
-                pageSize = 10
+                pageSize = 10,
             };
-
-            RequestUtil.handleAddress(addressQo, addressSelector);
-            addressSelector.EndUpdate();*/
+            RequestUtil.post(Urls.ADDRESS_LIST, addressQo, (res) =>
+            {
+                Result<List<AddressInfo>> result = JsonConvert.DeserializeObject<Result<List<AddressInfo>>>(res);
+                addressSelector.DataSource = result.result;
+            });
+            addressSelector.EndUpdate();
         }
 
 
@@ -104,23 +103,24 @@ namespace checkout
                 SendCodeData sendCodeData = new SendCodeData
                 {
                     mobile = userMobile,
-                    randStr = System.Uri.EscapeDataString(captchData.randstr),
+                    randStr = Uri.EscapeDataString(captchData.randstr),
                     ticket = captchData.ticket,
-                    type = "1"
+                    type = "1",
+                    areaCode = "86_CN",
                 };
                 Helpers.writeini(MOBILE, userMobile);
-    /*            RequestUtil.post(Constants.Urls.SEND_CODE, sendCodeData, async (res) =>
-                {
-                    Result<object> result = await JsonSerializer.DeserializeAsync<Result<object>>(res);
-                    if (result.isSuccess())
-                    {
-                        AppendLogText("验证码发送成功");
-                    }
-                    else
-                    {
-                        AppendLogText("验证码发送失败：" + result.msg + " " + result.state);
-                    }
-                });*/
+                RequestUtil.post(Urls.SEND_CODE, sendCodeData, (res) =>
+               {
+                   Result<object> result = JsonConvert.DeserializeObject<Result<object>>(res);
+                   if (result.isSuccess())
+                   {
+                       AppendLogText("验证码发送成功");
+                   }
+                   else
+                   {
+                       AppendLogText("验证码发送失败：" + result.msg + " " + result.state);
+                   }
+               });
             });
 
         }
@@ -154,38 +154,36 @@ namespace checkout
 
             Helpers.writeini(MOBILE, userMobile);
             Helpers.writeini(PASSWORD, pwd);
+            Helpers.writeini("sign", "");
+            RequestUtil.post(Urls.LOGIN_PWD, loginData, (res) =>
+           {
+               LogHelpers.write(" 密码登陆：" + res);
+               Result<UserInfo> userRes = JsonConvert.DeserializeObject<Result<UserInfo>>(res);
 
 
-            RequestUtil.post(Constants.Urls.LOGIN_PWD, loginData, (async (res) =>
-            {
-                LogHelpers.write(" 密码登陆：" + res);
-                var userRes = await JsonSerializer.DeserializeAsync<Result<UserInfo>>(res);
+               if (userRes.isSuccess())
+               {
+                   string msg = "登陆成功";
+                   LogHelpers.write(msg);
+                   AppendLogText(msg);
+               }
+               else
+               {
+                   string msg = "登陆失败：" + userRes.msg;
+                   LogHelpers.write(msg);
+                   AppendLogText(msg);
+                   return;
+               }
 
-                if (userRes.isSuccess())
-                {
-                    string msg = "登陆成功";
-                    LogHelpers.write(msg);
-                    AppendLogText(msg);
-                }
-                else
-                {
-                    string msg = "登陆失败：" + userRes.msg;
-                    LogHelpers.write(msg);
-                    AppendLogText(msg);
-                    return;
-                }
-
-                initUserIdInfo();
-                initAddress();
-                Helpers.writeini("sign", userRes.result.sign);
-                Helpers.writeini("st_flpv", userRes.result.st_flpv);
-                Helpers.writeini("token", userRes.result.token);
-                Helpers.writeini("expireTime", userRes.result.expireTime + "");
-                Helpers.writeini("tel", userRes.result.tel);
-                Helpers.writeini("userId", userRes.result.userId + "");
-            }));
-
-
+               initUserIdInfo();
+               initAddress();
+               Helpers.writeini("sign", userRes.result.sign);
+               Helpers.writeini("st_flpv", userRes.result.st_flpv);
+               Helpers.writeini("token", userRes.result.token);
+               Helpers.writeini("expireTime", userRes.result.expireTime + "");
+               Helpers.writeini("tel", userRes.result.tel);
+               Helpers.writeini("userId", userRes.result.userId + "");
+           });
         }
 
 
@@ -227,30 +225,36 @@ namespace checkout
             {
                 phone = userMobile,
                 verifyCode = vcode,
+                areaCode = "86_CN",
+                cityCode = "571"
             };
             // 发送请求
-/*            Result<UserSession> result = RequestUtil.loginByVCode(loginData);
+            RequestUtil.post(Urls.VC_LOGIN, loginData, (res) =>
+            {
+                Result<UserSession> result = JsonConvert.DeserializeObject<Result<UserSession>>(res);
+                if (result.isSuccess())
+                {
+                    LogHelpers.write("登陆成功");
+                    AppendLogText("登陆成功");
+                }
+                else
+                {
+                    string msg = "登陆失败：" + result.msg + "  " + result.state;
+                    LogHelpers.write(msg);
+                    AppendLogText(msg);
+                    return;
+                }
+                initUserIdInfo();
+                initAddress();
+                Helpers.writeini("sign", result.result.session.sign);
+                Helpers.writeini("st_flpv", result.result.session.st_flpv);
+                Helpers.writeini("token", result.result.session.token);
+                Helpers.writeini("expireTime", result.result.session.expireTime + "");
+                Helpers.writeini("tel", result.result.session.tel);
+                Helpers.writeini("userId", result.result.session.userId + "");
+            });
 
-            if (result.isSuccess())
-            {
-                LogHelpers.write("登陆成功");
-                AppendLogText("登陆成功");
-            }
-            else
-            {
-                string msg = "登陆失败：" + result.msg + "  " + result.state;
-                LogHelpers.write(msg);
-                AppendLogText(msg);
-                return;
-            }
-            initUserIdInfo();
-            initAddress();
-            Helpers.writeini("sign", result.result.session.sign);
-            Helpers.writeini("st_flpv", result.result.session.st_flpv);
-            Helpers.writeini("token", result.result.session.token);
-            Helpers.writeini("expireTime", result.result.session.expireTime + "");
-            Helpers.writeini("tel", result.result.session.tel);
-            Helpers.writeini("userId", result.result.session.userId + "");*/
+
         }
 
 
@@ -265,19 +269,19 @@ namespace checkout
         // 搜索
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            Action<Stream> callBack = (async (res) =>
+            Action<string> callBack = (res) =>
             {
-                Result<ActivityInfoList> result = await JsonSerializer.DeserializeAsync<Result<ActivityInfoList>>(res);
+                Result<ActivityInfoList> result = JsonConvert.DeserializeObject<Result<ActivityInfoList>>(res);
 
                 if (result.isSuccess() && result.result.activityInfo.Count > 0)
                 {
                     activityComboBox.DataSource = result.result.activityInfo;
                     handleTicket((string)activityComboBox.SelectedValue);
                 }
-            });
+            };
             string search = searchTxt.Text;
 
-    /*        switch (searchSelector.SelectedItem)
+            switch (searchSelector.SelectedItem)
             {
                 case "演出名称":
                     SearchQo searchQo = new SearchQo
@@ -286,39 +290,38 @@ namespace checkout
                         pageNo = 1,
                         pageSize = 20
                     };
-                    RequestUtil.get(Constants.Urls.SEARCH, searchQo, callBack);
+                    RequestUtil.post(Urls.SEARCH, searchQo, callBack);
                     break;
                 case "演出ID":
-                    RequestUtil.post(Constants.Urls.ACTIVITY_DETAIL, new Dictionary<string, object>() {
+                    RequestUtil.post(Urls.ACTIVITY_DETAIL, new Dictionary<string, object>() {
                     {"activityId", search },
-                    {"userId",userService.getUserId() }
-                }, async (res) =>
-                {
-                    Result<ActivityVo> result = await JsonSerializer.DeserializeAsync<Result<ActivityVo>>(res);
-                    activityComboBox.DataSource = new List<ActivityInfoVo>() {
+                    {"keyId","" }
+                }, (res) =>
+               {
+                   Result<ActivityVo> result = JsonConvert.DeserializeObject<Result<ActivityVo>>(res);
+                   activityComboBox.DataSource = new List<ActivityInfoVo>() {
                         { new ActivityInfoVo(){
                         activityId = result.result.activityId,
                         title = result.result.title
                         } }
-                    };
+                   };
 
-                });
+               });
                     handleTicket(search);
                     break;
-            }*/
+            }
         }
 
         // 处理ticket
         private void handleTicket(string activtyId)
         {
-/*            TicketListQo activityDetailQo = new TicketListQo
+            TicketListQo activityDetailQo = new TicketListQo
             {
                 activityId = activtyId
             };
-            RequestUtil.post(Constants.Urls.TICKET_LIST, activityDetailQo, async (res) =>
+            RequestUtil.post(Urls.TICKET_LIST, activityDetailQo, (res) =>
             {
-                Result<TicketListVo> result = await JsonSerializer.DeserializeAsync<Result<TicketListVo>>(res);
-
+                Result<TicketListVo> result = JsonConvert.DeserializeObject<Result<TicketListVo>>(res);
 
                 if (result.isSuccess() && result.result.ticketList.Count > 0)
                 {
@@ -329,7 +332,7 @@ namespace checkout
                     });
                     ticketList.DataSource = result.result.ticketList;
                 }
-            });*/
+            });
 
         }
 
@@ -358,7 +361,7 @@ namespace checkout
         // 定时购票操作
         private void buyTicket(DateTime buyTime)
         {
-/*            var orderQo = getOrderQo();
+            var orderQo = getOrderQo();
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
@@ -379,11 +382,11 @@ namespace checkout
                            return;
                        }
                        newApiParams.Add("checkCode", captchData.ticket);
-                       newApiParams.Add("randStr", System.Uri.EscapeDataString(captchData.randstr));
+                       newApiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
                    }
-                   RequestUtil.post("app/order/order.json", newApiParams, buyOrderCallback(ticket), buyTime);
+                   RequestUtil.post(Urls.ORDER_ORDER, newApiParams, buyOrderCallback(ticket), buyTime);
                });
-            }*/
+            }
         }
 
 
@@ -394,55 +397,69 @@ namespace checkout
             ActivityInfoVo activity = (ActivityInfoVo)activityComboBox.SelectedItem;
             AddressInfo addressInfo = (AddressInfo)addressSelector.SelectedItem;
             UserIdInfo userInfo = (UserIdInfo)userIdSelector.SelectedItem;
+            CouponInfoVo couponInfo = (CouponInfoVo)couponList.SelectedItem;
+            var amountPayable = ticket.sellingPrice;
+            // 优惠券
+            if (couponInfo != null)
+            {
+                amountPayable = amountPayable - couponInfo.price;
+            }
+
+            List<OrderPlaceGoodsBean> lists = new List<OrderPlaceGoodsBean>();
+            OrderPlaceGoodsBean orderPlaceGoodsBean = new OrderPlaceGoodsBean();
+            orderPlaceGoodsBean.goodsType = 1;
+            orderPlaceGoodsBean.skuType = 1;
+            if (ticket.type == 2 || ticket.type == 3)
+            {
+                orderPlaceGoodsBean.skuType = ticket.type;
+            }
+            orderPlaceGoodsBean.num = 1;
+            orderPlaceGoodsBean.goodsId = ticket.activityId;
+            orderPlaceGoodsBean.skuId = ticket.ticketId;
+            orderPlaceGoodsBean.cartId = "";
+            orderPlaceGoodsBean.price = ticket.sellingPrice.ToString();
+            lists.Add(orderPlaceGoodsBean);
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>
             {
-                {"goodsType",ticket.goodType},
-                {"terminal","android"},
-                {"orderDetails[0].goodsType",ticket.goodType},
                 {"telephone",userService.getTel()},
-                {"orderDetails[0].num",1},
-                {"orderDetails[0].activityId",activity.activityId},
-                {"orderDetails[0].ticketId",ticket.ticketId},
-                {"orderDetails[0].price",ticket.sellingPrice},
-                {"orderDetails[0].ticketType",ticket.type},
+                {"customerName",addressInfo.consignee},
+                // 实际支付金额
+                {"amountPayable",amountPayable },
+                // 总价
+                {"totalAmount",ticket.sellingPrice },
+                // 折扣
+                {"discount",couponInfo == null ? 0 :couponInfo.price},
+                {"source","0"},
+                // 订单详情
+                {"orderDetails",lists},
+                // 地区
+                {"areaCode","86_CN"},
+                {"customerRemark",""},
                 {"longitude",0},
                 {"latitude",0},
-                {"areaCode","86_CN"},
-                {"formToken", Helpers.Get32RandomID()},
             };
 
             // 电子票 or 实体票
             if (ticket.type == 2)
             {
-                apiParams.Add("customerName", addressInfo.consignee);
                 apiParams.Add("provinceName", addressInfo.provinceName);
                 apiParams.Add("cityName", addressInfo.cityName);
                 apiParams.Add("address", addressInfo.address);
             }
-            else if (ticket.type == 3)
-            {
-                apiParams.Add("customerName", addressInfo.consignee);
-            }
 
-            apiParams.Add("orderType", 1);
-            // 支付方式
-            apiParams.Add("payPlatName", "alipaymobsc");
-
-            // 优惠券
-            if (couponList.SelectedItem != null)
+            if (couponInfo != null)
             {
-                CouponInfoVo couponInfo = (CouponInfoVo)couponList.SelectedItem;
                 apiParams.Add("couponId", couponInfo.id);
             }
+
 
             // 实名
             if (ticket.realName == 2 || ticket.realName == 3)
             {
-                apiParams.Add("commonPerfomers[0].name", userInfo.name);
-                apiParams.Add("commonPerfomers[0].documentType", userInfo.documentType);
-                apiParams.Add("commonPerfomers[0].documentNumber", userInfo.documentNumber);
+                apiParams.Add("commonPerfomerIds", new long[] { userInfo.id });
             }
+
             return new OrderQo()
             {
                 ticket = ticket,
@@ -489,16 +506,16 @@ namespace checkout
                     return;
                 }
                 apiParams.Add("checkCode", captchData.ticket);
-                apiParams.Add("randStr", System.Uri.EscapeDataString(captchData.randstr));
+                apiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
             }
-            //RequestUtil.post("app/order/order.json", apiParams, buyOrderCallback(ticket));
+            RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket));
         }
 
-        private Action<Stream> buyOrderCallback(TicketListItem ticket)
+        private Action<string> buyOrderCallback(TicketListItem ticket)
         {
-            return new Action<Stream>(async (res) =>
+            return new Action<string>((res) =>
             {
-                Result<object> result = await JsonSerializer.DeserializeAsync<Result<object>>(res);
+                Result<object> result = JsonConvert.DeserializeObject<Result<object>>(res);
                 if (result.isSuccess())
                 {
                     LogHelpers.write(ticket.ticketType + "抢票成功");
@@ -523,20 +540,18 @@ namespace checkout
             }
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>() {
-                {"pageNo",1 },
-                {"pageSize",10 },
-                {"sequence",activity.sequence },
+                {"activityId",ticket.activityId},
                 {"totalAmout",ticket.sellingPrice },
-                {"type",1 },
+
             };
-  /*          RequestUtil.post(Constants.Urls.COUPON_ORDER_LIST, apiParams, async (res) =>
-            {
-                Result<CouponList> result = await JsonSerializer.DeserializeAsync<Result<CouponList>>(res);
-                if (result.isSuccess())
-                {
-                    couponList.DataSource = result.result.couponList;
-                }
-            });*/
+            RequestUtil.post(Urls.COUPON_ORDER_LIST, apiParams, (res) =>
+           {
+               Result<CouponList> result = JsonConvert.DeserializeObject<Result<CouponList>>(res);
+               if (result.isSuccess())
+               {
+                   couponList.DataSource = result.result.couponList;
+               }
+           });
         }
 
         // 定时购票
@@ -593,8 +608,8 @@ namespace checkout
 
             if (DateTime.Now.AddMinutes(1).CompareTo(buyTime) >= 0)
             {
-                stopBuy();
                 buyTicket(buyTime);
+                stopBuy();
             }
         }
 
@@ -603,7 +618,6 @@ namespace checkout
         {
             try
             {
-
                 string text = pickUpBtn.Text;
                 if (text == PickUpTxt.开始捡漏.ToString())
                 {
@@ -621,7 +635,7 @@ namespace checkout
             catch (BusinessException ex) { MessageBox.Show(ex.Message); }
         }
 
-        private void pickStop() 
+        private void pickStop()
         {
             pickUpBtn.Text = PickUpTxt.开始捡漏.ToString();
             pickUpTimer.Stop();
@@ -638,47 +652,42 @@ namespace checkout
                 activityId = ticketListItem.activityId
             };
 
-        /*    RequestUtil.post(Constants.Urls.TICKET_LIST, activityDetailQo, async (res) =>
-            {
-                Result<TicketListVo> result = await JsonSerializer.DeserializeAsync<Result<TicketListVo>>(res);
+            RequestUtil.post(Urls.TICKET_LIST, activityDetailQo, (res) =>
+           {
+               Result<TicketListVo> result = JsonConvert.DeserializeObject<Result<TicketListVo>>(res);
 
-                if (result.isSuccess() && result.result.ticketList.Count > 0)
-                {
-                    result.result.ticketList.ForEach((item) =>
-                    {
-                        if (item.remainTicket > 0 && item.ticketId == ticketListItem.ticketId)
-                        {
-                            buyTicket();
-                            pickStop();
-                        }
-                    });
-                }
-            });*/
+               if (result.isSuccess() && result.result.ticketList.Count > 0)
+               {
+                   result.result.ticketList.ForEach((item) =>
+                   {
+                       if (item.remainTicket > 0 && item.ticketId == ticketListItem.ticketId)
+                       {
+                           buyTicket();
+                           pickStop();
+                       }
+                   });
+               }
+           });
         }
- 
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var result = "https://s2.showstart.com/img/2021/0428/16/30/194ca928d6bf4b28b47b11596dd9cd68_1242_2208_937440.0x0.jpg";
-            MD5 md5 = MD5.Create(); //实例化一个md5对像
-            // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
-            byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(result));
-            StringBuilder stringBuilder = new StringBuilder();
-            for (var i = 0; i < s.Length; ++i) {
-               var res =  s[i] & 255;
-                stringBuilder.Append(res.ToString("X2"));
-            }
-            Console.WriteLine(stringBuilder.ToString());
-        }
 
         private void makeToken(object sender, EventArgs e)
         {
-
-            RequestUtil.post(Urls.MAKE_TOKEN,new Object(), async (res) => {
-                Result<object> result = await JsonSerializer.DeserializeAsync<Result<object>>(res);
-                if (result.isSuccess()) {
+            RequestUtil.post(Urls.MAKE_TOKEN, new object(), (res) =>
+            {
+                Result<string> result = JsonConvert.DeserializeObject<Result<string>>(res);
+                if (result.isSuccess())
+                {
+                    Helpers.writeini(RequestUtil.DATA_KEY, result.result);
+                    AppendLogText("key 加载成功");
+                }
+                else
+                {
+                    AppendLogText("key 加载失败");
                 }
             });
         }
+
+      
     }
 }

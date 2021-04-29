@@ -11,7 +11,7 @@ namespace checkout.Entity.Qo
         /// <summary>
         /// 
         /// </summary>
-        public string areaCode = "86_CN";
+        public string areaCode { get; set; }
         /// <summary>
         /// 
         /// </summary>

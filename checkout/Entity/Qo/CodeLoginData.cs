@@ -13,28 +13,12 @@ namespace checkout.Entity.Qo
         /// <summary>
         /// 
         /// </summary>
-        public string areaCode = "86_CN";
+        public string areaCode { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string cityCode = "10";
+        public string cityCode { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string formToken = "";
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ip = Helpers.GetIP();
-        /// <summary>
-        /// 
-        /// </summary>
-        public double latitude = 0.0;
-        /// <summary>
-        /// 
-        /// </summary>
-        public double longitude = 0.0;
         /// <summary>
         /// 
         /// </summary>

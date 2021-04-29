@@ -59,9 +59,14 @@ namespace checkout.Helper
 
 
         //DateTime类型转换为时间戳(毫秒值)
-        public static long DateToTicks(DateTime? time)
+        public static long DateToTicks(DateTime time)
         {
-            return ((time.HasValue ? time.Value.Ticks : DateTime.Parse("1990-01-01").Ticks) - 621355968000000000) / 10000;
+            return (int)time.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+        }
+
+        public static long CurrentTimeStamp(bool isMinseconds = false)
+        {
+            return DateToTicks(DateTime.UtcNow);
         }
 
         //时间戳(毫秒值)String转换为DateTime类型转换
@@ -77,7 +82,7 @@ namespace checkout.Helper
             int i2 = 0;
             while (i2 < 8)
             {
-                char c = charArray[(new Random().Next(0,61))];
+                char c = charArray[(new Random().Next(0, 61))];
                 if (str.Contains(c.ToString()))
                 {
                     i2--;

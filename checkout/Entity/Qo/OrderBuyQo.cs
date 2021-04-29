@@ -41,4 +41,15 @@ namespace checkout.Entity.Qo
         /// </summary>
         public string terminal = "android";
     }
+
+    class OrderPlaceGoodsBean 
+    {
+        public String cartId { get; set; }
+        public String goodsId { get; set; }
+        public int goodsType { get; set; }
+        public int num { get; set; }
+        public String price { get; set; }
+        public String skuId { get; set; }
+        public int skuType { get; set; }
+    }
 }

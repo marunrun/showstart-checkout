@@ -7,8 +7,20 @@ using System.Threading.Tasks;
 
 namespace checkout.Services
 {
+
     class UserService
     {
+        private static UserService instance;
+
+        public static UserService getInstance() 
+        {
+            if (instance == null) {
+                instance = new UserService();
+            }
+
+            return instance;
+        }
+
         public Boolean isLogin()
         {
             string tel = getTel();

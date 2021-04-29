@@ -1,4 +1,5 @@
-﻿using System;
+﻿using checkout.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,8 @@ namespace checkout.Entity.Vo
         /// <summary>
         /// 
         /// </summary>
+        /// 
+        [System.Text.Json.Serialization.JsonConverter(typeof(LongToStringJsonConverter))]
         public string activityId { get; set; }
         /// <summary>
         /// 
