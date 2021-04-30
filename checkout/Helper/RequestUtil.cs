@@ -44,8 +44,8 @@ namespace checkout.Helper
         {
             HttpContent content = new StringContent(JsonSerializer.Serialize(buildeRquest(request, param)));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.Add("CUSUT", Helpers.readIni("sign", ""));
-            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp(true).ToString());
+            content.Headers.Add("CUSUT", UserService.getInstance().sign);
+            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.uri, content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
             callback(res);
@@ -57,8 +57,8 @@ namespace checkout.Helper
             Dictionary<string, string> dictionaries = buildeRquest(request, param, dateTime);
             HttpContent content = new StringContent(JsonSerializer.Serialize(dictionaries));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.Add("CUSUT", Helpers.readIni("sign", ""));
-            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp(true).ToString());
+            content.Headers.Add("CUSUT", UserService.getInstance().sign);
+            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
 
             while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
             {
@@ -79,7 +79,7 @@ namespace checkout.Helper
         }
         public static Dictionary<string, string> buildeRquest(RequestQo request, Object param)
         {
-            return buildeRquest(request, param, DateTime.UtcNow);
+            return buildeRquest(request, param, DateTime.Now);
         }
 
         // 构建请求参数

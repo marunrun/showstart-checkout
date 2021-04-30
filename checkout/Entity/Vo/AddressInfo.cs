@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace checkout.Entity.Vo
 {
-
-
-
     class AddressInfo
     {
         /// <summary>

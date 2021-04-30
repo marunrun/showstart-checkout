@@ -1,9 +1,5 @@
 ﻿using checkout.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace checkout.Services
 {
@@ -21,39 +17,13 @@ namespace checkout.Services
             return instance;
         }
 
-        public Boolean isLogin()
-        {
-            string tel = getTel();
-            string expireTime = getExpireTime();
-            string sign = getSign();
+        private UserService() { }
 
-            // 如果登陆过
-            if (tel != "" && sign != "" && Helpers.TicksToDate(expireTime).CompareTo(DateTime.Now) > 0)
-            {
-                return true;
-            }
+        public string tel { get; set; }
 
-            return false;
-        }
+        public string sign { get; set; }
 
-        public string getTel()
-        {
-            return Helpers.readIni("tel", "");
-        }
-        public string getSign()
-        {
-            return Helpers.readIni("sign", "");
-        }
+        public long userId { get; set; }
 
-        public string getUserId()
-        {
-            return Helpers.readIni("userId", "");
-
-        }
-
-        public string getExpireTime()
-        {
-            return Helpers.readIni("expireTime", "");
-        }
     }
 }

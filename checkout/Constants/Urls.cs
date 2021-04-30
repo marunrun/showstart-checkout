@@ -84,7 +84,7 @@ namespace checkout.Constants
         // 优惠券
         public static RequestQo COUPON_ORDER_LIST = new RequestQo
         {
-            action = "/coupon/default",
+            action = "/coupon/order_list",
             bol = false,
             type = "REQUEST_QUERY",
             uri = "appnj/00000000iRsA"

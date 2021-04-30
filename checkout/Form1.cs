@@ -7,8 +7,6 @@ using checkout.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Urls = checkout.Constants.Urls;
@@ -23,14 +21,13 @@ namespace checkout
 
         public delegate void appendTextBox(string value);
 
-
         private static string PASSWORD = "pwd";
 
         private UserService userService;
 
         public checkoutForm()
         {
-            userService = new UserService();
+            userService = UserService.getInstance();
             InitializeComponent();
             searchSelector.DataSource = new string[] {
             "演出名称","演出ID"};
@@ -43,6 +40,9 @@ namespace checkout
         {
             mobile.Text = Helpers.readIni(MOBILE, "");
             password.Text = Helpers.readIni(PASSWORD, "");
+            userService.sign = Helpers.readIni("sign", "");
+            userService.userId = long.Parse(Helpers.readIni("userId", ""));
+            userService.tel = Helpers.readIni("tel", "");
         }
 
         // 初始化用户身份证信息
@@ -56,6 +56,9 @@ namespace checkout
                 if (result.isSuccess())
                 {
                     userIdSelector.DataSource = result.result;
+                }
+                else 
+                {
                 }
             });
 
@@ -74,7 +77,10 @@ namespace checkout
             RequestUtil.post(Urls.ADDRESS_LIST, addressQo, (res) =>
             {
                 Result<List<AddressInfo>> result = JsonConvert.DeserializeObject<Result<List<AddressInfo>>>(res);
-                addressSelector.DataSource = result.result;
+                if (result.isSuccess())
+                {
+                    addressSelector.DataSource = result.result;
+                }
             });
             addressSelector.EndUpdate();
         }
@@ -125,10 +131,6 @@ namespace checkout
 
         }
 
-        public void writeLog(string msg)
-        {
-            logText.AppendText(msg);
-        }
 
         // 密码登陆
         private void pwdLogin_Click(object sender, EventArgs e)
@@ -158,52 +160,20 @@ namespace checkout
             RequestUtil.post(Urls.LOGIN_PWD, loginData, (res) =>
            {
                LogHelpers.write(" 密码登陆：" + res);
-               Result<UserInfo> userRes = JsonConvert.DeserializeObject<Result<UserInfo>>(res);
-
-
-               if (userRes.isSuccess())
+               Result<UserInfo> result = JsonConvert.DeserializeObject<Result<UserInfo>>(res);
+               if (result.isSuccess())
                {
-                   string msg = "登陆成功";
-                   LogHelpers.write(msg);
-                   AppendLogText(msg);
+                   loginSuccessCallBack(result.result);
                }
                else
                {
-                   string msg = "登陆失败：" + userRes.msg;
+                   string msg = "登陆失败：" + result.msg + "  " + result.state;
                    LogHelpers.write(msg);
                    AppendLogText(msg);
-                   return;
                }
-
-               initUserIdInfo();
-               initAddress();
-               Helpers.writeini("sign", userRes.result.sign);
-               Helpers.writeini("st_flpv", userRes.result.st_flpv);
-               Helpers.writeini("token", userRes.result.token);
-               Helpers.writeini("expireTime", userRes.result.expireTime + "");
-               Helpers.writeini("tel", userRes.result.tel);
-               Helpers.writeini("userId", userRes.result.userId + "");
            });
         }
 
-
-        public void AppendLogText(string msg)
-        {
-            if (logText.InvokeRequired)
-            {
-                appendTextBox appendTextBox = new appendTextBox(append);
-                Invoke(appendTextBox, new object[] { msg });
-            }
-            else
-            {
-                append(msg);
-            }
-        }
-
-        private void append(string msg)
-        {
-            logText.AppendText(DateTime.Now.ToString("HH:mm:ss.fff  ") + msg + "\r\n");
-        }
 
         // 验证码登陆
         private void login_Click(object sender, EventArgs e)
@@ -234,30 +204,32 @@ namespace checkout
                 Result<UserSession> result = JsonConvert.DeserializeObject<Result<UserSession>>(res);
                 if (result.isSuccess())
                 {
-                    LogHelpers.write("登陆成功");
-                    AppendLogText("登陆成功");
+                    loginSuccessCallBack(result.result.session);
                 }
                 else
                 {
                     string msg = "登陆失败：" + result.msg + "  " + result.state;
                     LogHelpers.write(msg);
                     AppendLogText(msg);
-                    return;
                 }
-                initUserIdInfo();
-                initAddress();
-                Helpers.writeini("sign", result.result.session.sign);
-                Helpers.writeini("st_flpv", result.result.session.st_flpv);
-                Helpers.writeini("token", result.result.session.token);
-                Helpers.writeini("expireTime", result.result.session.expireTime + "");
-                Helpers.writeini("tel", result.result.session.tel);
-                Helpers.writeini("userId", result.result.session.userId + "");
             });
-
-
         }
 
+        // 登陆成功的回调
+        private void loginSuccessCallBack(UserInfo userInfo)
+        {
+            LogHelpers.write("登陆成功");
+            AppendLogText("登陆成功");
 
+            userService.sign = userInfo.sign;
+            userService.userId = userInfo.userId;
+            userService.tel = userInfo.tel;
+            Helpers.writeini("sign", userInfo.sign);
+            Helpers.writeini("userId", userInfo.userId.ToString());
+            Helpers.writeini("tel", userInfo.tel);
+            initUserIdInfo();
+            initAddress();
+        }
 
         // 刷新信息
         private void refreshInfo_Click(object sender, EventArgs e)
@@ -422,7 +394,7 @@ namespace checkout
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>
             {
-                {"telephone",userService.getTel()},
+                {"telephone",userService.tel},
                 {"customerName",addressInfo.consignee},
                 // 实际支付金额
                 {"amountPayable",amountPayable },
@@ -511,6 +483,7 @@ namespace checkout
             RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket));
         }
 
+        // 购票的回调
         private Action<string> buyOrderCallback(TicketListItem ticket)
         {
             return new Action<string>((res) =>
@@ -541,8 +514,10 @@ namespace checkout
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>() {
                 {"activityId",ticket.activityId},
-                {"totalAmout",ticket.sellingPrice },
-
+                {"totalAmount",ticket.sellingPrice },
+                {"pageNo",1},
+                {"pageSize",20 },
+                {"type",1 },
             };
             RequestUtil.post(Urls.COUPON_ORDER_LIST, apiParams, (res) =>
            {
@@ -670,7 +645,7 @@ namespace checkout
            });
         }
 
-
+        // 生成token
         private void makeToken(object sender, EventArgs e)
         {
             RequestUtil.post(Urls.MAKE_TOKEN, new object(), (res) =>
@@ -688,6 +663,34 @@ namespace checkout
             });
         }
 
-      
+
+        #region 日志操作
+        public void AppendErrorLogText(Result result) 
+        {
+
+        }
+        public void AppendLogText(string msg)
+        {
+            if (logText.InvokeRequired)
+            {
+                appendTextBox appendTextBox = new appendTextBox(append);
+                Invoke(appendTextBox, new object[] { msg });
+            }
+            else
+            {
+                append(msg);
+            }
+        }
+
+        private void append(string msg)
+        {
+            logText.AppendText(DateTime.Now.ToString("HH:mm:ss.fff  ") + msg + "\r\n");
+        }
+
+        public void writeLog(string msg)
+        {
+            logText.AppendText(msg);
+        }
+        #endregion
     }
 }

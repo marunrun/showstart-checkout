@@ -28,7 +28,7 @@ namespace checkout.Entity.Vo
         /// <summary>
         /// 
         /// </summary>
-        public int subtractPrice { get; set; }
+        public float subtractPrice { get; set; }
         /// <summary>
         /// 西湖音乐节购票优惠券
         /// </summary>

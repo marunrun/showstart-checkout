@@ -61,20 +61,18 @@ namespace checkout.Helper
         //DateTime类型转换为时间戳(毫秒值)
         public static long DateToTicks(DateTime time)
         {
-            return (int)time.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1)); // 当地时区
+
+
+            return (long)time.Subtract(startTime).TotalMilliseconds;
         }
 
-        public static long CurrentTimeStamp(bool isMinseconds = false)
+        public static long CurrentTimeStamp()
         {
-            return DateToTicks(DateTime.UtcNow);
+            return DateToTicks(DateTime.Now);
         }
 
-        //时间戳(毫秒值)String转换为DateTime类型转换
-        public static DateTime TicksToDate(string time)
-        {
-            return new DateTime((Convert.ToInt64(time) * 10000) + 621355968000000000);
-        }
-
+   
         public static string getRandom()
         {
             char[] charArray = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
