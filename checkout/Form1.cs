@@ -41,7 +41,7 @@ namespace checkout
             mobile.Text = Helpers.readIni(MOBILE, "");
             password.Text = Helpers.readIni(PASSWORD, "");
             userService.sign = Helpers.readIni("sign", "");
-            userService.userId = long.Parse(Helpers.readIni("userId", ""));
+            userService.userId = long.Parse(Helpers.readIni("userId", "0"));
             userService.tel = Helpers.readIni("tel", "");
         }
 
@@ -665,10 +665,6 @@ namespace checkout
 
 
         #region 日志操作
-        public void AppendErrorLogText(Result result) 
-        {
-
-        }
         public void AppendLogText(string msg)
         {
             if (logText.InvokeRequired)

@@ -34,7 +34,7 @@ namespace checkout.Helper
             httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
             httpClient.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
             httpClient.DefaultRequestHeaders.Add("CTERMINAL", "android");
-            httpClient.DefaultRequestHeaders.Add("CUUSERREF", "e31d1cf2e8778e5ee9f0d5191a52ab02");
+            httpClient.DefaultRequestHeaders.Add("CUUSERREF", Helpers.Get32RandomID());
             return httpClient;
         }
 
