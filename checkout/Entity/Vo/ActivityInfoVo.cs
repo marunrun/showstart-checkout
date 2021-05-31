@@ -87,7 +87,7 @@ namespace checkout.Entity.Vo
         /// <summary>
         /// 
         /// </summary>
-        public int price { get; set; }
+        public double price { get; set; }
         /// <summary>
         /// 
         /// </summary>

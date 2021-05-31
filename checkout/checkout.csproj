@@ -139,6 +139,7 @@
     <Compile Include="Entity\Vo\AddressInfo.cs" />
     <Compile Include="Entity\Qo\OrderBuyQo.cs" />
     <Compile Include="Entity\Vo\CouponInfoVo.cs" />
+    <Compile Include="Entity\Vo\OrderOrderVo.cs" />
     <Compile Include="Entity\Vo\Result.cs" />
     <Compile Include="Entity\Qo\LoginData.cs" />
     <Compile Include="Entity\Qo\PublicData.cs" />

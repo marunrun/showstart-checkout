@@ -32,10 +32,11 @@ namespace checkout.Entity.Vo
         /// 
         /// </summary>
         public string state { get; set; }
+        public bool success { get; set; }
 
         public bool isSuccess() 
         {
-            return this.state == "1";
+            return this.success == true || this.state == "1";
         }
     }
 }

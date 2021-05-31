@@ -57,7 +57,7 @@ namespace checkout
                 {
                     userIdSelector.DataSource = result.result;
                 }
-                else 
+                else
                 {
                 }
             });
@@ -337,28 +337,22 @@ namespace checkout
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
-            for (var i = 0; i < 5; i++)
+            buyTime = buyTime.AddMilliseconds(-100);
+            var newApiParams = new Dictionary<string, object>(apiParams);
+            if (ticket.specialActivity == 4)
             {
-                Task.Run(() =>
-               {
-                   buyTime = buyTime.AddMilliseconds(-100);
-                   Console.WriteLine(buyTime.ToString("HH:mm:ss.ffff"));
-                   var newApiParams = new Dictionary<string, object>(apiParams);
-                   if (ticket.specialActivity == 4)
-                   {
-                       // 需要验证
-                       CaptchData captchData = CaptchHelper.getTicket();
-                       if (captchData == null)
-                       {
-                           AppendLogText("验证码滑块失败，请勿频繁滑块或稍后尝试");
-                           return;
-                       }
-                       newApiParams.Add("checkCode", captchData.ticket);
-                       newApiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
-                   }
-                   RequestUtil.post(Urls.ORDER_ORDER, newApiParams, buyOrderCallback(ticket), buyTime);
-               });
+                // 需要验证
+                CaptchData captchData = CaptchHelper.getTicket();
+                if (captchData == null)
+                {
+                    AppendLogText("验证码滑块失败，请勿频繁滑块或稍后尝试");
+                    return;
+                }
+                newApiParams.Add("checkCode", captchData.ticket);
+                newApiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
             }
+            RequestUtil.post(Urls.ORDER_ORDER, newApiParams, buyOrderCallback(ticket,1), buyTime);
+
         }
 
 
@@ -461,8 +455,14 @@ namespace checkout
             }
         }
 
+
+        private void buyTicket() 
+        {
+            buyTicket(null);
+        }
+
         // 立即购票
-        private void buyTicket()
+        private void buyTicket(int ?failCount)
         {
             var orderQo = getOrderQo();
             var ticket = orderQo.ticket;
@@ -480,26 +480,66 @@ namespace checkout
                 apiParams.Add("checkCode", captchData.ticket);
                 apiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
             }
-            RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket));
+            RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket,failCount));
+        }
+
+        private Action<string> buyOrderCallback(TicketListItem ticket)
+        {
+            return buyOrderCallback(ticket, null);
         }
 
         // 购票的回调
-        private Action<string> buyOrderCallback(TicketListItem ticket)
+        private Action<string> buyOrderCallback(TicketListItem ticket, int? failCount)
         {
             return new Action<string>((res) =>
             {
-                Result<object> result = JsonConvert.DeserializeObject<Result<object>>(res);
+                Result<OrderOrderVo> result = JsonConvert.DeserializeObject<Result<OrderOrderVo>>(res);
+
                 if (result.isSuccess())
                 {
-                    LogHelpers.write(ticket.ticketType + "抢票成功");
-                    AppendLogText(ticket.ticketType + "抢票成功");
+                    Dictionary<string, object> query = new Dictionary<string, object> {
+                    {
+                            "orderJobKey", result.result.orderJobKey }
+                    };
+
+                    RequestUtil.post(Urls.ORDER_RESULT, query, new Action<string>((res2) =>
+                    {
+                        Result<object> result2 = JsonConvert.DeserializeObject<Result<object>>(res2);
+
+                        if (result2.isSuccess())
+                        {
+                            LogHelpers.write(ticket.ticketType + "抢票成功");
+                            AppendLogText(ticket.ticketType + "抢票成功");
+                            return;
+                        }
+
+                        buyTicketFaild(ticket, result2.msg, result2.state, failCount);
+                    }));
+                    return;
                 }
-                else
-                {
-                    LogHelpers.write(ticket.ticketType + "抢票失败：" + result.msg + " " + result.state);
-                    AppendLogText(ticket.ticketType + "抢票失败：" + result.msg + " " + result.state);
-                }
+
+                buyTicketFaild(ticket, result.msg, result.state, failCount);
             });
+        }
+
+        // 购票重试
+        private void retry(int failCount)
+        {
+            failCount++;
+            System.Threading.Thread.Sleep(1000);
+            buyTicket(failCount);
+        }
+
+        // 购票失败
+        private void buyTicketFaild(TicketListItem ticket, string msg, string state, int ?failCount)
+        {
+            LogHelpers.write(ticket.ticketType + "抢票失败：" + msg + " " + state);
+            AppendLogText(ticket.ticketType + "抢票失败：" + msg + " " + state);
+            if (null != failCount && failCount < 5)
+            {
+                AppendLogText("抢票重试中~，重试第" + failCount + "次");
+                retry((int)failCount);
+            }
         }
 
         // 选票change

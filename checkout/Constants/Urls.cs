@@ -107,6 +107,15 @@ namespace checkout.Constants
             type = "REQUEST_QUERY",
             uri = "app/000000000000"
         };
+
+        // 订单结果
+        public static RequestQo ORDER_RESULT = new RequestQo
+        { 
+            action = "/order/getCoreOrderResult",
+            bol = false,
+            type = "REQUEST_QUERY",
+            uri = "appnj/02000000lcvj",
+        };
     }
 
 
