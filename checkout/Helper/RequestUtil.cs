@@ -34,7 +34,7 @@ namespace checkout.Helper
             httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
             httpClient.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
             httpClient.DefaultRequestHeaders.Add("CTERMINAL", "android");
-            httpClient.DefaultRequestHeaders.Add("CUUSERREF", Helpers.Get32RandomID());
+            httpClient.DefaultRequestHeaders.Add("CUUSERREF", Helpers.Md5(Helpers.Get32RandomID()));
             return httpClient;
         }
 
@@ -104,17 +104,27 @@ namespace checkout.Helper
             // 原始req
             var reqJson = JsonSerializer.Serialize(queryObj);
             Console.WriteLine("reqJson :" + reqJson);
-            var dataKey = Helpers.readIni(DATA_KEY, "");
-            var aruKey = Helpers.readIni(ARU_KEY, "lMOEEdGup12IvTv1");
+            var dataKey = "";
+            var aruKey = Helpers.readIni(ARU_KEY, "0RGF99CtUajPF0Ny");
             if (request.bol)
             {
-                dataKey = aruKey;
+                dataKey = "";
+            }
+            else
+            {
+                dataKey = Helpers.readIni(DATA_KEY, "");
             }
 
+            if (string.IsNullOrEmpty(dataKey))
+            {
+                dataKey = "0RGF99CtUajPF0Ny";
+            }
+            
+
             return new Dictionary<string, string> {
-                { "appid","app"},
-                { "terminal","android"},
-                { "version","4.8.0"},
+                { "appid",PublicData.appid},
+                { "terminal",PublicData.terminal},
+                { "version",PublicData.appVersion},
                 { "aru",Helpers.AesEncrypt(aruKey,request.action)},
                 { "data",Helpers.AesEncrypt(dataKey,reqJson)},
                 { "sign",Helpers.Md5(reqJson)},
