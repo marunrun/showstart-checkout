@@ -119,20 +119,25 @@ namespace checkout.Helper
             ICryptoTransform cTransform = rm.CreateEncryptor();
             byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);
+            var base64String = Convert.ToBase64String(resultArray, 0, resultArray.Length);
+            return base64String;
         }
 
         //md5
         public static string Md5(string str)
         {
+            Console.WriteLine(str);
             MD5 md5 = MD5.Create(); //实例化一个md5对像
             // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
-            byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
+            byte[] digest = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
             StringBuilder stringBuilder = new StringBuilder();
-            for (var i = 0; i < s.Length; ++i)
+            for (var i = 0; i < digest.Length; ++i)
             {
-                var res = s[i] & 255;
-                stringBuilder.Append(res.ToString("X2"));
+                if ((digest[i] & 255).ToString("X2").Length == 1)
+                {
+                    stringBuilder.Append("0");
+                }
+                stringBuilder.Append((digest[i] & 255).ToString("X2"));
             }
             return stringBuilder.ToString().ToLower();
         }

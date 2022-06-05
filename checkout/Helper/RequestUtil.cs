@@ -34,7 +34,7 @@ namespace checkout.Helper
             httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
             httpClient.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
             httpClient.DefaultRequestHeaders.Add("CTERMINAL", "android");
-            httpClient.DefaultRequestHeaders.Add("CUUSERREF", Helpers.Get32RandomID());
+            httpClient.DefaultRequestHeaders.Add("CUUSERREF", Helpers.Md5(Helpers.Get32RandomID()));
             return httpClient;
         }
 
@@ -122,12 +122,22 @@ namespace checkout.Helper
             var aruKey = Helpers.readIni(ARU_KEY, PublicData.ARU_KEY);
             if (request.bol)
             {
-                dataKey = aruKey;
+                dataKey = "";
+            }
+            else
+            {
+                dataKey = Helpers.readIni(DATA_KEY, "");
             }
 
+            if (string.IsNullOrEmpty(dataKey))
+            {
+                dataKey = "0RGF99CtUajPF0Ny";
+            }
+            
+
             return new Dictionary<string, string> {
-                { "appid","app"},
-                { "terminal","android"},
+                { "appid",PublicData.appid},
+                { "terminal",PublicData.terminal},
                 { "version",PublicData.appVersion},
                 { "aru",Helpers.AesEncrypt(aruKey,request.action)},
                 { "data",Helpers.AesEncrypt(dataKey,reqJson)},

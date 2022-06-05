@@ -32,7 +32,7 @@ namespace checkout.Constants
             action = "/app/commonPerformer/list",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "app/00000000iRsA"
+            uri = "app/00000000lcvj"
         };
 
         // 收货地址
@@ -41,7 +41,7 @@ namespace checkout.Constants
             action = "/app/address/list",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "app/00000000iRsA"
+            uri = "app/00000000lcvj"
         };
 
         // 下单
@@ -50,8 +50,8 @@ namespace checkout.Constants
             action = "/order/order",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "appnj/01000000iRsA",
             prefix ="/appnj/"
+            uri = "appnj/00000000lcvj"
         };
 
 
@@ -82,7 +82,7 @@ namespace checkout.Constants
             action = "/common/user/maketoken",
             bol = true,
             type = "REQUEST_QUERY",
-            uri  = "app/000000000000"
+            uri  = "app/00000000lcvj"
         };
 
         // 优惠券
@@ -91,7 +91,7 @@ namespace checkout.Constants
             action = "/coupon/order_list",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "appnj/00000000iRsA"
+            uri = "appnj/00000000lcvj"
         };
 
         // 验证码登陆

@@ -23,6 +23,8 @@ namespace checkout
 
         private static string PASSWORD = "pwd";
 
+        private static string SING = "sign";
+
         private UserService userService;
 
         public checkoutForm()
@@ -40,7 +42,7 @@ namespace checkout
         {
             mobile.Text = Helpers.readIni(MOBILE, "");
             password.Text = Helpers.readIni(PASSWORD, "");
-            userService.sign = Helpers.readIni("sign", "");
+            userService.sign = Helpers.readIni(SING, "");
             userService.userId = long.Parse(Helpers.readIni("userId", "0"));
             userService.tel = Helpers.readIni("tel", "");
         }
@@ -156,7 +158,7 @@ namespace checkout
 
             Helpers.writeini(MOBILE, userMobile);
             Helpers.writeini(PASSWORD, pwd);
-            Helpers.writeini("sign", "");
+            Helpers.writeini(SING, "");
             RequestUtil.post(Urls.LOGIN_PWD, loginData, (res) =>
            {
                LogHelpers.write(" 密码登陆：" + res);
@@ -224,7 +226,7 @@ namespace checkout
             userService.sign = userInfo.sign;
             userService.userId = userInfo.userId;
             userService.tel = userInfo.tel;
-            Helpers.writeini("sign", userInfo.sign);
+            Helpers.writeini(SING, userInfo.sign);
             Helpers.writeini("userId", userInfo.userId.ToString());
             Helpers.writeini("tel", userInfo.tel);
             initUserIdInfo();

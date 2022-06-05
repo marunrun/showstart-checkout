@@ -16,28 +16,35 @@ namespace checkout.Entity.Qo
         /// <summary>
         /// 
         /// </summary>
-        public string terminal = "android";
+        public const string terminal = "android";
+
         /// <summary>
         /// 
         /// </summary>
-        public string sysVersion = "10";
+        public const string sysVersion = "10";
+
         /// <summary>
         /// 
         /// </summary>
         public string sign { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         public string p_json_dig { get; set; }
+
         /// <string>
         /// 
         /// </summary>
-        public string deviceName = "MI 9 SE";
+        public const string deviceName = "MI 9 SE";
+
         /// <summary>
         /// 
         /// </summary>
         public const string appVersion = "5.0.8";
 
         public const string ARU_KEY = "fGTKGj1VVAYaNIEu";
+
+        public const string appid = "app";
     }
 }
