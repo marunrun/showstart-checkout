@@ -50,7 +50,7 @@ namespace checkout.Constants
             action = "/order/order",
             bol = false,
             type = "REQUEST_QUERY",
-            prefix ="/appnj/"
+            prefix ="/appnj/",
             uri = "appnj/00000000lcvj"
         };
 

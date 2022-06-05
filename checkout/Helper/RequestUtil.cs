@@ -122,22 +122,12 @@ namespace checkout.Helper
             var aruKey = Helpers.readIni(ARU_KEY, PublicData.ARU_KEY);
             if (request.bol)
             {
-                dataKey = "";
+                dataKey = aruKey;
             }
-            else
-            {
-                dataKey = Helpers.readIni(DATA_KEY, "");
-            }
-
-            if (string.IsNullOrEmpty(dataKey))
-            {
-                dataKey = "0RGF99CtUajPF0Ny";
-            }
-            
 
             return new Dictionary<string, string> {
-                { "appid",PublicData.appid},
-                { "terminal",PublicData.terminal},
+                { "appid","app"},
+                { "terminal","android"},
                 { "version",PublicData.appVersion},
                 { "aru",Helpers.AesEncrypt(aruKey,request.action)},
                 { "data",Helpers.AesEncrypt(dataKey,reqJson)},
