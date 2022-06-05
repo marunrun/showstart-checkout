@@ -36,6 +36,8 @@ namespace checkout.Entity.Qo
         /// <summary>
         /// 
         /// </summary>
-        public string appVersion = "4.6.9";
+        public const string appVersion = "5.0.8";
+
+        public const string ARU_KEY = "fGTKGj1VVAYaNIEu";
     }
 }

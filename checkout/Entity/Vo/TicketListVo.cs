@@ -9,184 +9,60 @@ namespace checkout.Entity.Vo
 
     class TicketListVo
     {
-        public int realName { get; set; }
-        public List<TicketListItem> ticketList { get; set; }
+        //public int realName { get; set; }
+        public List<Session> sessions { get; set; }
         public string showTime { get; set; }
-        public string helpUrl { get; set; }
-        public int specialActivity { get; set; }
-        public PayType payType { get; set; }
+        //public string helpUrl { get; set; }
+        //public int specialActivity { get; set; }
+        //public PayType payType { get; set; }
 
     }
+
+    public class Session
+    {
+        public string sessionId { get; set; }
+        public string sessionName { get; set; }
+
+        public int isConfirmedStartTime { get; set; }
+
+
+        public List<TicketListItem> ticketList { get; set; }
+
+    }
+
     public class TicketListItem
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string activityId { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string alternateEndTime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int alternateLimitNum { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string alternateUrl { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string areaCode { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int buyGroupType { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int canAddGoods { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int canBuyNum { get; set; }
-        /// <summary>
-        /// 杭州
-        /// </summary>
-        public string cityName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int costPrice { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string entityMailInstruction { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string entityPickupInstruction { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public double entityPickupLatitude { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public double entityPickupLongitude { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string exchangeRate { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int goodType { get; set; }
-        /// <summary>
-        /// 限量
-        /// </summary>
-        public string instruction { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int isShowAlternateButton { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int limitBuyNum { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string pickupAddress { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string pickupDate { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        //public long pickupEndTime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        //public long pickupStartTime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string pickupTime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int remainTicket { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int saleStatus { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public double sellingPrice { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool showRuleTip { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string showStartTime { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int startSellNoticeStatus { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string teamRemark { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string telephone { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public string ticketId { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ticketNum { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ticketRecordStatus { get; set; }
-        /// <summary>
-        /// 早鸟票
-        /// </summary>
         public string ticketType { get; set; }
-        /// <summary>
-        /// 2021.03.15 00:00停售
-        /// </summary>
+        public double sellingPrice { get; set; }
+        public string costPrice { get; set; }
+        public int ticketNum { get; set; }
+        public int validateType { get; set; }
         public string time { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int type { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+        public string instruction { get; set; }
+        public int countdown { get; set; }
+        public int remainTicket { get; set; }
+        public int saleStatus { get; set; }
+        public string activityId { get; set; }
+        public int goodType { get; set; }
+        public string telephone { get; set; }
+        public string areaCode { get; set; }
+        public int limitBuyNum { get; set; }
+        public int canBuyNum { get; set; }
+        public string cityName { get; set; }
         public int unPayOrderNum { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public int waitingAlternateNum { get; set; }
-
+        public int type { get; set; }
+        public int buyType { get; set; }
+        public int canAddGoods { get; set; }
+        public int ticketRecordStatus { get; set; }
+        public int startSellNoticeStatus { get; set; }
+        public bool showRuleTip { get; set; }
+        public long startTime { get; set; }
+        public string showTime { get; set; }
+        public int memberNum { get; set; }
         public string text { get {
                 return ticketType + "库存：" + remainTicket;
-            } }
-
-        public int specialActivity  { get; set; }
-        public int realName { get; set; }
-
+        } }
 
     }
 

@@ -16,7 +16,7 @@ namespace checkout.Helper
     {
         private static readonly HttpClient client = getHttpClient();
 
-        static Uri apiUri = new Uri(Helpers.readIni("apiUri", "http://pro2-api.showstart.com"));
+        static Uri apiUri = new Uri(Helpers.readIni("apiUri", "https://pro2-api.showstart.com"));
 
         public const string DATA_KEY = "dataKey";
         public const string ARU_KEY = "aruKey";
@@ -40,32 +40,46 @@ namespace checkout.Helper
 
 
         // post请求
-        public async static void post(RequestQo request, object param, Action<string> callback)
+        public async static void post(RequestQo request, object param, Action<string> callback,string sessionId = null)
         {
             HttpContent content = new StringContent(JsonSerializer.Serialize(buildeRquest(request, param)));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.Add("CUSUT", UserService.getInstance().sign);
             content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
-            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.uri, content);
+
+            // 如果 pathType 不是null
+            if (!String.IsNullOrEmpty(sessionId)) {
+                request.sessionId = sessionId;
+            }
+
+            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
             callback(res);
         }
 
         // 定时post请求
-        public async static void post(RequestQo request, Object param, Action<string> callback, DateTime dateTime)
+        public async static void post(RequestQo request, Object param, Action<string> callback, DateTime dateTime, string sessionId = null)
         {
+            // 线程停一下
+            while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
+            {
+                Thread.Sleep(10);
+            }
+
             Dictionary<string, string> dictionaries = buildeRquest(request, param, dateTime);
             HttpContent content = new StringContent(JsonSerializer.Serialize(dictionaries));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.Add("CUSUT", UserService.getInstance().sign);
             content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
 
-            while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
+            // 如果 pathType 不是null
+            if (!String.IsNullOrEmpty(sessionId))
             {
-                Thread.Sleep(10);
+                request.sessionId = sessionId;
             }
 
-            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.uri, content);
+     
+            HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
             callback(res);
         }
@@ -74,7 +88,7 @@ namespace checkout.Helper
         public async static void get(RequestQo request, Object param, Action<Stream> callback)
         {
             string pram = BuildParam(request, param);
-            Stream res = await client.GetStreamAsync(apiUri + request.uri + "?" + pram);
+            Stream res = await client.GetStreamAsync(apiUri + request.Geturi() + "?" + pram);
             callback(res);
         }
         public static Dictionary<string, string> buildeRquest(RequestQo request, Object param)
@@ -105,7 +119,7 @@ namespace checkout.Helper
             var reqJson = JsonSerializer.Serialize(queryObj);
             Console.WriteLine("reqJson :" + reqJson);
             var dataKey = Helpers.readIni(DATA_KEY, "");
-            var aruKey = Helpers.readIni(ARU_KEY, "lMOEEdGup12IvTv1");
+            var aruKey = Helpers.readIni(ARU_KEY, PublicData.ARU_KEY);
             if (request.bol)
             {
                 dataKey = aruKey;
@@ -114,7 +128,7 @@ namespace checkout.Helper
             return new Dictionary<string, string> {
                 { "appid","app"},
                 { "terminal","android"},
-                { "version","4.8.0"},
+                { "version",PublicData.appVersion},
                 { "aru",Helpers.AesEncrypt(aruKey,request.action)},
                 { "data",Helpers.AesEncrypt(dataKey,reqJson)},
                 { "sign",Helpers.Md5(reqJson)},

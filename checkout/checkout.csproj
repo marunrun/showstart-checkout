@@ -158,6 +158,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Base62.cs" />
     <Compile Include="Helper\CaptchHelper.cs" />
     <Compile Include="Helper\Helpers.cs" />
     <Compile Include="Helper\LogHelpers.cs" />

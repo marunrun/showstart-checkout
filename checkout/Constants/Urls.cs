@@ -11,7 +11,7 @@ namespace checkout.Constants
             action = "/app/activity/search",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "app/00000000j2rN"
+            uri = "app/00000000lcvj"
         };
 
 
@@ -21,7 +21,9 @@ namespace checkout.Constants
             action = "/app/activity/details",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "app/000000000000"
+            uri = "app/0h0IuB000000",
+            pathType = "17",
+            sessionId = "activityId"
         };
 
         // 身份证
@@ -48,17 +50,19 @@ namespace checkout.Constants
             action = "/order/order",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "appnj/01000000iRsA"
+            uri = "appnj/01000000iRsA",
+            prefix ="/appnj/"
         };
 
 
         // 票列表
         public static RequestQo TICKET_LIST = new RequestQo
         {
-            action = "/app/activity/ticket/list",
+            action = "/app/activity/V2/ticket/list",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "app/00000000iRsA"
+            uri = "app/0g0IeO00j2rN",
+            pathType = "16",
         };
 
 
@@ -115,7 +119,11 @@ namespace checkout.Constants
             bol = false,
             type = "REQUEST_QUERY",
             uri = "appnj/02000000lcvj",
+            pathType = "2",
+            prefix = "/appnj"
         };
+
+
     }
 
 

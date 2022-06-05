@@ -67,6 +67,12 @@ namespace checkout.Helper
             return (long)time.Subtract(startTime).TotalMilliseconds;
         }
 
+        public static DateTime ticksToDate(long cc) 
+        {
+            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));//当地时区  
+            return  startTime.AddMilliseconds(cc);
+        }
+
         public static long CurrentTimeStamp()
         {
             return DateToTicks(DateTime.Now);
@@ -131,6 +137,105 @@ namespace checkout.Helper
             return stringBuilder.ToString().ToLower();
         }
 
+
+
+        public static string transtoPath(string str,string str2) 
+        {
+            String str3 = "00";
+            if (!String.IsNullOrEmpty(str))
+            {
+                try
+                {
+                    String b = base62(long.Parse(str));
+                    str3 = convert(2, b);
+                }
+                catch (Exception unused)
+                {
+                }
+            }
+
+            String stringPlus = "" + str3;
+
+            String str4 = "0000";
+            if (!String.IsNullOrEmpty(str2))
+            {
+                try
+                {
+                    String b2 = base62(long.Parse(str2));
+                    str4 = convert(4, b2);
+                }
+                catch (Exception unused2)
+                {
+                }
+            }
+            String stringPlus2 = stringPlus+ str4;
+            String C0 = readIni("userId","");
+            String str5 = "000000";
+            if (!String.IsNullOrEmpty(C0))
+            {
+                try
+                {
+                    String b3 = base62(long.Parse(C0));
+                    str5 = convert(6, b3);
+                }
+                catch (Exception unused3)
+                {
+                }
+            }
+
+            return stringPlus2 +  str5;
+        }
+
+
+        private const string base62Charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        public static string base62(long j2) 
+        {
+            if (j2 >= 1)
+            {
+                StringBuilder sb = new StringBuilder();
+                while (j2 > 0)
+                {
+                    sb.Append(base62Charset.ElementAt((int)(j2 % 62)));
+                    j2 /= 62;
+                }
+                char[] arr =  sb.ToString().ToCharArray();
+                Array.Reverse(arr);
+                return new string(arr);
+
+            }
+
+            throw new InvalidProgramException("base62 长度问题");
+        }
+
+        private static string convert(int i2, String str)
+        {
+            int i3 = 0;
+            if (!String.IsNullOrEmpty(str))
+            {
+                if (str.Length < i2)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    int length = i2 - str.Length;
+                    while (i3 < length)
+                    {
+                        i3++;
+                        sb.Append("0");
+                    }
+                    sb.Append(str);
+                    str = sb.ToString();
+                }
+                return str;
+            }
+            StringBuilder sb2 = new StringBuilder();
+            while (i3 < i2)
+            {
+                i3++;
+                sb2.Append("0");
+            }
+            String sb3 = sb2.ToString();
+            return sb3;
+        }
 
     }
 }

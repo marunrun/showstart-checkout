@@ -278,7 +278,7 @@ namespace checkout
                         } }
                    };
 
-               });
+               },search);
                     handleTicket(search);
                     break;
             }
@@ -295,16 +295,22 @@ namespace checkout
             {
                 Result<TicketListVo> result = JsonConvert.DeserializeObject<Result<TicketListVo>>(res);
 
-                if (result.isSuccess() && result.result.ticketList.Count > 0)
+                if (result.isSuccess() && result.result.sessions.Count > 0)
                 {
-                    result.result.ticketList.ForEach((item) =>
+
+                    //todo 场次处理
+
+                    Session sessionOne = result.result.sessions[0];
+
+                    /*
+                    sessionOne.ticketList.ForEach((item) =>
                     {
                         item.specialActivity = result.result.specialActivity;
                         item.realName = result.result.realName;
-                    });
-                    ticketList.DataSource = result.result.ticketList;
+                    });*/
+                    ticketList.DataSource = sessionOne.ticketList;
                 }
-            });
+            },activtyId);
 
         }
 
@@ -337,9 +343,9 @@ namespace checkout
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
-            buyTime = buyTime.AddMilliseconds(-100);
+            buyTime = buyTime.AddMilliseconds(-200);
             var newApiParams = new Dictionary<string, object>(apiParams);
-            if (ticket.specialActivity == 4)
+            /*if (ticket.specialActivity == 4)
             {
                 // 需要验证
                 CaptchData captchData = CaptchHelper.getTicket();
@@ -350,8 +356,8 @@ namespace checkout
                 }
                 newApiParams.Add("checkCode", captchData.ticket);
                 newApiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
-            }
-            RequestUtil.post(Urls.ORDER_ORDER, newApiParams, buyOrderCallback(ticket,1), buyTime);
+            }*/
+            RequestUtil.post(Urls.ORDER_ORDER, newApiParams, buyOrderCallback(ticket,1), buyTime,ticket.activityId);
 
         }
 
@@ -388,7 +394,7 @@ namespace checkout
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>
             {
-                {"telephone",userService.tel},
+                //{"telephone",userService.tel},
                 {"customerName",addressInfo.consignee},
                 // 实际支付金额
                 {"amountPayable",amountPayable },
@@ -397,6 +403,7 @@ namespace checkout
                 // 折扣
                 {"discount",couponInfo == null ? 0 :couponInfo.price},
                 {"source","0"},
+                {"telephone",Helpers.readIni("tel","") },
                 // 订单详情
                 {"orderDetails",lists},
                 // 地区
@@ -421,10 +428,10 @@ namespace checkout
 
 
             // 实名
-            if (ticket.realName == 2 || ticket.realName == 3)
+            /*if (ticket.realName == 2 || ticket.realName == 3)
             {
                 apiParams.Add("commonPerfomerIds", new long[] { userInfo.id });
-            }
+            }*/
 
             return new OrderQo()
             {
@@ -468,7 +475,7 @@ namespace checkout
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
-            if (ticket.specialActivity == 4)
+            /*if (ticket.specialActivity == 4)
             {
                 // 需要验证
                 CaptchData captchData = CaptchHelper.getTicket();
@@ -479,8 +486,11 @@ namespace checkout
                 }
                 apiParams.Add("checkCode", captchData.ticket);
                 apiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
-            }
-            RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket,failCount));
+            }*/
+
+            Console.WriteLine(apiParams);
+
+            RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket,failCount),ticket.activityId);
         }
 
         private Action<string> buyOrderCallback(TicketListItem ticket)
@@ -526,7 +536,7 @@ namespace checkout
         private void retry(int failCount)
         {
             failCount++;
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(100);
             buyTicket(failCount);
         }
 
@@ -535,7 +545,7 @@ namespace checkout
         {
             LogHelpers.write(ticket.ticketType + "抢票失败：" + msg + " " + state);
             AppendLogText(ticket.ticketType + "抢票失败：" + msg + " " + state);
-            if (null != failCount && failCount < 5)
+            if (null != failCount && failCount < 20)
             {
                 AppendLogText("抢票重试中~，重试第" + failCount + "次");
                 retry((int)failCount);
@@ -580,9 +590,8 @@ namespace checkout
                 {
                     buyTimer.Start();
                     buyTimeBtn.Text = BuyTimeTxt.取消定时.ToString();
-                    buyTimePicker.Enabled = false;
                     commonEnable(false);
-                    AppendLogText("启动定时，将与：" + buyTimePicker.Text + "自动帮您购票");
+                    AppendLogText("启动定时");
                 }
                 else
                 {
@@ -602,7 +611,6 @@ namespace checkout
         {
             buyTimer.Stop();
             buyTimeBtn.Text = BuyTimeTxt.定时自动购票.ToString();
-            buyTimePicker.Enabled = true;
             commonEnable(true);
         }
 
@@ -619,11 +627,12 @@ namespace checkout
         // 定时器
         private void buyTimer_Tick(object sender, EventArgs e)
         {
-            DateTime buyTime = DateTime.Parse(buyTimePicker.Text);
-
-            if (DateTime.Now.AddMinutes(1).CompareTo(buyTime) >= 0)
+            //DateTime buyTime = DateTime.Parse(buyTimePicker.Text);
+            TicketListItem ticket = (TicketListItem)ticketList.SelectedItem;
+            DateTime startTime =  Helpers.ticksToDate(ticket.startTime);
+            if (DateTime.Now.AddMinutes(1).CompareTo(startTime) >= 0)
             {
-                buyTicket(buyTime);
+                buyTicket(startTime);
                 stopBuy();
             }
         }
@@ -671,9 +680,12 @@ namespace checkout
            {
                Result<TicketListVo> result = JsonConvert.DeserializeObject<Result<TicketListVo>>(res);
 
-               if (result.isSuccess() && result.result.ticketList.Count > 0)
+               if (result.isSuccess() && result.result.sessions.Count > 0)
                {
-                   result.result.ticketList.ForEach((item) =>
+
+                   Session sessionOne = result.result.sessions[0];
+
+                   sessionOne.ticketList.ForEach((item) =>
                    {
                        if (item.remainTicket > 0 && item.ticketId == ticketListItem.ticketId)
                        {
