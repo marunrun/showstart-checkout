@@ -91,7 +91,8 @@ namespace checkout.Constants
             action = "/coupon/order_list",
             bol = false,
             type = "REQUEST_QUERY",
-            uri = "appnj/00000000lcvj"
+            uri = "app/00000000lcvj",
+            prefix = "/appnj/"
         };
 
         // 验证码登陆

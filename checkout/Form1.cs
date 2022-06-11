@@ -430,10 +430,10 @@ namespace checkout
 
 
             // 实名
-            /*if (ticket.realName == 2 || ticket.realName == 3)
+            if (ticket.buyType == 2 )
             {
                 apiParams.Add("commonPerfomerIds", new long[] { userInfo.id });
-            }*/
+            }
 
             return new OrderQo()
             {
@@ -538,7 +538,7 @@ namespace checkout
         private void retry(int failCount)
         {
             failCount++;
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(200);
             buyTicket(failCount);
         }
 
@@ -547,7 +547,7 @@ namespace checkout
         {
             LogHelpers.write(ticket.ticketType + "抢票失败：" + msg + " " + state);
             AppendLogText(ticket.ticketType + "抢票失败：" + msg + " " + state);
-            if (null != failCount && failCount < 20)
+            if (null != failCount && failCount < 5)
             {
                 AppendLogText("抢票重试中~，重试第" + failCount + "次");
                 retry((int)failCount);
@@ -567,9 +567,8 @@ namespace checkout
             Dictionary<string, object> apiParams = new Dictionary<string, object>() {
                 {"activityId",ticket.activityId},
                 {"totalAmount",ticket.sellingPrice },
-                {"pageNo",1},
-                {"pageSize",20 },
-                {"type",1 },
+                {"goodsType",1},
+                {"goodsId",ticket.activityId },
             };
             RequestUtil.post(Urls.COUPON_ORDER_LIST, apiParams, (res) =>
            {

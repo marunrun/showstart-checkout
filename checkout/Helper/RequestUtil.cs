@@ -51,6 +51,7 @@ namespace checkout.Helper
             if (!String.IsNullOrEmpty(sessionId)) {
                 request.sessionId = sessionId;
             }
+            Console.WriteLine(request);
 
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
@@ -63,7 +64,7 @@ namespace checkout.Helper
             // 线程停一下
             while (dateTime != null && DateTime.Now.CompareTo(dateTime) < 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(100);
             }
 
             Dictionary<string, string> dictionaries = buildeRquest(request, param, dateTime);
@@ -87,6 +88,8 @@ namespace checkout.Helper
         // get请求
         public async static void get(RequestQo request, Object param, Action<Stream> callback)
         {
+            Console.WriteLine(request);
+
             string pram = BuildParam(request, param);
             Stream res = await client.GetStreamAsync(apiUri + request.Geturi() + "?" + pram);
             callback(res);
