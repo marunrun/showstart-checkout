@@ -62,8 +62,9 @@ github repo : https://github.com/marunrun/showstart-checkout
 
 ----
 
-本软件免费使用，请勿轻信他人，不要花额外的钱去看live， livehouse本就越来越贵，希望每个人都能抢到原价票。
+本软件免费使用，请勿轻信他人，不要花额外的钱去买票， livehouse本就越来越贵，希望每个人都能抢到原价票。
 
+暂时只支持window下使用，mac版本不知道何时更新，暂时没有计划。
 
 
 如出现奇奇怪怪的bug，问题，欢迎反馈。
