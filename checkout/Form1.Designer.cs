@@ -32,6 +32,7 @@ namespace checkout
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            PresentationControls.CheckBoxProperties checkBoxProperties1 = new PresentationControls.CheckBoxProperties();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.mobile = new System.Windows.Forms.TextBox();
@@ -46,8 +47,6 @@ namespace checkout
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.pwdLoginTab = new System.Windows.Forms.TabPage();
             this.codeLoginTab = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.userIdSelector = new System.Windows.Forms.ComboBox();
             this.userIdInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.addressSelector = new System.Windows.Forms.ComboBox();
             this.addressInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -61,6 +60,7 @@ namespace checkout
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchTxt = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buyCount = new System.Windows.Forms.NumericUpDown();
             this.pickUpBtn = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.couponList = new System.Windows.Forms.ComboBox();
@@ -70,25 +70,28 @@ namespace checkout
             this.remainTicket = new System.Windows.Forms.Label();
             this.ticketList = new System.Windows.Forms.ComboBox();
             this.ticketListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.multiSelect = new PresentationControls.CheckBoxComboBox();
             this.userSessionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ticketListVoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buyTimer = new System.Windows.Forms.Timer(this.components);
             this.pickUpTimer = new System.Windows.Forms.Timer(this.components);
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.group1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pwdLoginTab.SuspendLayout();
             this.codeLoginTab.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.userIdInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.addressInfoBindingSource)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.activityInfoVoBindingSource)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buyCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.couponInfoVoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ticketListItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userSessionBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ticketListVoBindingSource)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -117,7 +120,7 @@ namespace checkout
             // 
             this.mobile.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.mobile.Location = new System.Drawing.Point(117, 38);
-            this.mobile.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.mobile.Margin = new System.Windows.Forms.Padding(5);
             this.mobile.MaxLength = 11;
             this.mobile.Name = "mobile";
             this.mobile.Size = new System.Drawing.Size(148, 31);
@@ -126,7 +129,7 @@ namespace checkout
             // code
             // 
             this.code.Location = new System.Drawing.Point(81, 27);
-            this.code.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.code.Margin = new System.Windows.Forms.Padding(5);
             this.code.Name = "code";
             this.code.Size = new System.Drawing.Size(148, 31);
             this.code.TabIndex = 2;
@@ -134,7 +137,7 @@ namespace checkout
             // sendCode
             // 
             this.sendCode.Location = new System.Drawing.Point(9, 78);
-            this.sendCode.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.sendCode.Margin = new System.Windows.Forms.Padding(5);
             this.sendCode.Name = "sendCode";
             this.sendCode.Size = new System.Drawing.Size(113, 38);
             this.sendCode.TabIndex = 3;
@@ -145,7 +148,7 @@ namespace checkout
             // login
             // 
             this.login.Location = new System.Drawing.Point(160, 78);
-            this.login.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.login.Margin = new System.Windows.Forms.Padding(5);
             this.login.Name = "login";
             this.login.Size = new System.Drawing.Size(113, 38);
             this.login.TabIndex = 4;
@@ -166,7 +169,7 @@ namespace checkout
             // pwdLogin
             // 
             this.pwdLogin.Location = new System.Drawing.Point(47, 69);
-            this.pwdLogin.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pwdLogin.Margin = new System.Windows.Forms.Padding(5);
             this.pwdLogin.Name = "pwdLogin";
             this.pwdLogin.Size = new System.Drawing.Size(150, 49);
             this.pwdLogin.TabIndex = 3;
@@ -178,7 +181,7 @@ namespace checkout
             // 
             this.logText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logText.Location = new System.Drawing.Point(5, 24);
-            this.logText.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.logText.Margin = new System.Windows.Forms.Padding(5);
             this.logText.Multiline = true;
             this.logText.Name = "logText";
             this.logText.Size = new System.Drawing.Size(337, 669);
@@ -187,7 +190,7 @@ namespace checkout
             // password
             // 
             this.password.Location = new System.Drawing.Point(88, 17);
-            this.password.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.password.Margin = new System.Windows.Forms.Padding(5);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(148, 31);
             this.password.TabIndex = 2;
@@ -196,9 +199,9 @@ namespace checkout
             // 
             this.group1.Controls.Add(this.logText);
             this.group1.Location = new System.Drawing.Point(720, 0);
-            this.group1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.group1.Margin = new System.Windows.Forms.Padding(5);
             this.group1.Name = "group1";
-            this.group1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.group1.Padding = new System.Windows.Forms.Padding(5);
             this.group1.Size = new System.Drawing.Size(347, 698);
             this.group1.TabIndex = 15;
             this.group1.TabStop = false;
@@ -210,7 +213,7 @@ namespace checkout
             this.tabControl1.Controls.Add(this.codeLoginTab);
             this.tabControl1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabControl1.Location = new System.Drawing.Point(18, 85);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(372, 200);
@@ -222,9 +225,9 @@ namespace checkout
             this.pwdLoginTab.Controls.Add(this.label3);
             this.pwdLoginTab.Controls.Add(this.pwdLogin);
             this.pwdLoginTab.Location = new System.Drawing.Point(4, 31);
-            this.pwdLoginTab.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pwdLoginTab.Margin = new System.Windows.Forms.Padding(5);
             this.pwdLoginTab.Name = "pwdLoginTab";
-            this.pwdLoginTab.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pwdLoginTab.Padding = new System.Windows.Forms.Padding(5);
             this.pwdLoginTab.Size = new System.Drawing.Size(364, 165);
             this.pwdLoginTab.TabIndex = 0;
             this.pwdLoginTab.Text = "密码登陆";
@@ -237,41 +240,13 @@ namespace checkout
             this.codeLoginTab.Controls.Add(this.code);
             this.codeLoginTab.Controls.Add(this.label2);
             this.codeLoginTab.Location = new System.Drawing.Point(4, 31);
-            this.codeLoginTab.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.codeLoginTab.Margin = new System.Windows.Forms.Padding(5);
             this.codeLoginTab.Name = "codeLoginTab";
-            this.codeLoginTab.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.codeLoginTab.Padding = new System.Windows.Forms.Padding(5);
             this.codeLoginTab.Size = new System.Drawing.Size(364, 165);
             this.codeLoginTab.TabIndex = 1;
             this.codeLoginTab.Text = "验证码登陆";
             this.codeLoginTab.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.userIdSelector);
-            this.groupBox1.Location = new System.Drawing.Point(399, 38);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.groupBox1.Size = new System.Drawing.Size(312, 84);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "常用观影人";
-            // 
-            // userIdSelector
-            // 
-            this.userIdSelector.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.userIdInfoBindingSource, "documentNumber", true));
-            this.userIdSelector.DataSource = this.userIdInfoBindingSource;
-            this.userIdSelector.DisplayMember = "name";
-            this.userIdSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.userIdSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.userIdSelector.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.userIdSelector.FormattingEnabled = true;
-            this.userIdSelector.Location = new System.Drawing.Point(5, 24);
-            this.userIdSelector.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.userIdSelector.Name = "userIdSelector";
-            this.userIdSelector.Size = new System.Drawing.Size(302, 29);
-            this.userIdSelector.TabIndex = 21;
-            this.userIdSelector.ValueMember = "documentNumber";
             // 
             // userIdInfoBindingSource
             // 
@@ -290,7 +265,7 @@ namespace checkout
             this.addressSelector.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.addressSelector.FormattingEnabled = true;
             this.addressSelector.Location = new System.Drawing.Point(5, 24);
-            this.addressSelector.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.addressSelector.Margin = new System.Windows.Forms.Padding(5);
             this.addressSelector.Name = "addressSelector";
             this.addressSelector.Size = new System.Drawing.Size(298, 29);
             this.addressSelector.TabIndex = 19;
@@ -304,7 +279,7 @@ namespace checkout
             // 
             this.refreshInfo.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.refreshInfo.Location = new System.Drawing.Point(403, 240);
-            this.refreshInfo.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.refreshInfo.Margin = new System.Windows.Forms.Padding(5);
             this.refreshInfo.Name = "refreshInfo";
             this.refreshInfo.Size = new System.Drawing.Size(308, 38);
             this.refreshInfo.TabIndex = 20;
@@ -316,9 +291,9 @@ namespace checkout
             // 
             this.groupBox2.Controls.Add(this.addressSelector);
             this.groupBox2.Location = new System.Drawing.Point(403, 125);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(5);
             this.groupBox2.Size = new System.Drawing.Size(308, 84);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
@@ -331,7 +306,7 @@ namespace checkout
             this.searchSelector.FormattingEnabled = true;
             this.searchSelector.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.searchSelector.Location = new System.Drawing.Point(9, 33);
-            this.searchSelector.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.searchSelector.Margin = new System.Windows.Forms.Padding(5);
             this.searchSelector.Name = "searchSelector";
             this.searchSelector.Size = new System.Drawing.Size(121, 29);
             this.searchSelector.TabIndex = 23;
@@ -344,9 +319,9 @@ namespace checkout
             this.groupBox3.Controls.Add(this.searchTxt);
             this.groupBox3.Controls.Add(this.searchSelector);
             this.groupBox3.Location = new System.Drawing.Point(18, 293);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(5);
             this.groupBox3.Size = new System.Drawing.Size(698, 160);
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
@@ -371,7 +346,7 @@ namespace checkout
             this.activityComboBox.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.activityComboBox.FormattingEnabled = true;
             this.activityComboBox.Location = new System.Drawing.Point(141, 107);
-            this.activityComboBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.activityComboBox.Margin = new System.Windows.Forms.Padding(5);
             this.activityComboBox.Name = "activityComboBox";
             this.activityComboBox.Size = new System.Drawing.Size(546, 29);
             this.activityComboBox.TabIndex = 26;
@@ -386,7 +361,7 @@ namespace checkout
             // 
             this.searchBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.searchBtn.Location = new System.Drawing.Point(576, 33);
-            this.searchBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.searchBtn.Margin = new System.Windows.Forms.Padding(5);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(113, 38);
             this.searchBtn.TabIndex = 25;
@@ -399,13 +374,14 @@ namespace checkout
             this.searchTxt.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.searchTxt.ImeMode = System.Windows.Forms.ImeMode.On;
             this.searchTxt.Location = new System.Drawing.Point(141, 33);
-            this.searchTxt.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.searchTxt.Margin = new System.Windows.Forms.Padding(5);
             this.searchTxt.Name = "searchTxt";
             this.searchTxt.Size = new System.Drawing.Size(344, 31);
             this.searchTxt.TabIndex = 24;
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.buyCount);
             this.groupBox4.Controls.Add(this.pickUpBtn);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.couponList);
@@ -415,18 +391,35 @@ namespace checkout
             this.groupBox4.Controls.Add(this.ticketList);
             this.groupBox4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox4.Location = new System.Drawing.Point(18, 491);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(5);
             this.groupBox4.Size = new System.Drawing.Size(698, 167);
             this.groupBox4.TabIndex = 25;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "选票";
             // 
+            // buyCount
+            // 
+            this.buyCount.Location = new System.Drawing.Point(332, 37);
+            this.buyCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.buyCount.Name = "buyCount";
+            this.buyCount.Size = new System.Drawing.Size(54, 31);
+            this.buyCount.TabIndex = 19;
+            this.buyCount.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // pickUpBtn
             // 
             this.pickUpBtn.Location = new System.Drawing.Point(141, 113);
-            this.pickUpBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pickUpBtn.Margin = new System.Windows.Forms.Padding(5);
             this.pickUpBtn.Name = "pickUpBtn";
             this.pickUpBtn.Size = new System.Drawing.Size(113, 38);
             this.pickUpBtn.TabIndex = 9;
@@ -437,7 +430,7 @@ namespace checkout
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(385, 42);
+            this.label5.Location = new System.Drawing.Point(424, 39);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 21);
@@ -451,10 +444,10 @@ namespace checkout
             this.couponList.DisplayMember = "price";
             this.couponList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.couponList.FormattingEnabled = true;
-            this.couponList.Location = new System.Drawing.Point(459, 36);
-            this.couponList.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.couponList.Location = new System.Drawing.Point(507, 36);
+            this.couponList.Margin = new System.Windows.Forms.Padding(5);
             this.couponList.Name = "couponList";
-            this.couponList.Size = new System.Drawing.Size(232, 29);
+            this.couponList.Size = new System.Drawing.Size(184, 29);
             this.couponList.TabIndex = 6;
             this.couponList.ValueMember = "id";
             // 
@@ -466,7 +459,7 @@ namespace checkout
             // 
             this.buyTimeBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buyTimeBtn.Location = new System.Drawing.Point(276, 113);
-            this.buyTimeBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.buyTimeBtn.Margin = new System.Windows.Forms.Padding(5);
             this.buyTimeBtn.Name = "buyTimeBtn";
             this.buyTimeBtn.Size = new System.Drawing.Size(182, 38);
             this.buyTimeBtn.TabIndex = 3;
@@ -478,7 +471,7 @@ namespace checkout
             // 
             this.buyNowBtn.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buyNowBtn.Location = new System.Drawing.Point(9, 113);
-            this.buyNowBtn.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.buyNowBtn.Margin = new System.Windows.Forms.Padding(5);
             this.buyNowBtn.Name = "buyNowBtn";
             this.buyNowBtn.Size = new System.Drawing.Size(113, 38);
             this.buyNowBtn.TabIndex = 2;
@@ -505,7 +498,7 @@ namespace checkout
             this.ticketList.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ticketList.FormattingEnabled = true;
             this.ticketList.Location = new System.Drawing.Point(12, 36);
-            this.ticketList.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.ticketList.Margin = new System.Windows.Forms.Padding(5);
             this.ticketList.Name = "ticketList";
             this.ticketList.Size = new System.Drawing.Size(303, 29);
             this.ticketList.TabIndex = 0;
@@ -515,6 +508,18 @@ namespace checkout
             // ticketListItemBindingSource
             // 
             this.ticketListItemBindingSource.DataSource = typeof(checkout.Entity.Vo.TicketListItem);
+            // 
+            // multiSelect
+            // 
+            checkBoxProperties1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.multiSelect.CheckBoxProperties = checkBoxProperties1;
+            this.multiSelect.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.userIdInfoBindingSource, "documentNumber", true));
+            this.multiSelect.DisplayMemberSingleItem = "name";
+            this.multiSelect.FormattingEnabled = true;
+            this.multiSelect.Location = new System.Drawing.Point(5, 37);
+            this.multiSelect.Name = "multiSelect";
+            this.multiSelect.Size = new System.Drawing.Size(299, 28);
+            this.multiSelect.TabIndex = 10;
             // 
             // userSessionBindingSource
             // 
@@ -534,6 +539,18 @@ namespace checkout
             this.pickUpTimer.Interval = 200;
             this.pickUpTimer.Tick += new System.EventHandler(this.pickUpTimer_Tick);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.multiSelect);
+            this.groupBox5.Location = new System.Drawing.Point(407, 14);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox5.Size = new System.Drawing.Size(312, 84);
+            this.groupBox5.TabIndex = 22;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "常用观影人";
+            // 
             // checkoutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -542,17 +559,17 @@ namespace checkout
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1064, 697);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.refreshInfo);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mobile);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.group1);
             this.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "checkoutForm";
             this.Text = "秀动辅助";
             this.Load += new System.EventHandler(this.makeToken);
@@ -563,7 +580,6 @@ namespace checkout
             this.pwdLoginTab.PerformLayout();
             this.codeLoginTab.ResumeLayout(false);
             this.codeLoginTab.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.userIdInfoBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.addressInfoBindingSource)).EndInit();
             this.groupBox2.ResumeLayout(false);
@@ -572,10 +588,12 @@ namespace checkout
             ((System.ComponentModel.ISupportInitialize)(this.activityInfoVoBindingSource)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buyCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.couponInfoVoBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ticketListItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.userSessionBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ticketListVoBindingSource)).EndInit();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -597,11 +615,9 @@ namespace checkout
         private TabControl tabControl1;
         private TabPage pwdLoginTab;
         private TabPage codeLoginTab;
-        private GroupBox groupBox1;
         private ComboBox addressSelector;
         private BindingSource addressInfoBindingSource;
         private Button refreshInfo;
-        private ComboBox userIdSelector;
         private BindingSource userIdInfoBindingSource;
         private GroupBox groupBox2;
         private ComboBox searchSelector;
@@ -625,6 +641,9 @@ namespace checkout
         private Timer buyTimer;
         private Button pickUpBtn;
         private Timer pickUpTimer;
+        private PresentationControls.CheckBoxComboBox multiSelect;
+        private GroupBox groupBox5;
+        private NumericUpDown buyCount;
     }
 }
 

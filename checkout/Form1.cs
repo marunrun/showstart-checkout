@@ -5,6 +5,7 @@ using checkout.Exceptions;
 using checkout.Helper;
 using checkout.Services;
 using Newtonsoft.Json;
+using PresentationControls;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -50,21 +51,27 @@ namespace checkout
         // 初始化用户身份证信息
         protected void initUserIdInfo()
         {
-            userIdSelector.BeginUpdate();
+            multiSelect.BeginUpdate();
 
             RequestUtil.post(Urls.COMMON_PERFORMER, new object(), (res) =>
             {
                 Result<List<UserIdInfo>> result = JsonConvert.DeserializeObject<Result<List<UserIdInfo>>>(res);
                 if (result.isSuccess())
                 {
-                    userIdSelector.DataSource = result.result;
+                    multiSelect.DataSource = new ListSelectionWrapper<UserIdInfo>(result.result,"name");
+                    multiSelect.ValueMember = "Selected";
+                    multiSelect.DisplayMemberSingleItem = "name";
+                    multiSelect.DisplayMember = "NameConcatenated";
+                    if ( result.result.Count > 0) {
+                        multiSelect.CheckBoxItems[0].Checked = true;
+                    }
                 }
                 else
                 {
                 }
             });
 
-            userIdSelector.EndUpdate();
+            multiSelect.EndUpdate();
         }
 
         // 初始化用户地址信息
@@ -311,6 +318,7 @@ namespace checkout
                         item.realName = result.result.realName;
                     });*/
                     ticketList.DataSource = sessionOne.ticketList;
+
                 }
             },activtyId);
 
@@ -370,9 +378,11 @@ namespace checkout
             TicketListItem ticket = (TicketListItem)ticketList.SelectedItem;
             ActivityInfoVo activity = (ActivityInfoVo)activityComboBox.SelectedItem;
             AddressInfo addressInfo = (AddressInfo)addressSelector.SelectedItem;
-            UserIdInfo userInfo = (UserIdInfo)userIdSelector.SelectedItem;
             CouponInfoVo couponInfo = (CouponInfoVo)couponList.SelectedItem;
-            var amountPayable = ticket.sellingPrice;
+            int buyNum = decimal.ToInt32(buyCount.Value);
+
+
+            var amountPayable = ticket.sellingPrice * buyNum;
             // 优惠券
             if (couponInfo != null)
             {
@@ -387,7 +397,8 @@ namespace checkout
             {
                 orderPlaceGoodsBean.skuType = ticket.type;
             }
-            orderPlaceGoodsBean.num = 1;
+
+            orderPlaceGoodsBean.num = buyNum;
             orderPlaceGoodsBean.goodsId = ticket.activityId;
             orderPlaceGoodsBean.skuId = ticket.ticketId;
             orderPlaceGoodsBean.cartId = "";
@@ -401,7 +412,7 @@ namespace checkout
                 // 实际支付金额
                 {"amountPayable",amountPayable },
                 // 总价
-                {"totalAmount",ticket.sellingPrice },
+                {"totalAmount",ticket.sellingPrice * buyNum },
                 // 折扣
                 {"discount",couponInfo == null ? 0 :couponInfo.price},
                 {"source","0"},
@@ -432,7 +443,23 @@ namespace checkout
             // 实名
             if (ticket.buyType == 2 )
             {
-                apiParams.Add("commonPerfomerIds", new long[] { userInfo.id });
+
+                List<long>  perfomerIdList = new List<long>{ };
+
+                for (int i = 0; i < multiSelect.CheckBoxItems.Count; i++) {
+
+                    if (multiSelect.CheckBoxItems[i].Checked) {
+                        ObjectSelectionWrapper<UserIdInfo> user =  (ObjectSelectionWrapper<UserIdInfo>)multiSelect.Items[i];
+
+                        perfomerIdList.Add(user.Item.id);
+                    }
+                }
+
+                if  ( perfomerIdList.Count != buyNum) {
+                    throw new BusinessException("观影人数量选择错误 , 必须与购票数量一致");
+                }
+
+                apiParams.Add("commonPerfomerIds", perfomerIdList);
             }
 
             return new OrderQo()
@@ -449,12 +476,6 @@ namespace checkout
             if (ticketList.SelectedItem == null)
             {
                 throw new BusinessException("请先选票");
-            }
-
-
-            if (userIdSelector.SelectedItem == null)
-            {
-                throw new BusinessException("请先添加或选择常用观影人，以免下单失败");
             }
 
 
@@ -563,6 +584,7 @@ namespace checkout
             {
                 return;
             }
+            buyCount.Maximum = ticket.limitBuyNum;
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>() {
                 {"activityId",ticket.activityId},
