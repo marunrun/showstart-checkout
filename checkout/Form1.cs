@@ -597,7 +597,10 @@ namespace checkout
                Result<CouponList> result = JsonConvert.DeserializeObject<Result<CouponList>>(res);
                if (result.isSuccess())
                {
-                   couponList.DataSource = result.result.couponList;
+                   List<CouponInfoVo> coupons = result.result.couponList;
+                   coupons.Add(new CouponInfoVo());
+
+                   couponList.DataSource = coupons;
                }
            });
         }
