@@ -72,9 +72,5 @@ github repo : https://github.com/marunrun/showstart-checkout
 暂时只支持window下使用，mac版本不知道何时更新，暂时没有计划。
 
 
-如出现奇奇怪怪的bug，问题，欢迎反馈。
-
-VX: amarunrun
-
-email:marunrun#163.com
+如出现奇奇怪怪的bug，问题，欢迎反馈
 
