@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Urls = checkout.Constants.Urls;
+using System.Text.RegularExpressions;
 
 namespace checkout
 {
@@ -30,6 +31,7 @@ namespace checkout
 
         public checkoutForm()
         {
+
             userService = UserService.getInstance();
             InitializeComponent();
             searchSelector.DataSource = new string[] {
@@ -713,7 +715,7 @@ namespace checkout
 
                    sessionOne.ticketList.ForEach((item) =>
                    {
-                       if (item.remainTicket > 0 && item.ticketId == ticketListItem.ticketId)
+                       if (item.saleStatus == 1 && item.remainTicket > 0 && item.ticketId == ticketListItem.ticketId)
                        {
                            buyTicket();
                            pickStop();
