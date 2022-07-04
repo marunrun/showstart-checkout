@@ -14,6 +14,9 @@ namespace checkout.Services
 {
     public static class DataService
     {
+        /**
+         * 演出搜索
+         **/
         public static async Task<List<ActivityInfoVo>> GetSearchResults(string keyword ,int pageNo)
         {
             SearchQo searchQo = new SearchQo
@@ -22,7 +25,6 @@ namespace checkout.Services
                 pageNo = pageNo,
                 pageSize = 20
             };
-
 
 
             var res = await RequestUtil.post(Urls.SEARCH, searchQo);
@@ -36,6 +38,27 @@ namespace checkout.Services
 
             return response.result.activityInfo;
 
+        }
+
+        public static async void GetTicketList(string activityId,Action<TicketListVo> callback)
+        {
+            TicketListQo activityDetailQo = new TicketListQo
+            {
+                activityId = activityId
+            };
+
+            var res = await RequestUtil.post(Urls.TICKET_LIST, activityDetailQo);
+
+            var response = JsonSerializer.Deserialize<Result<TicketListVo>>(res);
+
+
+            if (!response.isSuccess())
+            {
+                throw new BusinessException("演出票搜索失败:" + response.msg);
+
+            }
+
+            callback(response.result);
         }
     }
 }

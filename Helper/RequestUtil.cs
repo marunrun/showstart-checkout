@@ -12,6 +12,23 @@ using System.Threading;
 namespace checkout.Helper
 {
 
+
+    class  CustomDelegatingHandlerTokenRefresher : HttpClientHandler
+    {
+        protected override HttpResponseMessage Send(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            request.Headers.Add("CUSUT", UserService.getSign());
+            request.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
+
+            return base.Send(request, cancellationToken);
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            return base.SendAsync(request, cancellationToken);
+        }
+    }
+
     class RequestUtil
     {
         private static readonly HttpClient client = getHttpClient();
@@ -23,10 +40,12 @@ namespace checkout.Helper
 
         private static HttpClient getHttpClient()
         {
-            var handler = new HttpClientHandler()
+            var handler = new CustomDelegatingHandlerTokenRefresher()
             {
                 AutomaticDecompression = DecompressionMethods.GZip
             };
+
+
             HttpClient httpClient = new HttpClient(handler);
             httpClient.DefaultRequestHeaders.Clear();
             httpClient.DefaultRequestHeaders.Add("Host", "pro2-api.showstart.com");
@@ -44,8 +63,7 @@ namespace checkout.Helper
         {
             HttpContent content = new StringContent(JsonSerializer.Serialize(buildeRquest(request, param)));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.Add("CUSUT", UserService.getSign());
-            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
+
 
             // 如果 pathType 不是null
             if (!String.IsNullOrEmpty(sessionId)) {
@@ -62,8 +80,6 @@ namespace checkout.Helper
         {
             HttpContent content = new StringContent(JsonSerializer.Serialize(buildeRquest(request, param)));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.Add("CUSUT", UserService.getSign());
-            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
 
             // 如果 pathType 不是null
             if (!String.IsNullOrEmpty(sessionId))
@@ -92,8 +108,7 @@ namespace checkout.Helper
             Dictionary<string, string> dictionaries = buildeRquest(request, param, dateTime);
             HttpContent content = new StringContent(JsonSerializer.Serialize(dictionaries));
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.Add("CUSUT", UserService.getSign());
-            content.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
+
 
             // 如果 pathType 不是null
             if (!String.IsNullOrEmpty(sessionId))

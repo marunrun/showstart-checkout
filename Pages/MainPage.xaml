@@ -6,23 +6,36 @@
              Title="下单">
 
     <ContentPage.BindingContext>
-        <viewmodels:SearchViewModel />
+        <viewmodels:MainViewModel />
     </ContentPage.BindingContext>
-    
-    
+
+
     <Grid RowDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto"
           ColumnDefinitions="*, *"
           Padding="40" RowSpacing="20">
         <SearchBar  x:Name="activitySearch" 
                     Placeholder="演出搜索"
-                    Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                    Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                     SearchCommand="{Binding PerformSearch}"
                     SearchCommandParameter="{Binding Text, Source={x:Reference activitySearch}}"
                     />
-            
-        <ListView  x:Name="activityList"
-                   ItemsSource="{Binding SearchResults}"
-                   
+
+        <HorizontalStackLayout  Grid.Row="1" Grid.Column="0">
+            <Label Text="演出选择:" VerticalOptions="Center" Margin="0,0,20,0" />
+            <Picker x:Name="activityList"
+                    ItemsSource="{Binding SearchResults}"
+                    ItemDisplayBinding="{Binding MyTitle}"
+                    MinimumWidthRequest="200"
+                    HorizontalOptions="Start"
+                    HorizontalTextAlignment="Start"
+                    SelectedItem="{Binding SelctedActivity}"
                    />
+            
+        </HorizontalStackLayout>
+        <CollectionView Grid.Row="2" Grid.Column="0">
+            
+        </CollectionView>
+
+
     </Grid>
 </ContentPage>

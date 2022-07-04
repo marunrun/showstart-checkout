@@ -1,3 +1,5 @@
+using checkout.Services;
+
 namespace checkout.Pages;
 
 public partial class MainPage : ContentPage
@@ -7,8 +9,5 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 	}
 
-	private void search(object sender, TextChangedEventArgs e)
-	{
 
-	}
 }

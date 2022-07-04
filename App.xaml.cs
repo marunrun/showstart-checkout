@@ -8,8 +8,18 @@ public partial class App : Application
 	public App()
 	{
 
-		InitializeComponent();
+		try
+		{
 
-		MainPage = new AppShell();
+
+			InitializeComponent();
+
+			MainPage = new AppShell();
+		} catch (Exception ex) {
+            
+	
+        }
+
     }
+
 }

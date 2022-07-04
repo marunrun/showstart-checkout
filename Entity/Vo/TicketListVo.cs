@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace checkout.Entity.Vo
 {
 
-    class TicketListVo
+    public class TicketListVo
     {
         //public int realName { get; set; }
         public List<Session> sessions { get; set; }
@@ -60,9 +60,13 @@ namespace checkout.Entity.Vo
         public long startTime { get; set; }
         public string showTime { get; set; }
         public int memberNum { get; set; }
-        public string text { get {
+        public string text
+        {
+            get
+            {
                 return ticketType + "库存：" + remainTicket;
-        } }
+            }
+        }
 
     }
 
