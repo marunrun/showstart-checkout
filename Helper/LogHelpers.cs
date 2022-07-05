@@ -23,13 +23,7 @@ namespace checkout.Helper
 
         public static string write(string msg)
         {
-            if (!Directory.Exists("./logs"))
-            {
-                Directory.CreateDirectory("./logs");
-            }
-
-            msg = DateTime.Now.ToString("HH:mm:ss.fff  ") + msg + "\r\n";
-
+  
             Console.WriteLine(msg);
             //write(msg, "");
             return msg;

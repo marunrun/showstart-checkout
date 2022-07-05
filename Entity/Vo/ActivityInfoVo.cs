@@ -87,7 +87,7 @@ namespace checkout.Entity.Vo
         /// <summary>
         /// 
         /// </summary>
-        public string price { get; set; }
+        public double price { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -135,7 +135,7 @@ namespace checkout.Entity.Vo
             {
                 if (city != null)
                 {
-                    return title + "演出城市：" + city + "演出时间：" + showTime;
+                    return title  + "\r\n";
                 }
                 else
                 {

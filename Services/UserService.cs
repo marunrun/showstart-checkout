@@ -101,6 +101,7 @@ namespace checkout.Services
                     setMobile(moblie);
                     setPwd(pwd);
                     setUid(result.result.userId);
+                    setSign(result.result.sign);
                 }
                 else
                 {

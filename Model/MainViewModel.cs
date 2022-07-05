@@ -1,4 +1,5 @@
 ﻿using checkout.Entity.Vo;
+using checkout.Pages;
 using checkout.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -40,6 +41,10 @@ namespace checkout.Model
             {
                 searchResults = value;
                 NotifyPropertyChanged();
+
+                SelctedActivity = value.First();
+                NotifyPropertyChanged("SelctedActivity");
+
             }
         }
 
@@ -54,12 +59,6 @@ namespace checkout.Model
             {
                 selectedActivity = value;
                 NotifyPropertyChanged();
-                DataService.GetTicketList(value.activityId, (ticket) =>
-                {
-                    TicketList = ticket;
-                    NotifyPropertyChanged("TicketList");
-                });
-
             }
         }
 

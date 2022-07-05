@@ -9,8 +9,8 @@ public partial class LoginPage : ContentPage
 
 		InitializeComponent();
 
-        if (UserService.getUid() > 0) {
-			Shell.Current.GoToAsync("main");
+        if (!string.IsNullOrWhiteSpace(UserService.getSign())) {
+            Shell.Current.GoToAsync("main");
 			return;
 		}
 
@@ -20,23 +20,24 @@ public partial class LoginPage : ContentPage
 
     }
 
-	private void loginClicked(object sender, EventArgs e)
+	private async void loginClicked(object sender, EventArgs e)
 	{
 		var mobile = mobileInput.Text;
 		var pwd = pwdInput.Text;
 
 		if (string.IsNullOrWhiteSpace(mobile)) {
-			this.DisplayAlert("登录失败", "账号必填","ok");
+			await this.DisplayAlert("登录失败", "账号必填","ok");
 			return;
 		}
 
         if (string.IsNullOrWhiteSpace(pwd))
         {
-            this.DisplayAlert("登录失败", "密码必填", "ok");
+            await this.DisplayAlert("登录失败", "密码必填", "ok");
 			return;
         }
 
 		UserService.Login(mobile, pwd);
+        await Shell.Current.GoToAsync("main");
 
 
     }

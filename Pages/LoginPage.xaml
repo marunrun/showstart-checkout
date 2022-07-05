@@ -10,14 +10,14 @@
             Text="账号:"
             VerticalOptions="Center" 
             HorizontalOptions="Center" Grid.Row="0" Grid.Column="0" />
-        <Entry x:Name="mobileInput" Placeholder="请输入账号" Grid.Row="0" Grid.Column="1"/>
+        <Entry x:Name="mobileInput" Placeholder="请输入账号" Grid.Row="0" Grid.Column="1" Keyboard="Telephone"/>
 
 
-        <Label Text="密码:"   VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1" Grid.Column="0" />
-        <Entry x:Name="pwdInput" Placeholder="请输入密码" Grid.Row="1" Grid.Column="1"/>
+        <Label Text="密码:"   VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1" Grid.Column="0"  />
+        <Entry x:Name="pwdInput" Placeholder="请输入密码" Grid.Row="1" Grid.Column="1" Keyboard="Text"/>
 
         <Button Text="登录" Grid.Row="2" Clicked="loginClicked" Grid.Column="0" Grid.ColumnSpan="2"/>
-
+        
     </Grid>
 
 </ContentPage>

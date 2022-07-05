@@ -2,12 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="checkout.Pages.MainPage"
-             xmlns:viewmodels="clr-namespace:checkout.Model"
              Title="下单">
 
-    <ContentPage.BindingContext>
-        <viewmodels:MainViewModel />
-    </ContentPage.BindingContext>
 
 
     <Grid RowDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto"
@@ -20,7 +16,7 @@
                     SearchCommandParameter="{Binding Text, Source={x:Reference activitySearch}}"
                     />
 
-        <HorizontalStackLayout  Grid.Row="1" Grid.Column="0">
+        <HorizontalStackLayout  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <Label Text="演出选择:" VerticalOptions="Center" Margin="0,0,20,0" />
             <Picker x:Name="activityList"
                     ItemsSource="{Binding SearchResults}"
@@ -29,8 +25,10 @@
                     HorizontalOptions="Start"
                     HorizontalTextAlignment="Start"
                     SelectedItem="{Binding SelctedActivity}"
+                    SelectedIndexChanged="activityList_SelectedIndexChanged"
+                    Title="演出选择"
+                    VerticalOptions="Center"
                    />
-            
         </HorizontalStackLayout>
         <CollectionView Grid.Row="2" Grid.Column="0">
             

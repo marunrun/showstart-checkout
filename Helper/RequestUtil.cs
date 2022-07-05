@@ -25,6 +25,10 @@ namespace checkout.Helper
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            request.Headers.Add("CUSUT", UserService.getSign());
+            request.Headers.Add("CUSYSTIME", Helpers.CurrentTimeStamp().ToString());
+
+
             return base.SendAsync(request, cancellationToken);
         }
     }
@@ -33,7 +37,7 @@ namespace checkout.Helper
     {
         private static readonly HttpClient client = getHttpClient();
 
-        static Uri apiUri = new Uri(Helpers.readIni("apiUri", "https://pro2-api.showstart.com"));
+        static Uri apiUri = new Uri("https://pro2-api.showstart.com");
 
         public const string DATA_KEY = "dataKey";
         public const string ARU_KEY = "aruKey";
@@ -193,6 +197,7 @@ namespace checkout.Helper
 
             return parms;
         }
+
 
 
     }

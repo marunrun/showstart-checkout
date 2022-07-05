@@ -1,4 +1,5 @@
-﻿using System;
+﻿using checkout.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,15 +15,6 @@ namespace checkout.Helper
 {
     class Helpers
     {
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-
-
-        private static string SECTION = "userInfo";
-
-        private static string FILEPATH = "./Config.ini";
 
         // 随机32位uuid
         public static String Get32RandomID()
@@ -41,20 +33,6 @@ namespace checkout.Helper
                     return ipa.ToString();
             }
             return "127.0.0.1";
-        }
-
-        // 写入ini
-        public static void writeini(string key, string value)
-        {
-            WritePrivateProfileString(SECTION, key, value, FILEPATH);
-        }
-
-        // 读取ini
-        public static string readIni(string key, string defaultValue)
-        {
-            StringBuilder buffer = new StringBuilder();
-            GetPrivateProfileString(SECTION, key, defaultValue, buffer, 255, FILEPATH);
-            return buffer.ToString();
         }
 
 
@@ -109,14 +87,13 @@ namespace checkout.Helper
             if (string.IsNullOrEmpty(str)) return null;
             byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
 
-            RijndaelManaged rm = new RijndaelManaged
-            {
-                Key = Encoding.UTF8.GetBytes(key),
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
+            var aes = Aes.Create();
 
-            ICryptoTransform cTransform = rm.CreateEncryptor();
+            aes.Key = Encoding.UTF8.GetBytes(key);
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.PKCS7;   
+
+            ICryptoTransform cTransform = aes.CreateEncryptor();
             byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
             var base64String = Convert.ToBase64String(resultArray, 0, resultArray.Length);
@@ -174,7 +151,7 @@ namespace checkout.Helper
                 }
             }
             String stringPlus2 = stringPlus+ str4;
-            String C0 = readIni("userId","");
+            String C0 = UserService.getUid().ToString();
             String str5 = "000000";
             if (!String.IsNullOrEmpty(C0))
             {

@@ -3,6 +3,7 @@ using checkout.Entity.Qo;
 using checkout.Entity.Vo;
 using checkout.Exceptions;
 using checkout.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace checkout.Services
 
             var res = await RequestUtil.post(Urls.SEARCH, searchQo);
 
-            var response = JsonSerializer.Deserialize<Result<ActivityInfoList>>(res);
+            var response = JsonConvert.DeserializeObject<Result<ActivityInfoList>>(res);
 
             if (!response.isSuccess()) {
                 throw new BusinessException("搜索失败:"+response.msg);
@@ -40,7 +41,7 @@ namespace checkout.Services
 
         }
 
-        public static async void GetTicketList(string activityId,Action<TicketListVo> callback)
+        public static async void GetTicketList(string activityId,Action<Result<TicketListVo>> callback)
         {
             TicketListQo activityDetailQo = new TicketListQo
             {
@@ -49,16 +50,10 @@ namespace checkout.Services
 
             var res = await RequestUtil.post(Urls.TICKET_LIST, activityDetailQo);
 
-            var response = JsonSerializer.Deserialize<Result<TicketListVo>>(res);
+            var response = JsonConvert.DeserializeObject<Result<TicketListVo>>(res);
 
 
-            if (!response.isSuccess())
-            {
-                throw new BusinessException("演出票搜索失败:" + response.msg);
-
-            }
-
-            callback(response.result);
+            callback(response);
         }
     }
 }
