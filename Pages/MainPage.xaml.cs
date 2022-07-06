@@ -14,6 +14,10 @@ public partial class MainPage : ContentPage
 	}
 
 
+
+
+    protected List<RadioButton> historyRadio  = new List<RadioButton>();
+
     private void activityList_SelectedIndexChanged(object sender, EventArgs e)
     {
         var selectedAct = (ActivityInfoVo)activityList.SelectedItem;
@@ -32,6 +36,31 @@ public partial class MainPage : ContentPage
             }
 
 
+            var first = true;
+
+            historyRadio.ForEach(r => {
+                sessionSelect.Remove(r);
+            });
+
+            historyRadio.Clear();
+
+            res.result.sessions.ForEach((session) =>
+            {
+
+                var btn = new RadioButton();
+                btn.Content = session.sessionName;
+                btn.Value = session;
+                btn.IsChecked = first;
+                first = !first;
+
+                sessionSelect.Add(btn);
+                historyRadio.Add(btn);
+
+            });
+
+
         });
     }
+
+   
 }

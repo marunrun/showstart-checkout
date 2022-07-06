@@ -41,8 +41,9 @@ namespace checkout.Model
             {
                 searchResults = value;
                 NotifyPropertyChanged();
-
-                SelctedActivity = value.First();
+                if (value.Count > 0) {
+                    SelctedActivity = value.First();
+                }
                 NotifyPropertyChanged("SelctedActivity");
 
             }
@@ -73,6 +74,40 @@ namespace checkout.Model
             set
             {
                 ticketList = value;
+                NotifyPropertyChanged();
+
+            }
+        }
+
+        private Session session;
+        public Session Session
+        {
+            get
+            {
+                return session;
+            }
+            set
+            {
+                session = value;
+                NotifyPropertyChanged();
+
+                Ticket = session.ticketList.First();
+                NotifyPropertyChanged("Ticket");
+
+            }
+
+        }
+
+        private TicketListItem ticket;
+        public TicketListItem Ticket
+        {
+            get
+            {
+                return ticket;
+            }
+            set
+            {
+                ticket = value;
                 NotifyPropertyChanged();
 
             }

@@ -4,11 +4,9 @@
              x:Class="checkout.Pages.MainPage"
              Title="下单">
 
+    <VerticalStackLayout  Padding="20" Spacing="20" >
 
 
-    <Grid RowDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto"
-          ColumnDefinitions="*, *"
-          Padding="40" RowSpacing="20">
         <SearchBar  x:Name="activitySearch" 
                     Placeholder="演出搜索"
                     Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -16,8 +14,8 @@
                     SearchCommandParameter="{Binding Text, Source={x:Reference activitySearch}}"
                     />
 
-        <HorizontalStackLayout  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <Label Text="演出选择:" VerticalOptions="Center" Margin="0,0,20,0" />
+        <HorizontalStackLayout  VerticalOptions="CenterAndExpand">
+            <Label Text="演出选择:" VerticalOptions="CenterAndExpand" Margin="0,0,20,0" HorizontalTextAlignment="Center" />
             <Picker x:Name="activityList"
                     ItemsSource="{Binding SearchResults}"
                     ItemDisplayBinding="{Binding MyTitle}"
@@ -26,14 +24,26 @@
                     HorizontalTextAlignment="Start"
                     SelectedItem="{Binding SelctedActivity}"
                     SelectedIndexChanged="activityList_SelectedIndexChanged"
-                    Title="演出选择"
                     VerticalOptions="Center"
                    />
         </HorizontalStackLayout>
-        <CollectionView Grid.Row="2" Grid.Column="0">
-            
-        </CollectionView>
 
 
-    </Grid>
+        <HorizontalStackLayout VerticalOptions="CenterAndExpand" 
+                               x:Name="sessionSelect" 
+                               RadioButtonGroup.GroupName="session" RadioButtonGroup.SelectedValue="{Binding Session}">
+
+            <Label  Text="场次 : "  HorizontalTextAlignment="Center"   VerticalOptions="CenterAndExpand"/>
+
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout  VerticalOptions="CenterAndExpand">
+            <Label Text="选票:"  VerticalOptions="CenterAndExpand" Margin="0,0,20,0" HorizontalTextAlignment="Center" />
+            <Picker ItemsSource="{Binding Session.ticketList}"     ItemDisplayBinding="{Binding ticketType}" SelectedItem="{Binding Ticket}" MinimumWidthRequest="100" />
+        </HorizontalStackLayout>
+
+
+    </VerticalStackLayout>
+
+
 </ContentPage>
