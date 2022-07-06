@@ -543,6 +543,10 @@ namespace checkout
 
                         if (result2.isSuccess())
                         {
+                            pickStop();
+                            notifyIcon1.Visible = true;
+                            notifyIcon1.ShowBalloonTip(10000, "抢票成功", ticket.ticketType, ToolTipIcon.Info);
+
                             LogHelpers.write(ticket.ticketType + "抢票成功");
                             AppendLogText(ticket.ticketType + "抢票成功");
                             return;
@@ -586,7 +590,7 @@ namespace checkout
             {
                 return;
             }
-            buyCount.Maximum = ticket.limitBuyNum;
+            //buyCount.Maximum = ticket.limitBuyNum;
 
             Dictionary<string, object> apiParams = new Dictionary<string, object>() {
                 {"activityId",ticket.activityId},
@@ -689,6 +693,9 @@ namespace checkout
 
         private void pickStop()
         {
+            if (!pickUpTimer.Enabled) {
+                return;
+            }
             pickUpBtn.Text = PickUpTxt.开始捡漏.ToString();
             pickUpTimer.Stop();
             commonEnable(true);
@@ -718,7 +725,6 @@ namespace checkout
                        if (item.saleStatus == 1 && item.remainTicket > 0 && item.ticketId == ticketListItem.ticketId)
                        {
                            buyTicket();
-                           pickStop();
                        }
                    });
                }

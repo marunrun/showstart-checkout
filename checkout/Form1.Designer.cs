@@ -33,6 +33,7 @@ namespace checkout
         {
             this.components = new System.ComponentModel.Container();
             PresentationControls.CheckBoxProperties checkBoxProperties1 = new PresentationControls.CheckBoxProperties();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(checkoutForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.mobile = new System.Windows.Forms.TextBox();
@@ -76,6 +77,7 @@ namespace checkout
             this.buyTimer = new System.Windows.Forms.Timer(this.components);
             this.pickUpTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.group1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pwdLoginTab.SuspendLayout();
@@ -551,6 +553,12 @@ namespace checkout
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "常用观影人";
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "秀动辅助";
+            this.notifyIcon1.Visible = true;
+            // 
             // checkoutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -644,6 +652,7 @@ namespace checkout
         private PresentationControls.CheckBoxComboBox multiSelect;
         private GroupBox groupBox5;
         private NumericUpDown buyCount;
+        private NotifyIcon notifyIcon1;
     }
 }
 
