@@ -27,11 +27,12 @@ public partial class MainPage : ContentPage
 
         DataService.GetTicketList(selectedAct.activityId, async (res) => {
 
-            if (!res.isSuccess() && res.state == "token.empty")
+            if (!res.isSuccess())
             {
 
+                await DisplayAlert("请求失败", res.msg, "ok");
 
-                await Shell.Current.GoToAsync("login");
+                Shell.Current.GoToAsync("login");
                 return;
             }
 
@@ -46,12 +47,11 @@ public partial class MainPage : ContentPage
 
             res.result.sessions.ForEach((session) =>
             {
-
                 var btn = new RadioButton();
                 btn.Content = session.sessionName;
                 btn.Value = session;
-                btn.IsChecked = first;
-                first = !first;
+                if (first) { btn.IsChecked = true;first = false; }
+         
 
                 sessionSelect.Add(btn);
                 historyRadio.Add(btn);

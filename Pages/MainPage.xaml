@@ -4,7 +4,7 @@
              x:Class="checkout.Pages.MainPage"
              Title="下单">
 
-    <VerticalStackLayout  Padding="20" Spacing="20" >
+    <VerticalStackLayout  Padding="20" Spacing="20" HorizontalOptions="CenterAndExpand" >
 
 
         <SearchBar  x:Name="activitySearch" 
@@ -29,19 +29,60 @@
         </HorizontalStackLayout>
 
 
-        <HorizontalStackLayout VerticalOptions="CenterAndExpand" 
-                               x:Name="sessionSelect" 
-                               RadioButtonGroup.GroupName="session" RadioButtonGroup.SelectedValue="{Binding Session}">
+        <Grid VerticalOptions="CenterAndExpand"  >
 
-            <Label  Text="场次 : "  HorizontalTextAlignment="Center"   VerticalOptions="CenterAndExpand"/>
+            <Label Grid.Row="0" Grid.Column="0"  Text="场次 : "   VerticalOptions="CenterAndExpand"/>
+            <FlexLayout Wrap="Wrap" Grid.Column="1" Grid.Row="0"  Margin="40,0,0,0"    x:Name="sessionSelect"    RadioButtonGroup.GroupName="session" RadioButtonGroup.SelectedValue="{Binding Session}">
+  
+            </FlexLayout>
+        </Grid>
 
-        </HorizontalStackLayout>
+
 
         <HorizontalStackLayout  VerticalOptions="CenterAndExpand">
-            <Label Text="选票:"  VerticalOptions="CenterAndExpand" Margin="0,0,20,0" HorizontalTextAlignment="Center" />
-            <Picker ItemsSource="{Binding Session.ticketList}"     ItemDisplayBinding="{Binding ticketType}" SelectedItem="{Binding Ticket}" MinimumWidthRequest="100" />
+            <Label Text="选票:"  VerticalOptions="StartAndExpand" Margin="0,0,20,0" HorizontalTextAlignment="Center" />
+
+            <CollectionView ItemsSource="{Binding Session.ticketList}" SelectionMode="Single" SelectedItem="{Binding Ticket}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid  MinimumWidthRequest="200">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="1"
+                               Text="{Binding ticketType}"
+                               FontAttributes="Bold" />
+                            <Label Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{Binding sellingPrice,StringFormat='￥{0}'}"
+                               FontAttributes="Italic"
+                               VerticalOptions="End" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </HorizontalStackLayout>
 
+
+        <HorizontalStackLayout  VerticalOptions="CenterAndExpand" Spacing="5" >
+            <Label Text="数量:"   VerticalOptions="CenterAndExpand"/>
+            <Label Text="{Binding Ticket.canBuyNum, StringFormat='(最多可购{0}张)'}"   VerticalOptions="CenterAndExpand"/>
+            <Entry  Text="{Binding BuyCount}" Keyboard="Numeric"/>
+            <Stepper Value="{Binding BuyCount}" Maximum="{Binding Ticket.canBuyNum}"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout  VerticalOptions="CenterAndExpand" Spacing="20" >
+
+            <Button Text="立即购票" Command="{Binding BuyNow}"/>
+        </HorizontalStackLayout>
+        
+        <Editor VerticalTextAlignment="Start" MinimumHeightRequest="300" Text="{Binding LogContent}" />
 
     </VerticalStackLayout>
 

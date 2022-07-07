@@ -29,6 +29,13 @@ namespace checkout.Model
 
 
 
+        // 立即购票
+        public ICommand BuyNow => new Command(() =>
+        {
+            LogContent += "立即购票\r\n";
+        });
+
+
         // 搜索结果
 
         public List<ActivityInfoVo> SearchResults
@@ -113,7 +120,34 @@ namespace checkout.Model
             }
         }
 
+        private int buyCount = 1;
 
+        public int BuyCount
+        {
+            get
+            {
+                return buyCount;
+            }
+            set
+            {
+                buyCount = value;
+                NotifyPropertyChanged();
 
+            }
+        }
+
+        private string logContent;
+        public string LogContent
+        {
+            get
+            {
+                return logContent;
+            }
+            set
+            {
+                logContent = value;
+                NotifyPropertyChanged();
+            }
+        }
     }
 }
