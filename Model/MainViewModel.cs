@@ -1,6 +1,7 @@
 ﻿using checkout.Entity.Vo;
 using checkout.Pages;
 using checkout.Services;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -48,7 +49,8 @@ namespace checkout.Model
             {
                 searchResults = value;
                 NotifyPropertyChanged();
-                if (value.Count > 0) {
+                if (value.Count > 0)
+                {
                     SelctedActivity = value.First();
                 }
                 NotifyPropertyChanged("SelctedActivity");
@@ -149,5 +151,62 @@ namespace checkout.Model
                 NotifyPropertyChanged();
             }
         }
+
+        private List<UserIdInfo> userList;
+
+        public List<UserIdInfo> UserList
+        {
+            get { return userList; }
+            set
+            {
+                userList = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+
+
+        ObservableCollection<UserIdInfo> selectUser;
+        public ObservableCollection<UserIdInfo> SelectUser
+        {
+            get
+            {
+                return selectUser;
+            }
+            set
+            {
+                if (selectUser != value)
+                {
+                    selectUser = value;
+                }
+            }
+        }
+
+
+        private List<AddressInfo> addressList;
+
+        public List<AddressInfo> AddressList
+        {
+            get { return addressList; }
+            set
+            {
+                addressList = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private AddressInfo selectAddress;
+
+        public AddressInfo SelectAddress
+        {
+            get { return selectAddress; }
+            set
+            {
+                selectAddress = value;
+                NotifyPropertyChanged();
+            }
+        }
+
     }
 }

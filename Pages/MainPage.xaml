@@ -4,7 +4,7 @@
              x:Class="checkout.Pages.MainPage"
              Title="下单">
 
-    <VerticalStackLayout  Padding="20" Spacing="20" HorizontalOptions="CenterAndExpand" >
+    <VerticalStackLayout  Padding="20" Spacing="20" HorizontalOptions="CenterAndExpand"  >
 
 
         <SearchBar  x:Name="activitySearch" 
@@ -42,7 +42,14 @@
         <HorizontalStackLayout  VerticalOptions="CenterAndExpand">
             <Label Text="选票:"  VerticalOptions="StartAndExpand" Margin="0,0,20,0" HorizontalTextAlignment="Center" />
 
-            <CollectionView ItemsSource="{Binding Session.ticketList}" SelectionMode="Single" SelectedItem="{Binding Ticket}">
+            <CollectionView 
+                            x:Name="selectTicket"
+                            ItemsSource="{Binding Session.ticketList}" 
+                            SelectionMode="Single" 
+                            SelectedItem="{Binding Ticket}"
+                            HorizontalScrollBarVisibility="Always"
+                            MaximumHeightRequest="200"
+                            >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid  MinimumWidthRequest="200">
@@ -63,6 +70,7 @@
                                Text="{Binding sellingPrice,StringFormat='￥{0}'}"
                                FontAttributes="Italic"
                                VerticalOptions="End" />
+                            <Label/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -73,16 +81,36 @@
         <HorizontalStackLayout  VerticalOptions="CenterAndExpand" Spacing="5" >
             <Label Text="数量:"   VerticalOptions="CenterAndExpand"/>
             <Label Text="{Binding Ticket.canBuyNum, StringFormat='(最多可购{0}张)'}"   VerticalOptions="CenterAndExpand"/>
-            <Entry  Text="{Binding BuyCount}" Keyboard="Numeric"/>
+            <Entry x:Name="buyCount"  Text="{Binding BuyCount}" Keyboard="Numeric"  VerticalOptions="CenterAndExpand"/>
             <Stepper Value="{Binding BuyCount}" Maximum="{Binding Ticket.canBuyNum}"/>
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout  VerticalOptions="CenterAndExpand" >
+            <Label Text="观影人选择:" VerticalTextAlignment="Center"/>
+            <CollectionView 
+                ItemsSource="{Binding UserList}"
+                x:Name="userSelect" 
+                SelectionMode="Multiple"  
+                SelectedItems="{Binding SelectUser}"
+                HorizontalScrollBarVisibility="Always"
+                MaximumHeightRequest="100"
+                >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding name}"  MinimumWidthRequest="60" Margin="10"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label  Text="地址选择:" VerticalOptions="Center" />
+            <Picker x:Name="addressSelect" ItemsSource="{Binding AddressList}" ItemDisplayBinding="{Binding address}" SelectedItem="{Binding SelectAddress}" />
         </HorizontalStackLayout>
 
         <HorizontalStackLayout  VerticalOptions="CenterAndExpand" Spacing="20" >
 
-            <Button Text="立即购票" Command="{Binding BuyNow}"/>
+            <Button Text="立即购票"  Clicked="Button_Clicked" />
         </HorizontalStackLayout>
         
-        <Editor VerticalTextAlignment="Start" MinimumHeightRequest="300" Text="{Binding LogContent}" />
+        <Editor x:Name="logContent" VerticalTextAlignment="Start" MinimumHeightRequest="300" Text="{Binding LogContent}" />
 
     </VerticalStackLayout>
 

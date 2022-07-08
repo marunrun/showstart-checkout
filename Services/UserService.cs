@@ -28,58 +28,75 @@ namespace checkout.Services
         private const string SIGN = "sign";
 
 
+
+        private static string mobile = "";
+
         public static string getMobile()
         {
-            return Preferences.Get(MOBILE, "");
+            return Preferences.Get(MOBILE, mobile);
         }
 
         public static void setMobile(string mobile)
         {
+            mobile = mobile;
             Preferences.Set(MOBILE, mobile);
         }
 
+        private static string pwd = "";
+
         public static string getPwd()
         {
-            return Preferences.Get(PWD, "");
+            return Preferences.Get(PWD, pwd);
 
         }
 
         public static void setPwd(string pwd)
         {
+            pwd = pwd;
             Preferences.Set(PWD, pwd);
         }
 
+        private static string aesKey = "";
 
         public static string getAESKey()
         {
-            return Preferences.Get(AES_KEY, "");
+            if (!string.IsNullOrWhiteSpace(aesKey)) {
+                return aesKey;
+            }
+            return Preferences.Get(AES_KEY, aesKey);
 
         }
         public static void setAESKey(string AESKey)
         {
+            
             Preferences.Set(AES_KEY, AESKey);
-
+            aesKey = AESKey;
         }
 
 
+        private static long uid = -1L;
+
         public static long getUid()
         {
-            return Preferences.Get(UID, -1L);
+            return Preferences.Get(UID, uid);
 
         }
         public static void setUid(long uid)
         {
+            uid = uid;
             Preferences.Set(UID, uid);
 
         }
+        private static string sign = "";
 
         public static string getSign()
         {
-            return Preferences.Get(SIGN, "");
+            return Preferences.Get(SIGN, sign);
 
         }
         public static void setSign(string sign)
         {
+            sign = sign;
             Preferences.Set(SIGN, sign);
 
         }
@@ -111,7 +128,7 @@ namespace checkout.Services
         }
 
 
-        public static void initToken()
+        public async static void initToken()
         {
             RequestUtil.post(Urls.MAKE_TOKEN, new object(), (res) =>
             {

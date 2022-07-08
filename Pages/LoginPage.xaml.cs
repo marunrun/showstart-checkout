@@ -16,8 +16,6 @@ public partial class LoginPage : ContentPage
 
         mobileInput.Text = UserService.getMobile();
         pwdInput.Text = UserService.getPwd();
-
-
     }
 
 	private async void loginClicked(object sender, EventArgs e)
@@ -38,7 +36,5 @@ public partial class LoginPage : ContentPage
 
 		UserService.Login(mobile, pwd);
         await Shell.Current.GoToAsync("main");
-
-
     }
 }

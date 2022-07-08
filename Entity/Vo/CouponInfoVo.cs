@@ -11,7 +11,7 @@ namespace checkout.Entity.Vo
         public List<CouponInfoVo> couponList { set; get; }
     }
 
-    class CouponInfoVo
+    public class CouponInfoVo
     {
         /// <summary>
         /// 

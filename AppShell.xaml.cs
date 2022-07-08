@@ -6,13 +6,11 @@ namespace checkout;
 
 public partial class AppShell : Shell
 {
-	public AppShell()
-	{
+    public AppShell()
+    {
 
-            UserService.initToken();
+        UserService.initToken();
 
-			Routing.RegisterRoute("main", typeof(MainPage));
-
-            InitializeComponent();
+        InitializeComponent();
     }
 }

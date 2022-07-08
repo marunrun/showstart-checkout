@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace checkout.Entity.Vo
 {
-    class UserIdInfo
+    public class UserIdInfo
     {
         /// <summary>
         /// 

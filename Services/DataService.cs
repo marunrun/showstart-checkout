@@ -55,5 +55,30 @@ namespace checkout.Services
 
             callback(response);
         }
+
+        public static async void getPerfomer(Action<Result<List<UserIdInfo>>> callback)
+        {
+            RequestUtil.post(Urls.COMMON_PERFORMER, new object(), (res) =>
+            {
+                Result<List<UserIdInfo>> result = JsonConvert.DeserializeObject<Result<List<UserIdInfo>>>(res);
+
+                callback(result);
+            });
+        }
+
+        public static async void getAddress(Action<Result<List<AddressInfo>>> callback)
+        {
+            AddressQo addressQo = new AddressQo
+            {
+                pageNo = 0,
+                pageSize = 10,
+            };
+
+            RequestUtil.post(Urls.ADDRESS_LIST, addressQo, (res) =>
+            {
+                Result<List<AddressInfo>> result = JsonConvert.DeserializeObject<Result<List<AddressInfo>>>(res);
+                callback(result);
+            });
+        }
     }
 }
