@@ -33,27 +33,27 @@ namespace checkout.Services
 
         public static string getMobile()
         {
-            return Preferences.Get(MOBILE, mobile);
+            return Preferences.Default.Get(MOBILE, mobile);
         }
 
         public static void setMobile(string mobile)
         {
             mobile = mobile;
-            Preferences.Set(MOBILE, mobile);
+            Preferences.Default.Set(MOBILE, mobile);
         }
 
         private static string pwd = "";
 
         public static string getPwd()
         {
-            return Preferences.Get(PWD, pwd);
+            return Preferences.Default.Get(PWD, pwd);
 
         }
 
         public static void setPwd(string pwd)
         {
             pwd = pwd;
-            Preferences.Set(PWD, pwd);
+            Preferences.Default.Set(PWD, pwd);
         }
 
         private static string aesKey = "";
@@ -63,13 +63,13 @@ namespace checkout.Services
             if (!string.IsNullOrWhiteSpace(aesKey)) {
                 return aesKey;
             }
-            return Preferences.Get(AES_KEY, aesKey);
+            return Preferences.Default.Get(AES_KEY, aesKey);
 
         }
         public static void setAESKey(string AESKey)
         {
             
-            Preferences.Set(AES_KEY, AESKey);
+            Preferences.Default.Set(AES_KEY, AESKey);
             aesKey = AESKey;
         }
 
@@ -78,26 +78,26 @@ namespace checkout.Services
 
         public static long getUid()
         {
-            return Preferences.Get(UID, uid);
+            return Preferences.Default.Get(UID, uid);
 
         }
         public static void setUid(long uid)
         {
             uid = uid;
-            Preferences.Set(UID, uid);
+            Preferences.Default.Set(UID, uid);
 
         }
         private static string sign = "";
 
         public static string getSign()
         {
-            return Preferences.Get(SIGN, sign);
+            return Preferences.Default.Get(SIGN, sign);
 
         }
         public static void setSign(string sign)
         {
             sign = sign;
-            Preferences.Set(SIGN, sign);
+            Preferences.Default.Set(SIGN, sign);
 
         }
 
