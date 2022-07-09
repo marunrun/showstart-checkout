@@ -56,7 +56,7 @@ namespace checkout.Services
             callback(response);
         }
 
-        public static async void getPerfomer(Action<Result<List<UserIdInfo>>> callback)
+        public static void getPerfomer(Action<Result<List<UserIdInfo>>> callback)
         {
             RequestUtil.post(Urls.COMMON_PERFORMER, new object(), (res) =>
             {
@@ -66,7 +66,7 @@ namespace checkout.Services
             });
         }
 
-        public static async void getAddress(Action<Result<List<AddressInfo>>> callback)
+        public static void getAddress(Action<Result<List<AddressInfo>>> callback)
         {
             AddressQo addressQo = new AddressQo
             {

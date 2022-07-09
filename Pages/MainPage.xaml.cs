@@ -4,9 +4,11 @@ using checkout.Entity.Vo;
 using checkout.Helper;
 using checkout.Model;
 using checkout.Services;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Linq;
+using RadioButton = Microsoft.Maui.Controls.RadioButton;
+using Toast = CommunityToolkit.Maui.Alerts.Toast;
 
 namespace checkout.Pages;
 
@@ -16,15 +18,24 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
 
-
         InitializeComponent();
 
         this.BindingContext = new MainViewModel();
     }
 
 
+    private async void toast(string content)
+    {
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+        
+        ToastDuration duration = ToastDuration.Long;
+        double fontSize = 14;
 
+        var toast = Toast.Make(content, duration, fontSize);
+
+        await toast.Show(cancellationTokenSource.Token);
+    }
 
 
     protected List<RadioButton> historyRadio = new List<RadioButton>();
@@ -42,7 +53,7 @@ public partial class MainPage : ContentPage
             if (!res.isSuccess())
             {
 
-                await DisplayAlert("请求失败", res.msg, "ok");
+                toast("请求异常:" + res.msg);
 
                 Shell.Current.GoToAsync("login");
                 return;
@@ -85,7 +96,7 @@ public partial class MainPage : ContentPage
             if (!res.isSuccess())
             {
 
-                await DisplayAlert("用户列表请求失败", res.msg, "ok");
+                toast("用户列表请求失败:" + res.msg);
 
                 Shell.Current.GoToAsync("login")
 ;
@@ -99,8 +110,7 @@ public partial class MainPage : ContentPage
         {
             if (!res.isSuccess())
             {
-
-                await DisplayAlert("地址列表请求失败", res.msg, "ok");
+                toast("地址列表请求失败:" + res.msg);
 
                 Shell.Current.GoToAsync("login")
 ;
@@ -158,6 +168,8 @@ public partial class MainPage : ContentPage
                     //LogHelpers.write(ticket.ticketType + "抢票成功");
                     //AppendLogText(ticket.ticketType + "抢票成功");
                     logContent.Text += "抢票成功 " + result2.msg + " \r\n";
+                    toast("抢票成功" + result2.msg);
+
 
                     return;
                 }else

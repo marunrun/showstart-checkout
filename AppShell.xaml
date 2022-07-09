@@ -6,9 +6,17 @@
     xmlns:local="clr-namespace:checkout.Pages"
     >
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="MainPage" />
+
+    <FlyoutItem Title="下单页" Icon="home.png">
+        <ShellContent
+            ContentTemplate="{DataTemplate local:MainPage}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="登录页" Icon="login.png">
+        <ShellContent 
+            ContentTemplate="{DataTemplate local:LoginPage}"/>
+    </FlyoutItem>
+
+
 
 </Shell>

@@ -9,11 +9,6 @@ public partial class LoginPage : ContentPage
 
 		InitializeComponent();
 
-        if (!string.IsNullOrWhiteSpace(UserService.getSign())) {
-            Shell.Current.GoToAsync("main");
-			return;
-		}
-
         mobileInput.Text = UserService.getMobile();
         pwdInput.Text = UserService.getPwd();
     }

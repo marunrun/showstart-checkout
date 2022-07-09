@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="checkout.Pages.LoginPage"
              Title="登录页">
     <Grid RowDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto"
@@ -10,13 +11,27 @@
             Text="账号:"
             VerticalOptions="Center" 
             HorizontalOptions="Center" Grid.Row="0" Grid.Column="0" />
-        <Entry x:Name="mobileInput" Placeholder="请输入账号" Grid.Row="0" Grid.Column="1" Keyboard="Telephone"/>
+        <Entry x:Name="mobileInput" 
+               Placeholder="请输入账号" 
+               Grid.Row="0" 
+               Grid.Column="1" 
+               Keyboard="Telephone"
+               toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference pwdInput}"
+               ReturnType="Next"
+               />
 
 
         <Label Text="密码:"   VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1" Grid.Column="0"  />
-        <Entry x:Name="pwdInput" Placeholder="请输入密码" Grid.Row="1" Grid.Column="1" Keyboard="Text"/>
+        <Entry x:Name="pwdInput" 
+               Placeholder="请输入密码"
+               Grid.Row="1" 
+               Grid.Column="1" 
+               Keyboard="Text"
+               toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference loginBtn}"
+               ReturnType="Next"
+               />
 
-        <Button Text="登录" Grid.Row="2" Clicked="loginClicked" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <Button x:Name="loginBtn" Text="登录" Grid.Row="2" Clicked="loginClicked" Grid.Column="0" Grid.ColumnSpan="2"/>
         
     </Grid>
 

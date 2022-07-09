@@ -33,14 +33,10 @@ namespace checkout.Entity.Qo
         /// </summary>
         public string p_json_dig { get; set; }
 
-        /// <string>
-        /// 
-        /// </summary>
+
         public const string deviceName = "MI 9 SE";
 
-        /// <summary>
-        /// 
-        /// </summary>
+
         public const string appVersion = "5.0.8";
 
         public const string ARU_KEY = "fGTKGj1VVAYaNIEu";
