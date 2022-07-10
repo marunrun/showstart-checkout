@@ -55,6 +55,8 @@ namespace checkout.Helper
 
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(res);
+
             callback(res);
         }
 
@@ -82,6 +84,8 @@ namespace checkout.Helper
      
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
+            Console.WriteLine(res);
+
             callback(res);
         }
 

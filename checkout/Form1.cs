@@ -547,8 +547,8 @@ namespace checkout
                             notifyIcon1.Visible = true;
                             notifyIcon1.ShowBalloonTip(10000, "抢票成功", ticket.ticketType, ToolTipIcon.Info);
 
-                            LogHelpers.write(ticket.ticketType + "抢票成功 " + result2.msg);
-                            AppendLogText(ticket.ticketType + "抢票成功 " +   result2.msg);
+                            LogHelpers.write(ticket.ticketType + "抢票成功: " + result2.result);
+                            AppendLogText(ticket.ticketType + "抢票成功: " +   result2.result);
                             return;
                         }
 
