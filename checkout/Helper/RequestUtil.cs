@@ -1,4 +1,5 @@
 ﻿using checkout.Entity.Qo;
+using checkout.Entity.Vo;
 using checkout.Services;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,7 @@ namespace checkout.Helper
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(res);
+            LogHelpers.write(res);
 
             callback(res);
         }
@@ -85,6 +87,7 @@ namespace checkout.Helper
             HttpResponseMessage httpResponseMessage = await client.PostAsync(apiUri + request.Geturi(), content);
             var res = await httpResponseMessage.Content.ReadAsStringAsync();
             Console.WriteLine(res);
+            LogHelpers.write(res);
 
             callback(res);
         }
