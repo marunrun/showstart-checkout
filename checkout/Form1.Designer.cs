@@ -538,7 +538,7 @@ namespace checkout
             // 
             // pickUpTimer
             // 
-            this.pickUpTimer.Interval = 200;
+            this.pickUpTimer.Interval = 1000;
             this.pickUpTimer.Tick += new System.EventHandler(this.pickUpTimer_Tick);
             // 
             // groupBox5
