@@ -74,3 +74,7 @@ github repo : https://github.com/marunrun/showstart-checkout
 
 如出现奇奇怪怪的bug，问题，欢迎反馈
 
+如果觉得对你有用的话 也可以打赏一下
+
+<img src="https://user-images.githubusercontent.com/35883111/179758068-b3d3d675-2471-4695-80df-7d24512ea760.jpg" width="400px">
+
