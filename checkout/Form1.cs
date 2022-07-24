@@ -309,7 +309,9 @@ namespace checkout
                 if (result.isSuccess() && result.result.sessions.Count > 0)
                 {
 
-                    //todo 场次处理
+                    //场次处理
+                    sessionSelect.DataSource = result.result.sessions;
+                   
 
                     Session sessionOne = result.result.sessions[0];
 
@@ -355,7 +357,7 @@ namespace checkout
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
-            buyTime = buyTime.AddMilliseconds(-200);
+            buyTime = buyTime.AddMilliseconds(-100);
             var newApiParams = new Dictionary<string, object>(apiParams);
             /*if (ticket.specialActivity == 4)
             {
@@ -774,5 +776,12 @@ namespace checkout
             logText.AppendText(msg);
         }
         #endregion
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var session = (Session)sessionSelect.SelectedItem;
+
+            ticketList.DataSource = session.ticketList;
+        }
     }
 }
