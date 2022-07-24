@@ -515,7 +515,8 @@ namespace checkout
                 apiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
             }*/
 
-            Console.WriteLine(apiParams);
+            //Console.WriteLine(apiParams);
+            AppendLogText("开始购票");
 
             RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket,failCount),ticket.activityId);
         }
@@ -549,8 +550,19 @@ namespace checkout
                             notifyIcon1.Visible = true;
                             notifyIcon1.ShowBalloonTip(10000, "抢票成功", ticket.ticketType, ToolTipIcon.Info);
 
-                            LogHelpers.write(ticket.ticketType + "抢票成功: " + result2.result);
-                            AppendLogText(ticket.ticketType + "抢票成功: " +   result2.result);
+                            var msg = ticket.ticketType + "抢票成功: " + result2.result;
+
+                            LogHelpers.write(msg);
+                            AppendLogText(msg);
+
+                            // 判断是否开启消息通知
+                            if (notifyEnable.Checked) {
+                                Notify.Factory.getNotifyer().send(msg, ((nRes) => {
+
+                                    AppendLogText("消息通知结果:" + nRes);
+                                }));
+                            }
+
                             return;
                         }
 
@@ -720,7 +732,8 @@ namespace checkout
                if (result.isSuccess() && result.result.sessions.Count > 0)
                {
 
-                   Session sessionOne = result.result.sessions[0];
+                   
+                   Session sessionOne = result.result.sessions[sessionSelect.SelectedIndex];
 
                    sessionOne.ticketList.ForEach((item) =>
                    {
@@ -782,6 +795,13 @@ namespace checkout
             var session = (Session)sessionSelect.SelectedItem;
 
             ticketList.DataSource = session.ticketList;
+        }
+
+        private void notifyConfigBtn_Click(object sender, EventArgs e)
+        {
+            var notifyForm = new notifyConfig();
+
+            notifyForm.ShowDialog();
         }
     }
 }

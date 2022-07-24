@@ -61,6 +61,8 @@ namespace checkout
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchTxt = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.notifyConfigBtn = new System.Windows.Forms.Button();
+            this.notifyEnable = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.sessionSelect = new System.Windows.Forms.ComboBox();
             this.sessionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -190,7 +192,7 @@ namespace checkout
             this.logText.Margin = new System.Windows.Forms.Padding(5);
             this.logText.Multiline = true;
             this.logText.Name = "logText";
-            this.logText.Size = new System.Drawing.Size(337, 669);
+            this.logText.Size = new System.Drawing.Size(383, 671);
             this.logText.TabIndex = 0;
             // 
             // password
@@ -204,11 +206,11 @@ namespace checkout
             // group1
             // 
             this.group1.Controls.Add(this.logText);
-            this.group1.Location = new System.Drawing.Point(720, 0);
+            this.group1.Location = new System.Drawing.Point(807, 0);
             this.group1.Margin = new System.Windows.Forms.Padding(5);
             this.group1.Name = "group1";
             this.group1.Padding = new System.Windows.Forms.Padding(5);
-            this.group1.Size = new System.Drawing.Size(347, 698);
+            this.group1.Size = new System.Drawing.Size(393, 700);
             this.group1.TabIndex = 15;
             this.group1.TabStop = false;
             this.group1.Text = "日志";
@@ -328,7 +330,7 @@ namespace checkout
             this.groupBox3.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox3.Size = new System.Drawing.Size(698, 160);
+            this.groupBox3.Size = new System.Drawing.Size(784, 160);
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "演出搜索";
@@ -354,7 +356,7 @@ namespace checkout
             this.activityComboBox.Location = new System.Drawing.Point(141, 107);
             this.activityComboBox.Margin = new System.Windows.Forms.Padding(5);
             this.activityComboBox.Name = "activityComboBox";
-            this.activityComboBox.Size = new System.Drawing.Size(546, 29);
+            this.activityComboBox.Size = new System.Drawing.Size(618, 29);
             this.activityComboBox.TabIndex = 26;
             this.activityComboBox.ValueMember = "activityId";
             this.activityComboBox.SelectionChangeCommitted += new System.EventHandler(this.activityChange);
@@ -387,6 +389,8 @@ namespace checkout
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.notifyConfigBtn);
+            this.groupBox4.Controls.Add(this.notifyEnable);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Controls.Add(this.sessionSelect);
             this.groupBox4.Controls.Add(this.buyCount);
@@ -402,10 +406,30 @@ namespace checkout
             this.groupBox4.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox4.Size = new System.Drawing.Size(701, 192);
+            this.groupBox4.Size = new System.Drawing.Size(779, 204);
             this.groupBox4.TabIndex = 25;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "选票";
+            // 
+            // notifyConfigBtn
+            // 
+            this.notifyConfigBtn.Location = new System.Drawing.Point(622, 147);
+            this.notifyConfigBtn.Name = "notifyConfigBtn";
+            this.notifyConfigBtn.Size = new System.Drawing.Size(149, 35);
+            this.notifyConfigBtn.TabIndex = 23;
+            this.notifyConfigBtn.Text = "通知配置";
+            this.notifyConfigBtn.UseVisualStyleBackColor = true;
+            this.notifyConfigBtn.Click += new System.EventHandler(this.notifyConfigBtn_Click);
+            // 
+            // notifyEnable
+            // 
+            this.notifyEnable.AutoSize = true;
+            this.notifyEnable.Location = new System.Drawing.Point(464, 152);
+            this.notifyEnable.Name = "notifyEnable";
+            this.notifyEnable.Size = new System.Drawing.Size(152, 25);
+            this.notifyEnable.TabIndex = 22;
+            this.notifyEnable.Text = "开消息通知?";
+            this.notifyEnable.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -422,9 +446,9 @@ namespace checkout
             this.sessionSelect.DataSource = this.sessionsBindingSource;
             this.sessionSelect.DisplayMember = "sessionName";
             this.sessionSelect.FormattingEnabled = true;
-            this.sessionSelect.Location = new System.Drawing.Point(82, 41);
+            this.sessionSelect.Location = new System.Drawing.Point(92, 44);
             this.sessionSelect.Name = "sessionSelect";
-            this.sessionSelect.Size = new System.Drawing.Size(225, 29);
+            this.sessionSelect.Size = new System.Drawing.Size(302, 29);
             this.sessionSelect.TabIndex = 20;
             this.sessionSelect.ValueMember = "sessionId";
             this.sessionSelect.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
@@ -440,7 +464,7 @@ namespace checkout
             // 
             // buyCount
             // 
-            this.buyCount.Location = new System.Drawing.Point(352, 92);
+            this.buyCount.Location = new System.Drawing.Point(474, 90);
             this.buyCount.Minimum = new decimal(new int[] {
             1,
             0,
@@ -469,7 +493,7 @@ namespace checkout
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(414, 94);
+            this.label5.Location = new System.Drawing.Point(572, 95);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 21);
@@ -483,10 +507,10 @@ namespace checkout
             this.couponList.DisplayMember = "price";
             this.couponList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.couponList.FormattingEnabled = true;
-            this.couponList.Location = new System.Drawing.Point(497, 91);
+            this.couponList.Location = new System.Drawing.Point(658, 92);
             this.couponList.Margin = new System.Windows.Forms.Padding(5);
             this.couponList.Name = "couponList";
-            this.couponList.Size = new System.Drawing.Size(184, 29);
+            this.couponList.Size = new System.Drawing.Size(102, 29);
             this.couponList.TabIndex = 6;
             this.couponList.ValueMember = "id";
             // 
@@ -539,7 +563,7 @@ namespace checkout
             this.ticketList.Location = new System.Drawing.Point(9, 91);
             this.ticketList.Margin = new System.Windows.Forms.Padding(5);
             this.ticketList.Name = "ticketList";
-            this.ticketList.Size = new System.Drawing.Size(335, 29);
+            this.ticketList.Size = new System.Drawing.Size(457, 29);
             this.ticketList.TabIndex = 0;
             this.ticketList.ValueMember = "ticketId";
             this.ticketList.SelectedIndexChanged += new System.EventHandler(this.ticketChange);
@@ -599,7 +623,7 @@ namespace checkout
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1064, 697);
+            this.ClientSize = new System.Drawing.Size(1214, 701);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -690,6 +714,8 @@ namespace checkout
         private ComboBox sessionSelect;
         private Label label6;
         private BindingSource sessionsBindingSource;
+        private Button notifyConfigBtn;
+        private CheckBox notifyEnable;
     }
 }
 
