@@ -549,8 +549,16 @@ namespace checkout
                             notifyIcon1.Visible = true;
                             notifyIcon1.ShowBalloonTip(10000, "抢票成功", ticket.ticketType, ToolTipIcon.Info);
 
-                            LogHelpers.write(ticket.ticketType + "抢票成功: " + result2.result);
-                            AppendLogText(ticket.ticketType + "抢票成功: " +   result2.result);
+                            var msg = ticket.ticketType + "抢票成功: " + result2.result;
+
+                            LogHelpers.write(msg);
+                            AppendLogText(msg);
+
+                            // 判断是否开启消息通知
+                            if (notifyEnable.Checked) {
+                                Notify.Factory.getNotifyer().send(msg);
+                            }
+
                             return;
                         }
 
@@ -782,6 +790,13 @@ namespace checkout
             var session = (Session)sessionSelect.SelectedItem;
 
             ticketList.DataSource = session.ticketList;
+        }
+
+        private void notifyConfigBtn_Click(object sender, EventArgs e)
+        {
+            var notifyForm = new notifyConfig();
+
+            notifyForm.ShowDialog();
         }
     }
 }

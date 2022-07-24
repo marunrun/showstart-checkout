@@ -185,6 +185,14 @@
     <Compile Include="Helper\LogHelpers.cs" />
     <Compile Include="Helper\LongToStringConverter.cs" />
     <Compile Include="Helper\RequestUtil.cs" />
+    <Compile Include="notifyConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="notifyConfig.Designer.cs">
+      <DependentUpon>notifyConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Notify\EmailNotify.cs" />
+    <Compile Include="Notify\Factory.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,6 +200,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="notifyConfig.resx">
+      <DependentUpon>notifyConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
