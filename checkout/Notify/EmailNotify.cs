@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace checkout.Notify
 {
-    internal class EmailNotify : Notifyer
+    internal class EmailNotify : BaseNotifyer
     {
-        public void send(string content)
+
+        protected override void execute(string content, Action<string> action)
         {
             var client = EmailHelper.getClient();
 
             client.SendAsync(EmailHelper.newMessage(content));
+            action("邮件发送成功");
         }
     }
 }

@@ -193,6 +193,7 @@
     </Compile>
     <Compile Include="Notify\EmailNotify.cs" />
     <Compile Include="Notify\Factory.cs" />
+    <Compile Include="Notify\WebHook.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

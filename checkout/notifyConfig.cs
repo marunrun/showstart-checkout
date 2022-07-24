@@ -18,7 +18,6 @@ namespace checkout
     {
 
 
-        public const string WEB_HOOK_URL = "web_hook_url";
 
         public notifyConfig()
         {
@@ -46,13 +45,20 @@ namespace checkout
             emailAddress.Text =  Helpers.readIni(EmailHelper.EMAIL_ADDRESS,"");
 
 
+            webHookIpt.Text = Helpers.readIni(Notify.WebHook.WEB_HOOK_URL, "");
+            secretInpt.Text =  Helpers.readIni(Notify.WebHook.WEB_HOOK_SECRET, "");
         }
 
         private void notifyTest_Click(object sender, EventArgs e)
         {
-            var notifyer = Notify.Factory.getNotifyer(configSelectTab.SelectedIndex);
+            saveEmailConfig();
+            saveWebHookConfig();
 
-            notifyer.send("测试通知");
+            var notifyer = Notify.Factory.getNotifyer();
+
+            notifyer.send("测试通知",((res)=> {
+                MessageBox.Show(res);
+            }));
         }
 
 
@@ -84,7 +90,20 @@ namespace checkout
 
         private void saveWebHookConfig()
         {
-            Helpers.writeini(WEB_HOOK_URL, webHookIpt.Text);
+            Helpers.writeini(Notify.WebHook.WEB_HOOK_URL, webHookIpt.Text);
+            Helpers.writeini(Notify.WebHook.WEB_HOOK_SECRET, secretInpt.Text);
+        }
+
+        private void webhookTypeChanged(object sender, EventArgs e)
+        {
+            if (!((RadioButton)sender).Checked)
+            {
+                return;
+            }
+
+            var typename = ((RadioButton)sender).Name.ToString();
+
+            Helpers.writeini(Notify.WebHook.TYPE_SELECT, typename);
         }
     }
 }

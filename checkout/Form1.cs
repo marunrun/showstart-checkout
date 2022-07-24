@@ -515,7 +515,8 @@ namespace checkout
                 apiParams.Add("randStr", Uri.EscapeDataString(captchData.randstr));
             }*/
 
-            Console.WriteLine(apiParams);
+            //Console.WriteLine(apiParams);
+            AppendLogText("开始购票");
 
             RequestUtil.post(Urls.ORDER_ORDER, apiParams, buyOrderCallback(ticket,failCount),ticket.activityId);
         }
@@ -556,7 +557,10 @@ namespace checkout
 
                             // 判断是否开启消息通知
                             if (notifyEnable.Checked) {
-                                Notify.Factory.getNotifyer().send(msg);
+                                Notify.Factory.getNotifyer().send(msg, ((nRes) => {
+
+                                    AppendLogText("消息通知结果:" + nRes);
+                                }));
                             }
 
                             return;
@@ -728,7 +732,8 @@ namespace checkout
                if (result.isSuccess() && result.result.sessions.Count > 0)
                {
 
-                   Session sessionOne = result.result.sessions[0];
+                   
+                   Session sessionOne = result.result.sessions[sessionSelect.SelectedIndex];
 
                    sessionOne.ticketList.ForEach((item) =>
                    {

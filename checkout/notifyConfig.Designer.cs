@@ -30,6 +30,9 @@
         {
             this.configSelectTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.smtpPort = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.emailSaveBtn = new System.Windows.Forms.Button();
             this.emailAddress = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.smtpPwd = new System.Windows.Forms.TextBox();
@@ -39,13 +42,14 @@
             this.smtpHost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.wechat = new System.Windows.Forms.RadioButton();
+            this.dingtalk = new System.Windows.Forms.RadioButton();
+            this.webHookSaveBtn = new System.Windows.Forms.Button();
             this.webHookIpt = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.notifyTest = new System.Windows.Forms.Button();
-            this.emailSaveBtn = new System.Windows.Forms.Button();
-            this.webHookSaveBtn = new System.Windows.Forms.Button();
-            this.smtpPort = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.secretInpt = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.configSelectTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -82,6 +86,33 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "邮箱";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // smtpPort
+            // 
+            this.smtpPort.Location = new System.Drawing.Point(160, 56);
+            this.smtpPort.Name = "smtpPort";
+            this.smtpPort.Size = new System.Drawing.Size(243, 26);
+            this.smtpPort.TabIndex = 10;
+            this.smtpPort.Text = "25";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(18, 62);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(132, 20);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "SMTP服务器端口";
+            // 
+            // emailSaveBtn
+            // 
+            this.emailSaveBtn.Location = new System.Drawing.Point(17, 225);
+            this.emailSaveBtn.Name = "emailSaveBtn";
+            this.emailSaveBtn.Size = new System.Drawing.Size(101, 33);
+            this.emailSaveBtn.TabIndex = 8;
+            this.emailSaveBtn.Text = "保存配置";
+            this.emailSaveBtn.UseVisualStyleBackColor = true;
+            this.emailSaveBtn.Click += new System.EventHandler(this.emailSaveBtn_Click);
             // 
             // emailAddress
             // 
@@ -150,6 +181,10 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.secretInpt);
+            this.tabPage2.Controls.Add(this.label7);
+            this.tabPage2.Controls.Add(this.wechat);
+            this.tabPage2.Controls.Add(this.dingtalk);
             this.tabPage2.Controls.Add(this.webHookSaveBtn);
             this.tabPage2.Controls.Add(this.webHookIpt);
             this.tabPage2.Controls.Add(this.label4);
@@ -161,9 +196,43 @@
             this.tabPage2.Text = "webHook";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // wechat
+            // 
+            this.wechat.AutoSize = true;
+            this.wechat.Location = new System.Drawing.Point(182, 37);
+            this.wechat.Name = "wechat";
+            this.wechat.Size = new System.Drawing.Size(162, 24);
+            this.wechat.TabIndex = 11;
+            this.wechat.Text = "企业微信群机器人";
+            this.wechat.UseVisualStyleBackColor = true;
+            this.wechat.CheckedChanged += new System.EventHandler(this.webhookTypeChanged);
+            // 
+            // dingtalk
+            // 
+            this.dingtalk.AutoSize = true;
+            this.dingtalk.Checked = true;
+            this.dingtalk.Location = new System.Drawing.Point(28, 37);
+            this.dingtalk.Name = "dingtalk";
+            this.dingtalk.Size = new System.Drawing.Size(130, 24);
+            this.dingtalk.TabIndex = 10;
+            this.dingtalk.TabStop = true;
+            this.dingtalk.Text = "钉钉群机器人";
+            this.dingtalk.UseVisualStyleBackColor = true;
+            this.dingtalk.CheckedChanged += new System.EventHandler(this.webhookTypeChanged);
+            // 
+            // webHookSaveBtn
+            // 
+            this.webHookSaveBtn.Location = new System.Drawing.Point(25, 206);
+            this.webHookSaveBtn.Name = "webHookSaveBtn";
+            this.webHookSaveBtn.Size = new System.Drawing.Size(101, 33);
+            this.webHookSaveBtn.TabIndex = 9;
+            this.webHookSaveBtn.Text = "保存配置";
+            this.webHookSaveBtn.UseVisualStyleBackColor = true;
+            this.webHookSaveBtn.Click += new System.EventHandler(this.webHookSaveBtn_Click);
+            // 
             // webHookIpt
             // 
-            this.webHookIpt.Location = new System.Drawing.Point(86, 57);
+            this.webHookIpt.Location = new System.Drawing.Point(82, 103);
             this.webHookIpt.Name = "webHookIpt";
             this.webHookIpt.Size = new System.Drawing.Size(440, 26);
             this.webHookIpt.TabIndex = 3;
@@ -171,7 +240,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 60);
+            this.label4.Location = new System.Drawing.Point(17, 106);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(42, 20);
             this.label4.TabIndex = 2;
@@ -187,42 +256,21 @@
             this.notifyTest.UseVisualStyleBackColor = true;
             this.notifyTest.Click += new System.EventHandler(this.notifyTest_Click);
             // 
-            // emailSaveBtn
+            // secretInpt
             // 
-            this.emailSaveBtn.Location = new System.Drawing.Point(17, 225);
-            this.emailSaveBtn.Name = "emailSaveBtn";
-            this.emailSaveBtn.Size = new System.Drawing.Size(101, 33);
-            this.emailSaveBtn.TabIndex = 8;
-            this.emailSaveBtn.Text = "保存配置";
-            this.emailSaveBtn.UseVisualStyleBackColor = true;
-            this.emailSaveBtn.Click += new System.EventHandler(this.emailSaveBtn_Click);
+            this.secretInpt.Location = new System.Drawing.Point(82, 148);
+            this.secretInpt.Name = "secretInpt";
+            this.secretInpt.Size = new System.Drawing.Size(440, 26);
+            this.secretInpt.TabIndex = 13;
             // 
-            // webHookSaveBtn
+            // label7
             // 
-            this.webHookSaveBtn.Location = new System.Drawing.Point(25, 206);
-            this.webHookSaveBtn.Name = "webHookSaveBtn";
-            this.webHookSaveBtn.Size = new System.Drawing.Size(101, 33);
-            this.webHookSaveBtn.TabIndex = 9;
-            this.webHookSaveBtn.Text = "保存配置";
-            this.webHookSaveBtn.UseVisualStyleBackColor = true;
-            this.webHookSaveBtn.Click += new System.EventHandler(this.webHookSaveBtn_Click);
-            // 
-            // smtpPort
-            // 
-            this.smtpPort.Location = new System.Drawing.Point(160, 56);
-            this.smtpPort.Name = "smtpPort";
-            this.smtpPort.Size = new System.Drawing.Size(243, 26);
-            this.smtpPort.TabIndex = 10;
-            this.smtpPort.Text = "25";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 62);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(132, 20);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "SMTP服务器端口";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 151);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(56, 20);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Secret";
             // 
             // notifyConfig
             // 
@@ -262,5 +310,9 @@
         private System.Windows.Forms.Button webHookSaveBtn;
         private System.Windows.Forms.TextBox smtpPort;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.RadioButton wechat;
+        private System.Windows.Forms.RadioButton dingtalk;
+        private System.Windows.Forms.TextBox secretInpt;
+        private System.Windows.Forms.Label label7;
     }
 }
