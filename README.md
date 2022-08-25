@@ -78,3 +78,8 @@ github repo : https://github.com/marunrun/showstart-checkout
 
 <img src="https://user-images.githubusercontent.com/35883111/179758068-b3d3d675-2471-4695-80df-7d24512ea760.jpg" width="400px">
 
+## 由 JetBrains 赞助
+
+非常感谢 Jetbrains 为我提供的 IDE 开源许可，让我完成此项目和其他开源项目上的开发工作。
+
+[![](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://www.jetbrains.com/?from=https://github.com/marunrun)
