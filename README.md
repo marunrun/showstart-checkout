@@ -41,6 +41,9 @@ github repo : https://github.com/marunrun/showstart-checkout
 ### 八. 定时自动购票
 请先选择时间，点击定时自动购票，本工具会定时帮您购票
 
+在`Config.ini`可以配置抢跑时间(leadTime=100) ,以及购票重试时间(retryInterval=1000) 单位均为毫秒
+
+
 # 特别说明
 ~~自动滑块验证使用[EdgeDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) 可能在不同的电脑上不可用，请自行下载。~~
 
