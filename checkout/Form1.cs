@@ -545,21 +545,15 @@ namespace checkout
                         Result<object> result2 = JsonConvert.DeserializeObject<Result<object>>(res2);
 
 
-
                         if (!result2.isSuccess()) {
-                            var msg = ticket.ticketType + "抢票失败: " + result2.result;
 
-                            LogHelpers.write(msg);
-                            AppendLogText(msg);
                             buyTicketFaild(ticket, result2.msg, result2.state, failCount);
                             return;
                         }
 
                         if (result2.result is string && (string)result2.result == "pending") {
-                            var msg = ticket.ticketType + "抢票失败: " + result2.result;
-                            LogHelpers.write(msg);
-                            AppendLogText(msg);
-                            buyTicketFaild(ticket, result2.msg, result2.state, failCount);
+
+                            buyTicketFaild(ticket, result2.msg, "pending", failCount);
                             return;
                         }
 
