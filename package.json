@@ -1,0 +1,30 @@
+{
+  "name": "showstart",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-layout": "7.0.1-beta.28",
+    "@babel/core": "^7.18.13",
+    "@tauri-apps/api": "^1.0.2",
+    "antd": "^4.22.8",
+    "less": "^4.1.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.5",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.0.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7"
+  }
+}
