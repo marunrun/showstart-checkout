@@ -357,7 +357,7 @@ namespace checkout
             var ticket = orderQo.ticket;
             var apiParams = orderQo.apiParams;
 
-            buyTime = buyTime.AddMilliseconds(-100);
+            buyTime = buyTime.AddMilliseconds(int.Parse(Helpers.readIni("leadTime", "100")) * -1);
             var newApiParams = new Dictionary<string, object>(apiParams);
             /*if (ticket.specialActivity == 4)
             {
@@ -579,7 +579,7 @@ namespace checkout
         private void retry(int failCount)
         {
             failCount++;
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(int.Parse(Helpers.readIni("retryInterval", "1000")));
             buyTicket(failCount);
         }
 
