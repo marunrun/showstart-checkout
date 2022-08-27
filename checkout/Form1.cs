@@ -544,7 +544,8 @@ namespace checkout
                     {
                         Result<object> result2 = JsonConvert.DeserializeObject<Result<object>>(res2);
 
-                        if (result2.isSuccess())
+                        // result  pending 也会下单失败
+                        if (result2.isSuccess() && (string)result2.result != "pending")
                         {
                             pickStop();
                             notifyIcon1.Visible = true;
