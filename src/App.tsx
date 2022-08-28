@@ -1,7 +1,22 @@
-import { PageContainer, ProLayout } from '@ant-design/pro-layout';
-import defaultProps from './_defaultProps';
+import {Link, Outlet, Route, Routes} from "react-router-dom";
+import {DefaultFooter, PageContainer, ProLayout} from "@ant-design/pro-layout";
+import route from "./configs/route";
+import Home from "./pages/home";
+import {useEffect} from "react";
+import {MAKE_TOKEN} from "./network/request";
+import {post} from "./util/http";
 
 export default () => {
+
+    useEffect(() => {
+
+
+        post(MAKE_TOKEN, {}, (res) => {
+
+        })
+
+    }, []);
+
     return (
         <div
             style={{
@@ -21,13 +36,45 @@ export default () => {
                         {title}
                     </div>
                 )}
-                {...defaultProps}
+                route={route}
                 location={{
-                    pathname: '/welcome',
+                    pathname: '/home',
+                }}
+                footerRender={() => {
+                    return <DefaultFooter
+                        links={[
+                            {
+                                key: "github",
+                                title: "Github",
+                                href: "https://github.com/marunrun/showstart-checkout",
+                                blankTarget: true
+                            },
+                        ]}
+                        // @ts-ignore
+                        copyright={<a href='https://github.com/marunrun' target='_blank'>marunrun</a>}
+                    />
+
                 }}
             >
-                <PageContainer content="欢迎使用">Hello World</PageContainer>
+                <Routes>
+                    <Route path="/" element={<Home/>}>
+
+                        {route.routes!.map((route, index) => {
+                                return (
+                                    <Route
+                                        key={index}
+                                        path={route.path!}
+                                        element={route.component!}
+                                    />
+                                );
+                            }
+                        )}
+                    </Route>
+                </Routes>
+                <Outlet/>
             </ProLayout>
+
         </div>
     );
 };
+

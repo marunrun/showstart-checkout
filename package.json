@@ -15,9 +15,14 @@
     "@babel/core": "^7.18.13",
     "@tauri-apps/api": "^1.0.2",
     "antd": "^4.22.8",
+    "crypto-js": "^4.1.1",
     "less": "^4.1.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router": "^6.3.0",
+    "react-router-dom": "6",
+    "react-test": "^0.17.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.5",
