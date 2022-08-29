@@ -10,18 +10,20 @@ let baseUrl = 'https://pro2-api.showstart.com'
 let client = await http.getClient();
 
 
-export function post(requestQo: RequestQo, data: object, callback: ((res: string) => void), sessionId?: string) {
+export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: string) => void), sessionId?: string) {
 
-    let apiParams = new ApiParams();
+
     let request: RequestParams = {
         action: requestQo.action,
         z: requestQo.bol,
-        type: requestQo.type
+        type: requestQo.type,
+
     }
 
-    let postParams = apiParams.getPostParams(request);
-    console.log(requestQo);
+    let postParams = data.getPostParams(request);
 
+    console.log(requestQo);
+    requestQo.sessionId = sessionId;
     client.post(baseUrl + getUri(requestQo), Body.json(postParams), {
         headers: {
             "Host": "pro2-api.showstart.com",
@@ -32,7 +34,9 @@ export function post(requestQo: RequestQo, data: object, callback: ((res: string
             "CUSUT": Helpers.getSign(),
             "CUSYSTIME": Helpers.getTimestamp().toString(),
         }
-    }).then(res => {callback(res.data as string)})
+    }).then(res => {
+        callback(res.data as string)
+    })
 
 
 }

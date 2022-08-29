@@ -5,11 +5,12 @@ import Home from "./pages/home";
 import {useEffect} from "react";
 import {post} from "./util/http";
 import {MAKE_TOKEN} from "./network/request";
+import {ApiParams} from "./network/apiParams";
 
 export default () => {
 
     useEffect(() => {
-        post(MAKE_TOKEN, {}, (res) => {
+        post(MAKE_TOKEN, new ApiParams(), (res) => {
             console.log(res)
         })
     }, []);
