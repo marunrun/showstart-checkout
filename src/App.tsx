@@ -3,18 +3,15 @@ import {DefaultFooter, PageContainer, ProLayout} from "@ant-design/pro-layout";
 import route from "./configs/route";
 import Home from "./pages/home";
 import {useEffect} from "react";
-import {MAKE_TOKEN} from "./network/request";
 import {post} from "./util/http";
+import {MAKE_TOKEN} from "./network/request";
 
 export default () => {
 
     useEffect(() => {
-
-
         post(MAKE_TOKEN, {}, (res) => {
-
+            console.log(res)
         })
-
     }, []);
 
     return (

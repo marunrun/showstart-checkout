@@ -14,7 +14,7 @@ export interface RequestParams {
 
 export class ApiParams extends Map<String, Object> {
 
-    public getPostParams(requestParams: RequestParams): string {
+    public getPostParams(requestParams: RequestParams): RealParameter {
 
         let parameter = this.getParameter(requestParams.action);
         let requestJson: string
@@ -38,16 +38,14 @@ export class ApiParams extends Map<String, Object> {
         }
 
 
-        let realParameter: RealParameter = {
+        return {
             appid: Config.appid,
             terminal: Config.terminal,
             version: Config.appVersion,
             aru: Helpers.aesEncrypt(aesKey, requestParams.action),
             data: Helpers.aesEncrypt(dataKey, requestJson),
             sign: Helpers.md5(requestJson)
-        }
-
-        return JSON.stringify(realParameter);
+        };
     }
 
     /**
