@@ -1,10 +1,24 @@
 import React from "react";
 import {Button, Checkbox, Form, Input} from "antd";
+import {post} from "../util/http";
+import {LOGIN_PWD} from "../network/request";
+import {ApiParams} from "../network/apiParams";
+import {store} from "../constant/store";
 
 class LoginForm extends React.Component<any, any> {
 
     onFinish = (values: any) => {
-        console.log('Success:', values);
+
+
+        localStorage.setItem(store.mobile,values.mobile)
+        localStorage.setItem(store.password,values.password)
+
+        let apiParams = new ApiParams();
+        apiParams.set("mobile",values.mobile)
+        apiParams.set("password",values.password)
+        post(LOGIN_PWD,apiParams,(res)=>{
+            console.log(res)
+        })
     };
 
     render() {
@@ -13,14 +27,15 @@ class LoginForm extends React.Component<any, any> {
             <Form
                 size="small"
                 initialValues={{
-                    remember: true,
+                    mobile : localStorage.getItem(store.mobile),
+                    password : localStorage.getItem(store.password)
                 }}
                 onFinish={this.onFinish}
                 autoComplete="off"
             >
                 <Form.Item
                     label="账号"
-                    name="username"
+                    name="mobile"
                     rules={[
                         {
                             required: true,
@@ -41,7 +56,7 @@ class LoginForm extends React.Component<any, any> {
                         },
                     ]}
                 >
-                    <Input.Password/>
+                    <Input/>
                 </Form.Item>
 
                 <Form.Item

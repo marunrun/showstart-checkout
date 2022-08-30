@@ -31,18 +31,20 @@ export class ApiParams extends Map<String, Object> {
             })
         }
 
-        let aesKey = requestParams.z ? Config.aesKey : Helpers.getAesKey()
-        let dataKey = Helpers.getSign()
+        let arukey = Helpers.getAruKey()
+        console.log(arukey)
+        arukey = arukey.length < 1 ? Config.aruKey : arukey
+        console.log(arukey);
+        let dataKey = Helpers.getToken()
         if (requestParams.z) {
-            dataKey = aesKey
+            dataKey = arukey
         }
-
 
         return {
             appid: Config.appid,
             terminal: Config.terminal,
             version: Config.appVersion,
-            aru: Helpers.aesEncrypt(aesKey, requestParams.action),
+            aru: Helpers.aesEncrypt(arukey, requestParams.action),
             data: Helpers.aesEncrypt(dataKey, requestJson),
             sign: Helpers.md5(requestJson)
         };

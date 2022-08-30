@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js"
 import {v4 as uuidv4} from 'uuid';
 import base62 from "base62";
+import {store} from "../constant/store";
 
 export namespace Helpers {
 
@@ -8,8 +9,12 @@ export namespace Helpers {
         return !!localStorage.getItem("isLogin");
     }
 
-    export function getSign(): string {
-        return localStorage.getItem("sign") ?? "";
+    export function getSign() {
+        return localStorage.getItem(store.userSign) ?? ""
+    }
+
+    export function getToken(): string {
+        return localStorage.getItem(store.token) ?? "";
     }
 
     export function getRandStr(len: number): string {
@@ -21,8 +26,9 @@ export namespace Helpers {
         return n
     }
 
-    export function getAesKey(): string {
-        return localStorage.getItem("aesKey") ?? "";
+    export function getAruKey(): string {
+        // 从localStore中取 默认空
+        return localStorage.getItem(store.aruKey) ?? "";
     }
 
     export function aesEncrypt(key: string, str: string) {
@@ -69,7 +75,7 @@ export namespace Helpers {
         let sb2 = "";
         while (i3 < i2) {
             i3++;
-            sb2+="0";
+            sb2 += "0";
         }
 
         return sb2
