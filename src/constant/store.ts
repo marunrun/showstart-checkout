@@ -6,4 +6,5 @@ export enum store {
     userSign = "userSign",
     mobile = "mobile",
     password = "password",
+    userId = "userId",
 }

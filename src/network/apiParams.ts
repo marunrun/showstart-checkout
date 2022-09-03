@@ -32,9 +32,7 @@ export class ApiParams extends Map<String, Object> {
         }
 
         let arukey = Helpers.getAruKey()
-        console.log(arukey)
         arukey = arukey.length < 1 ? Config.aruKey : arukey
-        console.log(arukey);
         let dataKey = Helpers.getToken()
         if (requestParams.z) {
             dataKey = arukey

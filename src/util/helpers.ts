@@ -100,7 +100,7 @@ export namespace Helpers {
         }
 
         let stringPlus2 = stringPlus + str4;
-        let C0 = localStorage.getItem("userId") ?? "";
+        let C0 = localStorage.getItem(store.userId) ?? "";
 
         let str5 = "000000";
         // 判断C0 非null 非空

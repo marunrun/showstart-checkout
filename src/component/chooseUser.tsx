@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, List, Select, Space} from 'antd';
-import internal from "stream";
+import {Button, Select, Space} from 'antd';
 
 const {Option} = Select;
 
@@ -32,7 +31,8 @@ const ChooseUser: React.FC<UserInfoProps> = (props) => {
                 name: "marin",
                 address: "江苏"
             },
-        ])    }, [])
+        ])
+    }, [])
 
 
     const handleOnChange = function (val: string, option: any) {
@@ -56,26 +56,31 @@ const ChooseUser: React.FC<UserInfoProps> = (props) => {
     }
 
     return (
-            <Space direction="vertical" size="small">
+        <Space direction="vertical" size="small">
 
-            <Select
-                placeholder="请选择常用观影人"
-                onChange={handleOnChange}
-                style={{width: 200}}
-            >
-                {userInfoList.map((info, key) => {
-                    return <Option value={info.id} key={key}>{info.name}</Option>
-                })}
-            </Select>
+            <div>
+                观影人：
+                <Select
+                    placeholder="请选择常用观影人"
+                    onChange={handleOnChange}
+                    // style={{width: 200}}
+                >
+                    {userInfoList.map((info, key) => {
+                        return <Option value={info.id} key={key}>{info.name}</Option>
+                    })}
+                </Select>
+            </div>
+            <div>
+                收货地址：
+                <Select
+                    placeholder="请选择收货地址"
+                >
+                </Select>
+            </div>
 
-            <Select
-                placeholder="请选择收货地址"
-
-            >
-            </Select>
-            <Button size="small" onClick={fetchInfo} type="primary" > 刷新用户信息 </Button>
-            </Space>
-)
+            <Button size="small" onClick={fetchInfo} type="primary"> 刷新用户信息 </Button>
+        </Space>
+    )
 
 }
 

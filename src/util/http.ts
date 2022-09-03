@@ -1,11 +1,11 @@
 import {http} from "@tauri-apps/api";
-import {getUri, RequestQo} from "../network/request";
+import {getUri, MAKE_TOKEN, RequestQo} from "../network/request";
 import {Body} from "@tauri-apps/api/http";
-import { Helpers} from "./helpers";
+import {Helpers} from "./helpers";
 import {ApiParams, RequestParams} from "../network/apiParams";
 import {response, state} from "../network/response";
-import {message} from "@tauri-apps/api/dialog";
 import {message as antdMsg} from "antd"
+import {store} from "../constant/store";
 
 let baseUrl = 'https://pro2-api.showstart.com'
 
@@ -14,8 +14,12 @@ let client = await http.getClient();
 
 const uuid = Helpers.get32RandomID();
 
-export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: string) => void), sessionId?: string) {
+post(MAKE_TOKEN, new ApiParams(), (res) => {
+    localStorage.setItem(store.token, res)
+})
 
+
+export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: any) => void), sessionId?: string) {
 
     let request: RequestParams = {
         action: requestQo.action,
@@ -27,15 +31,17 @@ export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: str
     let postParams = data.getPostParams(request);
 
     requestQo.sessionId = sessionId;
-    let headers =  {
+    let headers = {
         "Host": "pro2-api.showstart.com",
-            "User-Agent": "okhttp/4.6.0",
-            "Connection": "Keep-Alive",
-            "CTERMINAL": "android",
-            'CUUSERREF': Helpers.md5(uuid),
-            "CUSUT": Helpers.getSign(),
-            "CUSYSTIME": Helpers.getTimestamp().toString(),
+        "User-Agent": "okhttp/4.6.0",
+        "Connection": "Keep-Alive",
+        "CTERMINAL": "android",
+        'CUUSERREF': Helpers.md5(uuid),
+        "CUSUT": Helpers.getSign(),
+        "CUSYSTIME": Helpers.getTimestamp().toString(),
     }
+    console.log(headers);
+    console.log(postParams);
     client.post(baseUrl + getUri(requestQo), Body.json(postParams), {
         headers
     }).then(res => {
@@ -46,11 +52,12 @@ export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: str
         if (response.state == state.user_not_login || response.state == state.user_login_again || response.state == state.user_ref_login_again || response.state == state.user_token_login_again) {
             antdMsg.error("登录已过期,请重新登录")
             return;
-        }else if (response.state == state.user_other_login) {
-            antdMsg.error(response.msg ??"登录已过期,请重新登录")
+        } else if (response.state == state.user_other_login) {
+            antdMsg.error(response.msg ?? "登录已过期,请重新登录")
             return;
-        }else if(response.state != "1") {
+        } else if (response.state != "1") {
             antdMsg.error(response.msg ? response.msg : "网络错误")
+            return;
         }
 
         callback(response.result);

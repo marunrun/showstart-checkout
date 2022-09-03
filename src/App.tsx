@@ -1,20 +1,9 @@
-import {Link, Outlet, Route, Routes} from "react-router-dom";
-import {DefaultFooter, PageContainer, ProLayout} from "@ant-design/pro-layout";
+import {Outlet, Route, Routes} from "react-router-dom";
+import {DefaultFooter, ProLayout} from "@ant-design/pro-layout";
 import route from "./configs/route";
 import Home from "./pages/home";
-import {useEffect} from "react";
-import {post} from "./util/http";
-import {MAKE_TOKEN} from "./network/request";
-import {ApiParams} from "./network/apiParams";
-import {store} from "./constant/store";
 
 export default () => {
-
-    useEffect(() => {
-        post(MAKE_TOKEN, new ApiParams(), (res) => {
-            localStorage.setItem(store.token,res)
-        })
-    }, []);
 
     return (
         <div

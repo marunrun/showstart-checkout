@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Checkbox, Form, Input} from "antd";
+import {Button, Form, Input, message} from "antd";
 import {post} from "../util/http";
 import {LOGIN_PWD} from "../network/request";
 import {ApiParams} from "../network/apiParams";
@@ -10,14 +10,16 @@ class LoginForm extends React.Component<any, any> {
     onFinish = (values: any) => {
 
 
-        localStorage.setItem(store.mobile,values.mobile)
-        localStorage.setItem(store.password,values.password)
+        localStorage.setItem(store.mobile, values.mobile)
+        localStorage.setItem(store.password, values.password)
 
         let apiParams = new ApiParams();
-        apiParams.set("mobile",values.mobile)
-        apiParams.set("password",values.password)
-        post(LOGIN_PWD,apiParams,(res)=>{
-            console.log(res)
+        apiParams.set("name", values.mobile)
+        apiParams.set("password", values.password)
+        post(LOGIN_PWD, apiParams, (res) => {
+            message.success("登录成功")
+            localStorage.setItem(store.userSign,res.sign)
+            localStorage.setItem(store.userId,res.userId)
         })
     };
 
@@ -27,8 +29,8 @@ class LoginForm extends React.Component<any, any> {
             <Form
                 size="small"
                 initialValues={{
-                    mobile : localStorage.getItem(store.mobile),
-                    password : localStorage.getItem(store.password)
+                    mobile: localStorage.getItem(store.mobile),
+                    password: localStorage.getItem(store.password)
                 }}
                 onFinish={this.onFinish}
                 autoComplete="off"
