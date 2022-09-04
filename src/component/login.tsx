@@ -1,9 +1,9 @@
 import React from "react";
 import {Button, Form, Input, message} from "antd";
 import {post} from "../util/http";
-import {LOGIN_PWD} from "../network/request";
 import {ApiParams} from "../network/apiParams";
 import {store} from "../constant/store";
+import {LOGIN_PWD} from "../network/api/login";
 
 class LoginForm extends React.Component<any, any> {
 

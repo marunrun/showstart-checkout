@@ -13,19 +13,27 @@ let baseUrl = 'https://pro2-api.showstart.com'
 let client = await http.getClient();
 
 const uuid = Helpers.get32RandomID();
+let  tokenInit = false;
 
 post(MAKE_TOKEN, new ApiParams(), (res) => {
     localStorage.setItem(store.token, res)
+    tokenInit = true;
 })
 
 
 export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: any) => void), sessionId?: string) {
 
+    if (requestQo !== MAKE_TOKEN && !tokenInit) {
+        setTimeout(() => {
+            post(requestQo, data, callback, sessionId)
+        }, 100)
+        return
+    }
+
     let request: RequestParams = {
         action: requestQo.action,
         z: requestQo.bol,
         type: requestQo.type,
-
     }
 
     let postParams = data.getPostParams(request);
@@ -40,8 +48,7 @@ export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: any
         "CUSUT": Helpers.getSign(),
         "CUSYSTIME": Helpers.getTimestamp().toString(),
     }
-    console.log(headers);
-    console.log(postParams);
+    console.log(request);
     client.post(baseUrl + getUri(requestQo), Body.json(postParams), {
         headers
     }).then(res => {

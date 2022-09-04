@@ -1,7 +1,6 @@
-import {Outlet, Route, Routes} from "react-router-dom";
+import {Navigate, Outlet, Route, Routes} from "react-router-dom";
 import {DefaultFooter, ProLayout} from "@ant-design/pro-layout";
 import route from "./configs/route";
-import Home from "./pages/home";
 
 export default () => {
 
@@ -12,15 +11,15 @@ export default () => {
             }}
         >
             <ProLayout
+                headerHeight={0}
                 menuItemRender={(item, dom) => <div> {dom}</div>}
                 subMenuItemRender={(_, dom) => <div> {dom}</div>}
                 title="秀动辅助"
-                logo="https://gw.alipayobjects.com/mdn/rms_b5fcc5/afts/img/A*1NHAQYduQiQAAAAAAAAAAABkARQnAQ"
+                siderWidth={120}
                 menuHeaderRender={(logo, title) => (
                     <div
                         id="customize_menu_header"
                     >
-                        {logo}
                         {title}
                     </div>
                 )}
@@ -45,19 +44,18 @@ export default () => {
                 }}
             >
                 <Routes>
-                    <Route path="/" element={<Home/>}>
-
-                        {route.routes!.map((route, index) => {
-                                return (
-                                    <Route
-                                        key={index}
-                                        path={route.path!}
-                                        element={route.component!}
-                                    />
-                                );
-                            }
-                        )}
+                    <Route path="/" element={<Navigate replace to="/home" />}>
                     </Route>
+                    {route.routes!.map((route, index) => {
+                            return (
+                                <Route
+                                    key={index}
+                                    path={route.path!}
+                                    element={route.component!}
+                                />
+                            );
+                        }
+                    )}
                 </Routes>
                 <Outlet/>
             </ProLayout>
