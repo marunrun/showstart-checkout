@@ -1,6 +1,6 @@
 import {http} from "@tauri-apps/api";
 import {getUri, MAKE_TOKEN, RequestQo} from "../network/request";
-import {Body} from "@tauri-apps/api/http";
+import {Body, fetch, ResponseType} from "@tauri-apps/api/http";
 import {Helpers} from "./helpers";
 import {ApiParams, RequestParams} from "../network/apiParams";
 import {response, state} from "../network/response";
@@ -10,7 +10,6 @@ import {store} from "../constant/store";
 let baseUrl = 'https://pro2-api.showstart.com'
 
 
-let client = await http.getClient();
 
 const uuid = Helpers.get32RandomID();
 let  tokenInit = false;
@@ -49,8 +48,11 @@ export function post(requestQo: RequestQo, data: ApiParams, callback: ((res: any
         "CUSYSTIME": Helpers.getTimestamp().toString(),
     }
     console.log(request);
-    client.post(baseUrl + getUri(requestQo), Body.json(postParams), {
-        headers
+    fetch(baseUrl + getUri(requestQo), {
+        body: Body.json(postParams),
+        headers,
+        method: 'POST',
+        responseType: ResponseType.JSON,
     }).then(res => {
 
         let response = res.data as response;
