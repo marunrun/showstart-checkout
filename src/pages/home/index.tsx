@@ -25,6 +25,8 @@ const Home: React.FC = () => {
     const [address, setAddress] = React.useState<AddressInfo>();
 
 
+    const [isLogin , setIsLogin] = React.useState<boolean>(false);
+
     // 捡漏
     const [pickupEnable, setPickupEnable] = React.useState<boolean>(false);
     const [pickupTimer, setPickupTimer] = React.useState<number>(0);
@@ -265,10 +267,10 @@ const Home: React.FC = () => {
         <>
             <ProCard gutter={8} title="用户信息">
                 <ProCard>
-                    <LoginForm/>
+                    <LoginForm afterLoginSuccess={() => { setIsLogin(true) }}/>
                 </ProCard>
                 <ProCard>
-                    <ChooseUser onAddressChange={addressChange} onPerformerChange={performerChange}/>
+                    <ChooseUser isLogin={isLogin} onAddressChange={addressChange} onPerformerChange={performerChange}/>
                 </ProCard>
             </ProCard>
             <ProCard style={{marginBlockStart: 8}} gutter={8} title="选择演出">

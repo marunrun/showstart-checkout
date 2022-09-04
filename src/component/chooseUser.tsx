@@ -8,6 +8,7 @@ import {ApiParams} from "../network/apiParams";
 export type UserInfoProps = {
     onPerformerChange: (value: performerInfo[]) => void;
     onAddressChange: (value: AddressInfo) => void;
+    isLogin : boolean
 }
 
 
@@ -39,7 +40,7 @@ const ChooseUser: React.FC<UserInfoProps> = (props) => {
     // 初始化
     useEffect(() => {
         fetchInfo()
-    }, [])
+    }, [props.isLogin])
 
 
     // 观影人信息更新
