@@ -11,6 +11,7 @@ github repo : https://github.com/marunrun/showstart-checkout
 
 
 ## Mac可以使用2.x版本 
+注意： mac版本使用 [tauri](https://github.com/tauri-apps/tauri) 开发
 
 使用说明参考以下，使用比较简单。 mac暂时没有做消息通知，作者也不怎么用这个软件了，因为现在用软件的抢票几率也不太高了，太卷了
 
