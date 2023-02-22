@@ -79,6 +79,7 @@ const ChooseUser: React.FC<UserInfoProps> = (props) => {
                     address : item
                 }
             }));
+            props.onAddressChange(res[0]);
             setDefaultAddressId(res.length > 0 && res[0].id)
         })
     }
