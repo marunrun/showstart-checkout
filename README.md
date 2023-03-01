@@ -15,6 +15,15 @@ github repo : https://github.com/marunrun/showstart-checkout
 
 使用说明参考以下，使用比较简单。 mac暂时没有做消息通知，作者也不怎么用这个软件了，因为现在用软件的抢票几率也不太高了，太卷了
 
+因作者本人只有一台m1机器，如果部分机型不支持，可以尝试自行构建
+```
+git clone https://github.com/marunrun/showstart-checkout.git
+cd showstart-checkout 
+pnpm install
+pnpm tauri build
+```
+
+
 ###  登陆
 使用密码登陆后，软件会默认记录下手机号和密码。请放心使用，账号密码只会保存在本地，不会上传云端。
 
